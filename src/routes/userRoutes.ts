@@ -17,5 +17,4 @@ router.delete('/delete', auth, deleteUser);
 router.post('/balance', auth, updateBalance);
 router.post('/bonus', auth, validateEmail, updateBonus);
 
-
 export default router;
