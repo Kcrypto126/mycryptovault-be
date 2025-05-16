@@ -1,0 +1,64 @@
+// This isyourPrismaschemafile,
+//learnmoreaboutitinthedocs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String    @id @default(uuid())
+  email              String    @unique
+  password           String
+  username           String?   @unique
+  full_name          String?
+  avatar             String?
+  balance            Float     @default(0)
+  bonus              Float     @default(0)
+  role               UserRole  @default(USER)
+  reset_token        String?
+  reset_token_expiry DateTime?
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @updatedAt
+
+  sentTransactions     Transaction[] @relation("SenderTransactions")
+  receivedTransactions Transaction[] @relation("RecipientTransactions")
+}
+
+model Transaction {
+  id          String             @id @default(uuid())
+  amount      Float              @default(0)
+  type        TransactionType
+  status      TransactionStatus?
+  description String?
+  created_at  DateTime           @default(now())
+
+  sender_id    String?
+  sender       User?   @relation("SenderTransactions", fields: [sender_id], references: [id])
+  recipient_id String?
+  recipient    User?   @relation("RecipientTransactions", fields: [recipient_id], references: [id])
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRANSFER
+  BONUS
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
