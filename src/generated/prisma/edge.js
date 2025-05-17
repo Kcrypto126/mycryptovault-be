@@ -167,7 +167,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "E:\\urfx-wallet\\backend\\src\\generated\\prisma",
+      "value": "/home/ubuntu2025/Documents/GitHub/backend/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -176,18 +176,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       }
     ],
-    "previewFeatures": [
-      "multiSchema"
-    ],
-    "sourceFilePath": "E:\\urfx-wallet\\backend\\prisma\\schema.prisma",
+    "previewFeatures": [],
+    "sourceFilePath": "/home/ubuntu2025/Documents/GitHub/backend/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -197,17 +195,16 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "postgresql://postgres:Roastery818@localhost:5432/crypto-vault"
       }
     }
   },
-  "inlineSchema": "// This isyourPrismaschemafile,\n//learnmoreaboutitinthedocs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/generated/prisma\"\n  previewFeatures = [\"multiSchema\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id                 String    @id @default(uuid())\n  email              String    @unique\n  password           String\n  username           String?   @unique\n  full_name          String?\n  avatar             String?\n  balance            Float     @default(0)\n  bonus              Float     @default(0)\n  role               UserRole  @default(USER)\n  reset_token        String?\n  reset_token_expiry DateTime?\n  created_at         DateTime  @default(now())\n  updated_at         DateTime  @updatedAt\n\n  sentTransactions     Transaction[] @relation(\"SenderTransactions\")\n  receivedTransactions Transaction[] @relation(\"RecipientTransactions\")\n}\n\nmodel Transaction {\n  id          String             @id @default(uuid())\n  amount      Float              @default(0)\n  type        TransactionType\n  status      TransactionStatus?\n  description String?\n  created_at  DateTime           @default(now())\n\n  sender_id    String?\n  sender       User?   @relation(\"SenderTransactions\", fields: [sender_id], references: [id])\n  recipient_id String?\n  recipient    User?   @relation(\"RecipientTransactions\", fields: [recipient_id], references: [id])\n}\n\nenum TransactionType {\n  DEPOSIT\n  WITHDRAWAL\n  TRANSFER\n  BONUS\n}\n\nenum TransactionStatus {\n  PENDING\n  COMPLETED\n  FAILED\n  CANCELLED\n}\n\nenum UserRole {\n  USER\n  ADMIN\n}\n",
-  "inlineSchemaHash": "a69d483d1341e9fb27be5038aed891c57a026c3960e9f0d7f867db72c4000371",
+  "inlineSchema": "// This isyourPrismaschemafile,\n//learnmoreaboutitinthedocs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id                 String    @id @default(uuid())\n  email              String    @unique\n  password           String\n  username           String?   @unique\n  full_name          String?\n  avatar             String?\n  balance            Float     @default(0)\n  bonus              Float     @default(0)\n  role               UserRole  @default(USER)\n  reset_token        String?\n  reset_token_expiry DateTime?\n  created_at         DateTime  @default(now())\n  updated_at         DateTime  @updatedAt\n\n  sentTransactions     Transaction[] @relation(\"SenderTransactions\")\n  receivedTransactions Transaction[] @relation(\"RecipientTransactions\")\n}\n\nmodel Transaction {\n  id          String             @id @default(uuid())\n  amount      Float              @default(0)\n  type        TransactionType\n  status      TransactionStatus?\n  description String?\n  created_at  DateTime           @default(now())\n\n  sender_id    String?\n  sender       User?   @relation(\"SenderTransactions\", fields: [sender_id], references: [id])\n  recipient_id String?\n  recipient    User?   @relation(\"RecipientTransactions\", fields: [recipient_id], references: [id])\n}\n\nenum TransactionType {\n  DEPOSIT\n  WITHDRAWAL\n  TRANSFER\n  BONUS\n}\n\nenum TransactionStatus {\n  PENDING\n  COMPLETED\n  FAILED\n  CANCELLED\n}\n\nenum UserRole {\n  USER\n  ADMIN\n}\n",
+  "inlineSchemaHash": "e43bd591c6328c4af883911b8117cd98a9a4839f640b65c10f7200ce251a4ae7",
   "copyEngine": true
 }
 config.dirname = '/'
