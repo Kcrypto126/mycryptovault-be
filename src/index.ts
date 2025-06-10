@@ -41,7 +41,7 @@ app.use('/api', routes);
 
 // Test api
 app.get("/", (req, res) => {
-  res.json({ message: "welcom to crypto wallet" })
+  res.json({ message: "welcome to crypto wallet" })
 })
 
 if (process.env.ENVIRONMENT === "PRODUCTION") {

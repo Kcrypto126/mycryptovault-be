@@ -27,7 +27,5 @@ export const sendEmail = async (options: EmailOptions): Promise<void> => {
     text: options.text,
     html: options.html,
   };
-  console.log("ping1...");
   await transporter.sendMail(message);
-  console.log("ping2....")
 };
