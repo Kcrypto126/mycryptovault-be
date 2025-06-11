@@ -1,11 +1,11 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import dotenv from 'dotenv';
-import routes from './routes';
-import { errorHandler } from './middlewares/errorHandler';
-import prisma from './lib/prisma';
-import path = require('path');
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import dotenv from "dotenv";
+import routes from "./routes";
+import { errorHandler } from "./middlewares/errorHandler";
+import prisma from "./lib/prisma";
+import path = require("path");
 
 // Load environment variables
 dotenv.config();
@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
 // Use static data in public
 app.use("/static", express.static(__dirname + "/public"));
@@ -27,9 +27,9 @@ app.use("/static", express.static(__dirname + "/public"));
 const connectToDatabase = async () => {
   try {
     await prisma.$connect();
-    console.log('Database connected successfully!');
+    console.log("Database connected successfully!");
   } catch (error) {
-    console.error('Database connection failed:', error);
+    console.error("Database connection failed:", error);
     process.exit(1);
   }
 };
@@ -37,12 +37,12 @@ const connectToDatabase = async () => {
 connectToDatabase();
 
 // Routes
-app.use('/api', routes);
+app.use("/api", routes);
 
 // Test api
 app.get("/", (req, res) => {
-  res.json({ message: "welcome to crypto wallet" })
-})
+  res.json({ message: "welcome to crypto wallet" });
+});
 
 if (process.env.ENVIRONMENT === "PRODUCTION") {
   console.log("Production requested");
@@ -61,16 +61,18 @@ app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`⚡️[server]: Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+  console.log(
+    `⚡️[server]: Server running on port ${PORT} in ${process.env.NODE_ENV} mode`
+  );
 });
 
 // Handle graceful shutdown
-process.on('SIGINT', async () => {
+process.on("SIGINT", async () => {
   await prisma.$disconnect();
   process.exit(0);
 });
 
-process.on('SIGTERM', async () => {
+process.on("SIGTERM", async () => {
   await prisma.$disconnect();
   process.exit(0);
 });
