@@ -17,7 +17,7 @@ export const getProfile = async (
 ) => {
   try {
     if (!req.user) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Not authorized",
       });
@@ -25,7 +25,7 @@ export const getProfile = async (
 
     const user = await UserModel.findById(req.user.id);
     if (!user) {
-      return res.status(404).json({
+      return res.json({
         success: false,
         message: "User not found",
       });
@@ -50,14 +50,14 @@ export const updateProfile = async (
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({
+      return res.json({
         success: false,
         message: errors.array()[0].msg,
       });
     }
 
     if (!req.user) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Not autorized",
       });
@@ -74,6 +74,8 @@ export const updateProfile = async (
     // Add avatar path if a file was uploaded
     if (req.file) {
       updateData.avatar = `${req.file.filename}`;
+    } else {
+      updateData.avatar = req.body.avatar;
     }
 
     let user;
@@ -81,7 +83,7 @@ export const updateProfile = async (
     if (username) {
       user = await UserModel.findByUserName(username);
       if (user && user.id !== req.user.id) {
-        return res.status(400).json({
+        return res.json({
           success: false,
           message: "Username already in use",
         });
@@ -100,6 +102,60 @@ export const updateProfile = async (
   }
 };
 
+// Update user password
+export const updatePassword = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.json({
+        success: false,
+        message: errors.array()[0].msg,
+      });
+    }
+
+    if (!req.user) {
+      return res.json({
+        success: false,
+        message: "Not autorized",
+      });
+    }
+
+    const user = await UserModel.findById(req.user.id);
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    const { oldPassword, newPassword } = req.body;
+    
+    const isOldPasswordValid = await UserModel.comparePassword(
+      oldPassword,
+      user.password
+    );
+    
+    if (!isOldPasswordValid) {
+      return res.json({
+        success: false,
+        message: "Invalid old password",
+      });
+    }
+    
+    const updatedUser = await UserModel.updatePassword(req.user.email, newPassword);
+
+    res.status(201).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Update user balance
 export const updateBalance = async (
   req: AuthRequest,
@@ -108,7 +164,7 @@ export const updateBalance = async (
 ) => {
   try {
     if (!req.user) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Not autorized",
       });
@@ -116,7 +172,7 @@ export const updateBalance = async (
 
     const user = await UserModel.findById(req.user.id);
     if (!user) {
-      return res.status(404).json({
+      return res.json({
         success: false,
         message: "User not found",
       });
@@ -147,13 +203,13 @@ export const updateBalance = async (
       // Send email for balance deposit success
     } else if (req.body.type === TransactionType.WITHDRAWAL) {
       if (currentBalance < 1500 || parseFloat(req.body.amount) < 1500) {
-        return res.status(403).json({
+        return res.json({
           success: false,
           message: "Minimum withdrawal amount is $1500",
         });
       }
       if (currentBalance < parseFloat(req.body.amount)) {
-        return res.status(403).json({
+        return res.json({
           success: false,
           message: "Balance is not enough",
         });
@@ -182,7 +238,7 @@ export const updateBalance = async (
       //   balance: newBalance2
       // });
     } else {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Balance handle error",
       });
@@ -210,7 +266,7 @@ export const updateBonus = async (
     if (req.body.type == TransactionType.TRANSFER) {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(422).json({
+        return res.json({
           success: false,
           message: errors.array()[0].msg,
         });
@@ -218,7 +274,7 @@ export const updateBonus = async (
     }
 
     if (!req.user) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Not autorized",
       });
@@ -226,7 +282,7 @@ export const updateBonus = async (
 
     const sender = await UserModel.findById(req.user.id);
     if (!sender) {
-      return res.status(404).json({
+      return res.json({
         success: false,
         message: "User not found",
       });
@@ -258,14 +314,14 @@ export const updateBonus = async (
       // Send email for success getting bonus
     } else if (type === TransactionType.TRANSFER) {
       if (senderCurrentBonus < parseFloat(amount)) {
-        return res.status(403).json({
+        return res.json({
           success: false,
           message: "Bonus not enough",
         });
       }
       const recipient = await UserModel.findByEmail(email);
       if (!recipient) {
-        return res.status(404).json({
+        return res.json({
           success: false,
           message: "Recipient user not found",
         });
@@ -299,7 +355,7 @@ export const updateBonus = async (
 
       // Send email for transfer bonus
     } else {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Handle bonus error",
       });
@@ -325,7 +381,7 @@ export const getAllUser = async (
 ) => {
   try {
     if (!req.user) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Not authorized",
       });
@@ -333,14 +389,14 @@ export const getAllUser = async (
 
     const user = await UserModel.findById(req.user.id);
     if (!user) {
-      return res.status(404).json({
+      return res.json({
         success: false,
         message: "User not found",
       });
     }
 
     if (user.email !== admin_email) {
-      return res.status(403).json({
+      return res.json({
         success: false,
         message: "You do not have admin permission",
       });
@@ -365,7 +421,7 @@ export const deleteUser = async (
 ) => {
   try {
     if (!req.user) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Not authorized",
       });
@@ -373,14 +429,14 @@ export const deleteUser = async (
 
     const user = await UserModel.findById(req.user.id);
     if (!user) {
-      return res.status(404).json({
+      return res.json({
         success: false,
         message: "User not found",
       });
     }
 
     if (user.email !== admin_email) {
-      return res.status(403).json({
+      return res.json({
         success: false,
         message: "You do not have admin permission",
       });
@@ -390,7 +446,7 @@ export const deleteUser = async (
     if (deleteUser) {
       await UserModel.deleteById(deleteUser.id);
     } else {
-      return res.status(404).json({
+      return res.json({
         success: false,
         message: "User not found",
       });

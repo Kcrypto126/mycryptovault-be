@@ -6,11 +6,13 @@ import {
   deleteUser,
   updateBonus,
   updateBalance,
+  updatePassword,
 } from "../controllers/userController";
 import { auth } from "../middlewares/auth";
 import {
   validateUpdateProfile,
   validateEmail,
+  validateUpdatePassword,
 } from "../validators/userValidators";
 import multer from "multer";
 import path from "path";
@@ -42,13 +44,17 @@ const upload = multer({
 
 // User routes
 router.get("/profile", auth, getProfile);
+
+// Update user profile
 router.put(
   "/profile",
   auth,
-//   validateUpdateProfile,
+  validateUpdateProfile,
   upload.single("avatar"),
   updateProfile
 );
+
+router.put("/password", auth, validateUpdatePassword, updatePassword);
 
 // By admin
 router.get("/all-user", auth, getAllUser);

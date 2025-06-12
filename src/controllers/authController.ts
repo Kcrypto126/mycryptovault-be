@@ -20,7 +20,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({
+      return res.json({
         success: false,
         message: errors.array()[0].msg
       });
@@ -32,7 +32,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     // Check if user already exists
     const existingUserEmail = await UserModel.findByEmail(email);
     if (existingUserEmail) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Email already in use"
       });
@@ -86,7 +86,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({
+      return res.json({
         success: false,
         message: errors.array()[0].msg
       });
@@ -97,7 +97,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     // Find user
     const user = await UserModel.findByEmail(email);
     if (!user) {
-      return res.status(404).json({
+      return res.json({
         success: false,
         message: "User not found"
       });
@@ -106,7 +106,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     // Check password
     const isPasswordValid = await UserModel.comparePassword(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Incorrect password"
       });
@@ -138,7 +138,7 @@ export const forgotPassword = async (req: Request, res: Response, next: NextFunc
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({
+      return res.json({
         success: false,
         message: errors.array()[0].msg
       })
@@ -149,7 +149,7 @@ export const forgotPassword = async (req: Request, res: Response, next: NextFunc
     // Find user
     const user = await UserModel.findByEmail(email);
     if (!user) {
-      return res.status(404).json({
+      return res.json({
         success: false,
         message: "User not found"
       });
@@ -167,7 +167,7 @@ export const forgotPassword = async (req: Request, res: Response, next: NextFunc
     // Store reset token in DB (implementation needed)
     const updatedUser = await UserModel.updateResetToken(email, updates);
     if (!updatedUser) {
-      return res.status(500).json({
+      return res.json({
         success: false,
         message: "Failed to update user with reset token in the database."
       })
@@ -201,7 +201,7 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({
+      return res.json({
         success: false,
         message: errors.array()[0].msg
       })
@@ -211,7 +211,7 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
 
     const user = await UserModel.findByToken(token);
     if (!user) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Invalid or expired token"
       });
@@ -219,7 +219,7 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
 
     const updatedUser = await UserModel.updatePassword(user.email, password);
     if (!updatedUser) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: 'Failed to reset password'
       })
@@ -241,14 +241,14 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
     jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
       if (err) {
         console.error(err);
-        return res.status(401).json({msg: "Invalid token"})
+        return res.json({msg: "Invalid token"})
       }
       
       const email = decoded.email;
-      if (!email) return res.status(404).json({msg: "User not found with token"});
+      if (!email) return res.json({msg: "User not found with token"});
 
       const user = await UserModel.findByEmail(email);
-      if(!user) return res.status(404).json({msg: "User not found"});
+      if(!user) return res.json({msg: "User not found"});
       // if(!user.verified) res.status(201).json({msg: "User not verified"});
       return res.status(200).json({msg: "Token is valid.", role: user.role});
     })
