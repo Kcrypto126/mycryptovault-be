@@ -139,12 +139,9 @@ export const updateKYC = async (
       address,
       id_card: "",
       government_id: "",
-    };
+    }
 
-    if (
-      req.files &&
-      "idCard" in (req.files as { [fieldname: string]: Express.Multer.File[] })
-    ) {
+    if (req.files && 'idCard' in (req.files as { [fieldname: string]: Express.Multer.File[] })) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       const idCard = files.idCard[0].filename;
       updateData.id_card = idCard;
@@ -152,10 +149,7 @@ export const updateKYC = async (
       updateData.id_card = req.body.idCard;
     }
 
-    if (
-      req.files &&
-      "govId" in (req.files as { [fieldname: string]: Express.Multer.File[] })
-    ) {
+    if (req.files && 'govId' in (req.files as { [fieldname: string]: Express.Multer.File[] })) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       const govId = files.govId[0].filename;
       updateData.government_id = govId;

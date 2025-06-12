@@ -14,6 +14,7 @@ dotenv.config();
 const jwt_secret: string = process.env.JWT_SECRET || "WELCOME TO CRYPTO WALLET";
 const admin_email: string = process.env.ADMIN_EMAIL || "a@a.com";
 const admin_pass: string = process.env.ADMIN_PASSWORD || "Asd123!@#";
+const frontend_url: string = process.env.FRONTEND_URL || "http://192.168.144.157:3000";
 
 // Register new user
 export const register = async (req: Request, res: Response, next: NextFunction) => {
@@ -151,7 +152,7 @@ export const forgotPassword = async (req: Request, res: Response, next: NextFunc
     if (!user) {
       return res.json({
         success: false,
-        message: "User not found"
+        message: "Email not found"
       });
     }
 
@@ -174,7 +175,7 @@ export const forgotPassword = async (req: Request, res: Response, next: NextFunc
     }
 
     // Send password reset email
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+    const resetUrl = `${frontend_url}/account/reset-password?token=${token}`;
 
     sendEmail({
       to: user.email,
