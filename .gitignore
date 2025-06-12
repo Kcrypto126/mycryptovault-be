@@ -5,3 +5,6 @@ dist
 coverage
 logs
 migrations
+
+public/avatars/*
+
