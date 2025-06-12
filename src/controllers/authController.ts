@@ -52,11 +52,11 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     });
 
     // Generate token with type-safe JWT secret
-    const token = jwt.sign(
-      { id: user.id, email: user.email },
-      jwt_secret,
-      { expiresIn: '1d' }
-    );
+    // const token = jwt.sign(
+    //   { id: user.id, email: user.email },
+    //   jwt_secret,
+    //   { expiresIn: '1d' }
+    // );
 
     // Send welcome email
     sendEmail({
@@ -70,7 +70,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
     res.status(201).json({
       success: true,
-      token,
+      // token,
       user: {
         id: user.id,
         email: user.email
@@ -114,7 +114,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
     // Generate token with type-safe JWT secret
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, role:user.role },
       jwt_secret,
       { expiresIn: '1d' }
     );
@@ -124,7 +124,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       token,
       user: {
         id: user.id,
-        email: user.email
+        email: user.email,
+        role: user.role
       }
     });
   } catch (error) {
@@ -234,7 +235,25 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
 };
 
 // verify token
-export const verifyToken = (token: string) => {
-  
+export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.body.token;
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+      if (err) {
+        console.error(err);
+        return res.status(401).json({msg: "Invalid token"})
+      }
+      
+      const email = decoded.email;
+      if (!email) return res.status(404).json({msg: "User not found with token"});
+
+      const user = await UserModel.findByEmail(email);
+      if(!user) return res.status(404).json({msg: "User not found"});
+      // if(!user.verified) res.status(201).json({msg: "User not verified"});
+      return res.status(200).json({msg: "Token is valid.", role: user.role});
+    })
+  } catch (error) {
+    next(error)
+  }
 }
 

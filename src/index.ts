@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import routes from "./routes";
 import { errorHandler } from "./middlewares/errorHandler";
 import prisma from "./lib/prisma";
-import path = require("path");
+import path from "path";
 
 // Load environment variables
 dotenv.config();

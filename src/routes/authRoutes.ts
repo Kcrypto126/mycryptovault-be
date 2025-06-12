@@ -7,6 +7,7 @@ const router = Router();
 // Auth routes
 router.post('/signup', validateRegistration, register);
 router.post('/signin', validateLogin, login);
+
 router.post('/forgot-password', validateForgotPassword, forgotPassword);
 router.post('/reset-password', validateResetPassword, resetPassword);
 

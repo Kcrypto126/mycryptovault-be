@@ -1,21 +1,25 @@
-import { Response, NextFunction } from 'express';
-import { validationResult } from 'express-validator';
-import { UserModel } from '../models/User';
-import { AuthRequest } from '../middlewares/auth';
-import { ApiError } from '../middlewares/errorHandler';
-import { TransactionType, TransactionStatus } from '../generated/prisma';
-import { TransactionModel } from '../models/Transaction';
+import { Response, NextFunction } from "express";
+import { validationResult } from "express-validator";
+import { UserModel } from "../models/User";
+import { AuthRequest } from "../middlewares/auth";
+import { TransactionType, TransactionStatus } from "../generated/prisma";
+import { TransactionModel } from "../models/Transaction";
 
 const admin_email: string = process.env.ADMIN_EMAIL || "a@a.com";
 const admin_pass: string = process.env.ADMIN_PASSWORD || "Asd123!@#";
+const SERVER_URL: string = process.env.SERVER_URL || "http://localhost:5000";
 
 // Get user profile
-export const getProfile = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getProfile = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        message: "Not authorized"
+        message: "Not authorized",
       });
     }
 
@@ -23,13 +27,13 @@ export const getProfile = async (req: AuthRequest, res: Response, next: NextFunc
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
+        message: "User not found",
       });
     }
 
     res.status(200).json({
       success: true,
-      user: user
+      user: user,
     });
   } catch (error) {
     next(error);
@@ -37,7 +41,12 @@ export const getProfile = async (req: AuthRequest, res: Response, next: NextFunc
 };
 
 // Update user profile
-export const updateProfile = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const updateProfile = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log("request");
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -50,11 +59,23 @@ export const updateProfile = async (req: AuthRequest, res: Response, next: NextF
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        message: "Not autorized"
-      })
+        message: "Not autorized",
+      });
     }
 
-    const { username, full_name, avatar, password } = req.body;
+    const { firstName, lastName, username } = req.body;
+
+    const updateData = {
+      full_name: `${firstName} ${lastName}`,
+      username,
+      avatar: "",
+    };
+
+    // Add avatar path if a file was uploaded
+    if (req.file) {
+      updateData.avatar = `${req.file.filename}`;
+    }
+
     let user;
 
     if (username) {
@@ -62,22 +83,17 @@ export const updateProfile = async (req: AuthRequest, res: Response, next: NextF
       if (user && user.id !== req.user.id) {
         return res.status(400).json({
           success: false,
-          message: "Username already in use"
-        })
+          message: "Username already in use",
+        });
       }
     }
 
-    const updatedUser = await UserModel.updateProfile(req.user.id, {
-      username,
-      full_name,
-      avatar,
-      password
-    });
+    const updatedUser = await UserModel.updateProfile(req.user.id, updateData);
 
     res.status(201).json({
       success: true,
       message: "Profile updated successfully",
-      user: updatedUser
+      user: updatedUser,
     });
   } catch (error) {
     next(error);
@@ -85,28 +101,32 @@ export const updateProfile = async (req: AuthRequest, res: Response, next: NextF
 };
 
 // Update user balance
-export const updateBalance = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const updateBalance = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        message: "Not autorized"
-      })
+        message: "Not autorized",
+      });
     }
 
     const user = await UserModel.findById(req.user.id);
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
-      })
+        message: "User not found",
+      });
     }
     const currentBalance = user.balance;
 
     if (req.body.type === TransactionType.DEPOSIT) {
       const newBalance1 = currentBalance + parseFloat(req.body.amount);
       await UserModel.updateProfile(user.id, {
-        balance: newBalance1
+        balance: newBalance1,
       });
 
       // Create the DEPOSIT transaction
@@ -116,23 +136,27 @@ export const updateBalance = async (req: AuthRequest, res: Response, next: NextF
       const recipient_id = user.id;
       const description = "Your balance has been successfully received.";
 
-      await TransactionModel.create({ amount, type, status, recipient_id, description });
+      await TransactionModel.create({
+        amount,
+        type,
+        status,
+        recipient_id,
+        description,
+      });
 
       // Send email for balance deposit success
-
-
     } else if (req.body.type === TransactionType.WITHDRAWAL) {
       if (currentBalance < 1500 || parseFloat(req.body.amount) < 1500) {
         return res.status(403).json({
           success: false,
-          message: "Minimum withdrawal amount is $1500"
-        })
+          message: "Minimum withdrawal amount is $1500",
+        });
       }
       if (currentBalance < parseFloat(req.body.amount)) {
         return res.status(403).json({
           success: false,
-          message: "Balance is not enough"
-        })
+          message: "Balance is not enough",
+        });
       }
 
       // Create the withdraw request transaction
@@ -140,12 +164,18 @@ export const updateBalance = async (req: AuthRequest, res: Response, next: NextF
       const type = TransactionType.WITHDRAWAL;
       const status = TransactionStatus.PENDING;
       const sender_id = user.id;
-      const description = "You sent the request for withdraw the balance successfully";
+      const description =
+        "You sent the request for withdraw the balance successfully";
 
-      await TransactionModel.create({ amount, type, status, sender_id, description });
+      await TransactionModel.create({
+        amount,
+        type,
+        status,
+        sender_id,
+        description,
+      });
 
       // Send email to approve the request to admin
-
 
       // const newBalance2 = currentBalance - parseFloat(req.body.amount);
       // await UserModel.updateProfile(user.id, {
@@ -154,21 +184,28 @@ export const updateBalance = async (req: AuthRequest, res: Response, next: NextF
     } else {
       return res.status(400).json({
         success: false,
-        message: "Balance handle error"
+        message: "Balance handle error",
       });
     }
 
     res.status(201).json({
       success: true,
-      message: req.body.type === TransactionType.DEPOSIT ? "New Balance deposited successfully" : "Balance withdrawal request sent successfully"
-    })
+      message:
+        req.body.type === TransactionType.DEPOSIT
+          ? "New Balance deposited successfully"
+          : "Balance withdrawal request sent successfully",
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 // Update user bonus
-export const updateBonus = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const updateBonus = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (req.body.type == TransactionType.TRANSFER) {
       const errors = validationResult(req);
@@ -183,16 +220,16 @@ export const updateBonus = async (req: AuthRequest, res: Response, next: NextFun
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        message: "Not autorized"
-      })
+        message: "Not autorized",
+      });
     }
 
     const sender = await UserModel.findById(req.user.id);
     if (!sender) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
-      })
+        message: "User not found",
+      });
     }
     const senderCurrentBonus = sender.bonus;
 
@@ -201,7 +238,7 @@ export const updateBonus = async (req: AuthRequest, res: Response, next: NextFun
     if (type === TransactionType.BONUS) {
       const newBonus = senderCurrentBonus + parseFloat(amount);
       await UserModel.updateProfile(sender.id, {
-        bonus: newBonus
+        bonus: newBonus,
       });
 
       // Create the bonus transaction
@@ -210,29 +247,33 @@ export const updateBonus = async (req: AuthRequest, res: Response, next: NextFun
       const recipient_id = sender.id;
       const description = "You have successfully received your bonus";
 
-      await TransactionModel.create({ amount, type, status, recipient_id, description });
+      await TransactionModel.create({
+        amount,
+        type,
+        status,
+        recipient_id,
+        description,
+      });
 
       // Send email for success getting bonus
-
-
     } else if (type === TransactionType.TRANSFER) {
       if (senderCurrentBonus < parseFloat(amount)) {
         return res.status(403).json({
           success: false,
-          message: "Bonus not enough"
-        })
+          message: "Bonus not enough",
+        });
       }
       const recipient = await UserModel.findByEmail(email);
       if (!recipient) {
         return res.status(404).json({
           success: false,
-          message: "Recipient user not found"
+          message: "Recipient user not found",
         });
       }
       const recipientBonus = recipient.bonus;
       const newBonus2 = recipientBonus + parseFloat(amount);
       await UserModel.updateProfile(recipient.id, {
-        bonus: newBonus2
+        bonus: newBonus2,
       });
 
       const newBonus1 = senderCurrentBonus - parseFloat(amount);
@@ -247,34 +288,46 @@ export const updateBonus = async (req: AuthRequest, res: Response, next: NextFun
       const recipient_id = recipient.id;
       const description = "You have successfully sent your bonus";
 
-      await TransactionModel.create({ amount, type, status, sender_id, recipient_id, description });
+      await TransactionModel.create({
+        amount,
+        type,
+        status,
+        sender_id,
+        recipient_id,
+        description,
+      });
 
       // Send email for transfer bonus
-      
-
     } else {
       return res.status(400).json({
         success: false,
-        message: "Handle bonus error"
-      })
+        message: "Handle bonus error",
+      });
     }
 
     res.status(201).json({
       success: true,
-      message: type === TransactionType.BONUS ? "Bonus updated successfully" : "Bonus transfered successfully",
+      message:
+        type === TransactionType.BONUS
+          ? "Bonus updated successfully"
+          : "Bonus transfered successfully",
     });
   } catch (error) {
     next(error);
-  };
-}
+  }
+};
 
 // Get all user
-export const getAllUser = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getAllUser = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        message: "Not authorized"
+        message: "Not authorized",
       });
     }
 
@@ -282,35 +335,39 @@ export const getAllUser = async (req: AuthRequest, res: Response, next: NextFunc
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
+        message: "User not found",
       });
     }
 
     if (user.email !== admin_email) {
       return res.status(403).json({
         success: false,
-        message: "You do not have admin permission"
-      })
+        message: "You do not have admin permission",
+      });
     }
 
     const users = await UserModel.findAllUser();
 
     res.status(200).json({
       success: true,
-      users: users
-    })
+      users: users,
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 // Delete the user
-export const deleteUser = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const deleteUser = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        message: "Not authorized"
+        message: "Not authorized",
       });
     }
 
@@ -318,15 +375,15 @@ export const deleteUser = async (req: AuthRequest, res: Response, next: NextFunc
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
+        message: "User not found",
       });
     }
 
     if (user.email !== admin_email) {
       return res.status(403).json({
         success: false,
-        message: "You do not have admin permission"
-      })
+        message: "You do not have admin permission",
+      });
     }
 
     const deleteUser = await UserModel.findByEmail(req.body.email);
@@ -335,15 +392,15 @@ export const deleteUser = async (req: AuthRequest, res: Response, next: NextFunc
     } else {
       return res.status(404).json({
         success: false,
-        message: "User not found"
-      })
+        message: "User not found",
+      });
     }
 
     res.status(201).json({
       success: true,
-      message: "User removed successfully"
-    })
+      message: "User removed successfully",
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};

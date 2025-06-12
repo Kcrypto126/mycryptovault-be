@@ -6,6 +6,7 @@ export interface AuthRequest extends Request {
   user?: {
     id: string;
     email: string;
+    role: "ADMIN" | "USER";
   };
 }
 
@@ -18,12 +19,13 @@ export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
     }
 
     if (!process.env.JWT_SECRET) {
-      return res.status(500).json({ success: false, message: "JWT_SECRET is not defined" })
+      return res.status(500).json({ success: false, message: "JWT secret key is not defined" })
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
       id: string;
       email: string;
+      role: "ADMIN" | "USER";
     };
 
     req.user = decoded;

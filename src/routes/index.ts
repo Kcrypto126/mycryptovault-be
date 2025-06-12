@@ -6,7 +6,7 @@ import transactionRoutes from './transactionRoutes';
 const router = Router();
 
 router.use('/auth', authRoutes);
-router.use('/users', userRoutes);
+router.use('/user', userRoutes);
 router.use('/transactions', transactionRoutes);
 
 export default router;
