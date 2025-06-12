@@ -6,5 +6,5 @@ coverage
 logs
 migrations
 
-public/avatars/*
+public/assets/*
 

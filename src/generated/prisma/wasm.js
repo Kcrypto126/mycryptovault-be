@@ -130,6 +130,12 @@ exports.Prisma.UserScalarFieldEnum = {
   balance: 'balance',
   bonus: 'bonus',
   role: 'role',
+  phone_number: 'phone_number',
+  address: 'address',
+  government_id: 'government_id',
+  id_card: 'id_card',
+  status: 'status',
+  verify: 'verify',
   reset_token: 'reset_token',
   reset_token_expiry: 'reset_token_expiry',
   created_at: 'created_at',
@@ -164,6 +170,18 @@ exports.Prisma.NullsOrder = {
 exports.UserRole = exports.$Enums.UserRole = {
   USER: 'USER',
   ADMIN: 'ADMIN'
+};
+
+exports.UserStatus = exports.$Enums.UserStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  FREEZE: 'FREEZE',
+  SUSPENDED: 'SUSPENDED'
+};
+
+exports.VerifyStatus = exports.$Enums.VerifyStatus = {
+  VERIFIED: 'VERIFIED',
+  UNVERIFIED: 'UNVERIFIED'
 };
 
 exports.TransactionType = exports.$Enums.TransactionType = {

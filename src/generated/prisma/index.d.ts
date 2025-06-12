@@ -55,6 +55,24 @@ export const UserRole: {
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
+
+export const UserStatus: {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  FREEZE: 'FREEZE',
+  SUSPENDED: 'SUSPENDED'
+};
+
+export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
+
+
+export const VerifyStatus: {
+  VERIFIED: 'VERIFIED',
+  UNVERIFIED: 'UNVERIFIED'
+};
+
+export type VerifyStatus = (typeof VerifyStatus)[keyof typeof VerifyStatus]
+
 }
 
 export type TransactionType = $Enums.TransactionType
@@ -68,6 +86,14 @@ export const TransactionStatus: typeof $Enums.TransactionStatus
 export type UserRole = $Enums.UserRole
 
 export const UserRole: typeof $Enums.UserRole
+
+export type UserStatus = $Enums.UserStatus
+
+export const UserStatus: typeof $Enums.UserStatus
+
+export type VerifyStatus = $Enums.VerifyStatus
+
+export const VerifyStatus: typeof $Enums.VerifyStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1076,6 +1102,12 @@ export namespace Prisma {
     balance: number | null
     bonus: number | null
     role: $Enums.UserRole | null
+    phone_number: string | null
+    address: string | null
+    government_id: string | null
+    id_card: string | null
+    status: $Enums.UserStatus | null
+    verify: $Enums.VerifyStatus | null
     reset_token: string | null
     reset_token_expiry: Date | null
     created_at: Date | null
@@ -1092,6 +1124,12 @@ export namespace Prisma {
     balance: number | null
     bonus: number | null
     role: $Enums.UserRole | null
+    phone_number: string | null
+    address: string | null
+    government_id: string | null
+    id_card: string | null
+    status: $Enums.UserStatus | null
+    verify: $Enums.VerifyStatus | null
     reset_token: string | null
     reset_token_expiry: Date | null
     created_at: Date | null
@@ -1108,6 +1146,12 @@ export namespace Prisma {
     balance: number
     bonus: number
     role: number
+    phone_number: number
+    address: number
+    government_id: number
+    id_card: number
+    status: number
+    verify: number
     reset_token: number
     reset_token_expiry: number
     created_at: number
@@ -1136,6 +1180,12 @@ export namespace Prisma {
     balance?: true
     bonus?: true
     role?: true
+    phone_number?: true
+    address?: true
+    government_id?: true
+    id_card?: true
+    status?: true
+    verify?: true
     reset_token?: true
     reset_token_expiry?: true
     created_at?: true
@@ -1152,6 +1202,12 @@ export namespace Prisma {
     balance?: true
     bonus?: true
     role?: true
+    phone_number?: true
+    address?: true
+    government_id?: true
+    id_card?: true
+    status?: true
+    verify?: true
     reset_token?: true
     reset_token_expiry?: true
     created_at?: true
@@ -1168,6 +1224,12 @@ export namespace Prisma {
     balance?: true
     bonus?: true
     role?: true
+    phone_number?: true
+    address?: true
+    government_id?: true
+    id_card?: true
+    status?: true
+    verify?: true
     reset_token?: true
     reset_token_expiry?: true
     created_at?: true
@@ -1271,6 +1333,12 @@ export namespace Prisma {
     balance: number
     bonus: number
     role: $Enums.UserRole
+    phone_number: string | null
+    address: string | null
+    government_id: string | null
+    id_card: string | null
+    status: $Enums.UserStatus
+    verify: $Enums.VerifyStatus
     reset_token: string | null
     reset_token_expiry: Date | null
     created_at: Date
@@ -1306,6 +1374,12 @@ export namespace Prisma {
     balance?: boolean
     bonus?: boolean
     role?: boolean
+    phone_number?: boolean
+    address?: boolean
+    government_id?: boolean
+    id_card?: boolean
+    status?: boolean
+    verify?: boolean
     reset_token?: boolean
     reset_token_expiry?: boolean
     created_at?: boolean
@@ -1325,6 +1399,12 @@ export namespace Prisma {
     balance?: boolean
     bonus?: boolean
     role?: boolean
+    phone_number?: boolean
+    address?: boolean
+    government_id?: boolean
+    id_card?: boolean
+    status?: boolean
+    verify?: boolean
     reset_token?: boolean
     reset_token_expiry?: boolean
     created_at?: boolean
@@ -1341,6 +1421,12 @@ export namespace Prisma {
     balance?: boolean
     bonus?: boolean
     role?: boolean
+    phone_number?: boolean
+    address?: boolean
+    government_id?: boolean
+    id_card?: boolean
+    status?: boolean
+    verify?: boolean
     reset_token?: boolean
     reset_token_expiry?: boolean
     created_at?: boolean
@@ -1357,13 +1443,19 @@ export namespace Prisma {
     balance?: boolean
     bonus?: boolean
     role?: boolean
+    phone_number?: boolean
+    address?: boolean
+    government_id?: boolean
+    id_card?: boolean
+    status?: boolean
+    verify?: boolean
     reset_token?: boolean
     reset_token_expiry?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "username" | "full_name" | "avatar" | "balance" | "bonus" | "role" | "reset_token" | "reset_token_expiry" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "username" | "full_name" | "avatar" | "balance" | "bonus" | "role" | "phone_number" | "address" | "government_id" | "id_card" | "status" | "verify" | "reset_token" | "reset_token_expiry" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sentTransactions?: boolean | User$sentTransactionsArgs<ExtArgs>
     receivedTransactions?: boolean | User$receivedTransactionsArgs<ExtArgs>
@@ -1388,6 +1480,12 @@ export namespace Prisma {
       balance: number
       bonus: number
       role: $Enums.UserRole
+      phone_number: string | null
+      address: string | null
+      government_id: string | null
+      id_card: string | null
+      status: $Enums.UserStatus
+      verify: $Enums.VerifyStatus
       reset_token: string | null
       reset_token_expiry: Date | null
       created_at: Date
@@ -1826,6 +1924,12 @@ export namespace Prisma {
     readonly balance: FieldRef<"User", 'Float'>
     readonly bonus: FieldRef<"User", 'Float'>
     readonly role: FieldRef<"User", 'UserRole'>
+    readonly phone_number: FieldRef<"User", 'String'>
+    readonly address: FieldRef<"User", 'String'>
+    readonly government_id: FieldRef<"User", 'String'>
+    readonly id_card: FieldRef<"User", 'String'>
+    readonly status: FieldRef<"User", 'UserStatus'>
+    readonly verify: FieldRef<"User", 'VerifyStatus'>
     readonly reset_token: FieldRef<"User", 'String'>
     readonly reset_token_expiry: FieldRef<"User", 'DateTime'>
     readonly created_at: FieldRef<"User", 'DateTime'>
@@ -3485,6 +3589,12 @@ export namespace Prisma {
     balance: 'balance',
     bonus: 'bonus',
     role: 'role',
+    phone_number: 'phone_number',
+    address: 'address',
+    government_id: 'government_id',
+    id_card: 'id_card',
+    status: 'status',
+    verify: 'verify',
     reset_token: 'reset_token',
     reset_token_expiry: 'reset_token_expiry',
     created_at: 'created_at',
@@ -3580,6 +3690,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'UserStatus'
+   */
+  export type EnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserStatus[]'
+   */
+  export type ListEnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'VerifyStatus'
+   */
+  export type EnumVerifyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerifyStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'VerifyStatus[]'
+   */
+  export type ListEnumVerifyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerifyStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -3651,6 +3789,12 @@ export namespace Prisma {
     balance?: FloatFilter<"User"> | number
     bonus?: FloatFilter<"User"> | number
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    phone_number?: StringNullableFilter<"User"> | string | null
+    address?: StringNullableFilter<"User"> | string | null
+    government_id?: StringNullableFilter<"User"> | string | null
+    id_card?: StringNullableFilter<"User"> | string | null
+    status?: EnumUserStatusFilter<"User"> | $Enums.UserStatus
+    verify?: EnumVerifyStatusFilter<"User"> | $Enums.VerifyStatus
     reset_token?: StringNullableFilter<"User"> | string | null
     reset_token_expiry?: DateTimeNullableFilter<"User"> | Date | string | null
     created_at?: DateTimeFilter<"User"> | Date | string
@@ -3669,6 +3813,12 @@ export namespace Prisma {
     balance?: SortOrder
     bonus?: SortOrder
     role?: SortOrder
+    phone_number?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    government_id?: SortOrderInput | SortOrder
+    id_card?: SortOrderInput | SortOrder
+    status?: SortOrder
+    verify?: SortOrder
     reset_token?: SortOrderInput | SortOrder
     reset_token_expiry?: SortOrderInput | SortOrder
     created_at?: SortOrder
@@ -3690,6 +3840,12 @@ export namespace Prisma {
     balance?: FloatFilter<"User"> | number
     bonus?: FloatFilter<"User"> | number
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    phone_number?: StringNullableFilter<"User"> | string | null
+    address?: StringNullableFilter<"User"> | string | null
+    government_id?: StringNullableFilter<"User"> | string | null
+    id_card?: StringNullableFilter<"User"> | string | null
+    status?: EnumUserStatusFilter<"User"> | $Enums.UserStatus
+    verify?: EnumVerifyStatusFilter<"User"> | $Enums.VerifyStatus
     reset_token?: StringNullableFilter<"User"> | string | null
     reset_token_expiry?: DateTimeNullableFilter<"User"> | Date | string | null
     created_at?: DateTimeFilter<"User"> | Date | string
@@ -3708,6 +3864,12 @@ export namespace Prisma {
     balance?: SortOrder
     bonus?: SortOrder
     role?: SortOrder
+    phone_number?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    government_id?: SortOrderInput | SortOrder
+    id_card?: SortOrderInput | SortOrder
+    status?: SortOrder
+    verify?: SortOrder
     reset_token?: SortOrderInput | SortOrder
     reset_token_expiry?: SortOrderInput | SortOrder
     created_at?: SortOrder
@@ -3732,6 +3894,12 @@ export namespace Prisma {
     balance?: FloatWithAggregatesFilter<"User"> | number
     bonus?: FloatWithAggregatesFilter<"User"> | number
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
+    phone_number?: StringNullableWithAggregatesFilter<"User"> | string | null
+    address?: StringNullableWithAggregatesFilter<"User"> | string | null
+    government_id?: StringNullableWithAggregatesFilter<"User"> | string | null
+    id_card?: StringNullableWithAggregatesFilter<"User"> | string | null
+    status?: EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
+    verify?: EnumVerifyStatusWithAggregatesFilter<"User"> | $Enums.VerifyStatus
     reset_token?: StringNullableWithAggregatesFilter<"User"> | string | null
     reset_token_expiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     created_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -3823,6 +3991,12 @@ export namespace Prisma {
     balance?: number
     bonus?: number
     role?: $Enums.UserRole
+    phone_number?: string | null
+    address?: string | null
+    government_id?: string | null
+    id_card?: string | null
+    status?: $Enums.UserStatus
+    verify?: $Enums.VerifyStatus
     reset_token?: string | null
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
@@ -3841,6 +4015,12 @@ export namespace Prisma {
     balance?: number
     bonus?: number
     role?: $Enums.UserRole
+    phone_number?: string | null
+    address?: string | null
+    government_id?: string | null
+    id_card?: string | null
+    status?: $Enums.UserStatus
+    verify?: $Enums.VerifyStatus
     reset_token?: string | null
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
@@ -3859,6 +4039,12 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     bonus?: FloatFieldUpdateOperationsInput | number
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    government_id?: NullableStringFieldUpdateOperationsInput | string | null
+    id_card?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    verify?: EnumVerifyStatusFieldUpdateOperationsInput | $Enums.VerifyStatus
     reset_token?: NullableStringFieldUpdateOperationsInput | string | null
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3877,6 +4063,12 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     bonus?: FloatFieldUpdateOperationsInput | number
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    government_id?: NullableStringFieldUpdateOperationsInput | string | null
+    id_card?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    verify?: EnumVerifyStatusFieldUpdateOperationsInput | $Enums.VerifyStatus
     reset_token?: NullableStringFieldUpdateOperationsInput | string | null
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3895,6 +4087,12 @@ export namespace Prisma {
     balance?: number
     bonus?: number
     role?: $Enums.UserRole
+    phone_number?: string | null
+    address?: string | null
+    government_id?: string | null
+    id_card?: string | null
+    status?: $Enums.UserStatus
+    verify?: $Enums.VerifyStatus
     reset_token?: string | null
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
@@ -3911,6 +4109,12 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     bonus?: FloatFieldUpdateOperationsInput | number
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    government_id?: NullableStringFieldUpdateOperationsInput | string | null
+    id_card?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    verify?: EnumVerifyStatusFieldUpdateOperationsInput | $Enums.VerifyStatus
     reset_token?: NullableStringFieldUpdateOperationsInput | string | null
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3927,6 +4131,12 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     bonus?: FloatFieldUpdateOperationsInput | number
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    government_id?: NullableStringFieldUpdateOperationsInput | string | null
+    id_card?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    verify?: EnumVerifyStatusFieldUpdateOperationsInput | $Enums.VerifyStatus
     reset_token?: NullableStringFieldUpdateOperationsInput | string | null
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4056,6 +4266,20 @@ export namespace Prisma {
     not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
   }
 
+  export type EnumUserStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserStatus | EnumUserStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserStatusFilter<$PrismaModel> | $Enums.UserStatus
+  }
+
+  export type EnumVerifyStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerifyStatus | EnumVerifyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VerifyStatus[] | ListEnumVerifyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VerifyStatus[] | ListEnumVerifyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVerifyStatusFilter<$PrismaModel> | $Enums.VerifyStatus
+  }
+
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -4103,6 +4327,12 @@ export namespace Prisma {
     balance?: SortOrder
     bonus?: SortOrder
     role?: SortOrder
+    phone_number?: SortOrder
+    address?: SortOrder
+    government_id?: SortOrder
+    id_card?: SortOrder
+    status?: SortOrder
+    verify?: SortOrder
     reset_token?: SortOrder
     reset_token_expiry?: SortOrder
     created_at?: SortOrder
@@ -4124,6 +4354,12 @@ export namespace Prisma {
     balance?: SortOrder
     bonus?: SortOrder
     role?: SortOrder
+    phone_number?: SortOrder
+    address?: SortOrder
+    government_id?: SortOrder
+    id_card?: SortOrder
+    status?: SortOrder
+    verify?: SortOrder
     reset_token?: SortOrder
     reset_token_expiry?: SortOrder
     created_at?: SortOrder
@@ -4140,6 +4376,12 @@ export namespace Prisma {
     balance?: SortOrder
     bonus?: SortOrder
     role?: SortOrder
+    phone_number?: SortOrder
+    address?: SortOrder
+    government_id?: SortOrder
+    id_card?: SortOrder
+    status?: SortOrder
+    verify?: SortOrder
     reset_token?: SortOrder
     reset_token_expiry?: SortOrder
     created_at?: SortOrder
@@ -4211,6 +4453,26 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUserRoleFilter<$PrismaModel>
     _max?: NestedEnumUserRoleFilter<$PrismaModel>
+  }
+
+  export type EnumUserStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserStatus | EnumUserStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserStatusWithAggregatesFilter<$PrismaModel> | $Enums.UserStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserStatusFilter<$PrismaModel>
+    _max?: NestedEnumUserStatusFilter<$PrismaModel>
+  }
+
+  export type EnumVerifyStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerifyStatus | EnumVerifyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VerifyStatus[] | ListEnumVerifyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VerifyStatus[] | ListEnumVerifyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVerifyStatusWithAggregatesFilter<$PrismaModel> | $Enums.VerifyStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVerifyStatusFilter<$PrismaModel>
+    _max?: NestedEnumVerifyStatusFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -4369,6 +4631,14 @@ export namespace Prisma {
     set?: $Enums.UserRole
   }
 
+  export type EnumUserStatusFieldUpdateOperationsInput = {
+    set?: $Enums.UserStatus
+  }
+
+  export type EnumVerifyStatusFieldUpdateOperationsInput = {
+    set?: $Enums.VerifyStatus
+  }
+
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
   }
@@ -4519,6 +4789,20 @@ export namespace Prisma {
     not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
   }
 
+  export type NestedEnumUserStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserStatus | EnumUserStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserStatusFilter<$PrismaModel> | $Enums.UserStatus
+  }
+
+  export type NestedEnumVerifyStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerifyStatus | EnumVerifyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VerifyStatus[] | ListEnumVerifyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VerifyStatus[] | ListEnumVerifyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVerifyStatusFilter<$PrismaModel> | $Enums.VerifyStatus
+  }
+
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -4621,6 +4905,26 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUserRoleFilter<$PrismaModel>
     _max?: NestedEnumUserRoleFilter<$PrismaModel>
+  }
+
+  export type NestedEnumUserStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserStatus | EnumUserStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserStatusWithAggregatesFilter<$PrismaModel> | $Enums.UserStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserStatusFilter<$PrismaModel>
+    _max?: NestedEnumUserStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumVerifyStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerifyStatus | EnumVerifyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VerifyStatus[] | ListEnumVerifyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VerifyStatus[] | ListEnumVerifyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVerifyStatusWithAggregatesFilter<$PrismaModel> | $Enums.VerifyStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVerifyStatusFilter<$PrismaModel>
+    _max?: NestedEnumVerifyStatusFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -4801,6 +5105,12 @@ export namespace Prisma {
     balance?: number
     bonus?: number
     role?: $Enums.UserRole
+    phone_number?: string | null
+    address?: string | null
+    government_id?: string | null
+    id_card?: string | null
+    status?: $Enums.UserStatus
+    verify?: $Enums.VerifyStatus
     reset_token?: string | null
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
@@ -4818,6 +5128,12 @@ export namespace Prisma {
     balance?: number
     bonus?: number
     role?: $Enums.UserRole
+    phone_number?: string | null
+    address?: string | null
+    government_id?: string | null
+    id_card?: string | null
+    status?: $Enums.UserStatus
+    verify?: $Enums.VerifyStatus
     reset_token?: string | null
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
@@ -4840,6 +5156,12 @@ export namespace Prisma {
     balance?: number
     bonus?: number
     role?: $Enums.UserRole
+    phone_number?: string | null
+    address?: string | null
+    government_id?: string | null
+    id_card?: string | null
+    status?: $Enums.UserStatus
+    verify?: $Enums.VerifyStatus
     reset_token?: string | null
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
@@ -4857,6 +5179,12 @@ export namespace Prisma {
     balance?: number
     bonus?: number
     role?: $Enums.UserRole
+    phone_number?: string | null
+    address?: string | null
+    government_id?: string | null
+    id_card?: string | null
+    status?: $Enums.UserStatus
+    verify?: $Enums.VerifyStatus
     reset_token?: string | null
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
@@ -4890,6 +5218,12 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     bonus?: FloatFieldUpdateOperationsInput | number
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    government_id?: NullableStringFieldUpdateOperationsInput | string | null
+    id_card?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    verify?: EnumVerifyStatusFieldUpdateOperationsInput | $Enums.VerifyStatus
     reset_token?: NullableStringFieldUpdateOperationsInput | string | null
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4907,6 +5241,12 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     bonus?: FloatFieldUpdateOperationsInput | number
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    government_id?: NullableStringFieldUpdateOperationsInput | string | null
+    id_card?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    verify?: EnumVerifyStatusFieldUpdateOperationsInput | $Enums.VerifyStatus
     reset_token?: NullableStringFieldUpdateOperationsInput | string | null
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4935,6 +5275,12 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     bonus?: FloatFieldUpdateOperationsInput | number
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    government_id?: NullableStringFieldUpdateOperationsInput | string | null
+    id_card?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    verify?: EnumVerifyStatusFieldUpdateOperationsInput | $Enums.VerifyStatus
     reset_token?: NullableStringFieldUpdateOperationsInput | string | null
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4952,6 +5298,12 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     bonus?: FloatFieldUpdateOperationsInput | number
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    government_id?: NullableStringFieldUpdateOperationsInput | string | null
+    id_card?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    verify?: EnumVerifyStatusFieldUpdateOperationsInput | $Enums.VerifyStatus
     reset_token?: NullableStringFieldUpdateOperationsInput | string | null
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string

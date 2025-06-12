@@ -12,19 +12,25 @@ datasource db {
 }
 
 model User {
-  id                 String    @id @default(uuid())
-  email              String    @unique
+  id                 String       @id @default(uuid())
+  email              String       @unique
   password           String
-  username           String?   @unique
+  username           String?      @unique
   full_name          String?
   avatar             String?
-  balance            Float     @default(0)
-  bonus              Float     @default(0)
-  role               UserRole  @default(USER)
+  balance            Float        @default(0)
+  bonus              Float        @default(0)
+  role               UserRole     @default(USER)
+  phone_number       String?
+  address            String?
+  government_id      String?
+  id_card            String?
+  status             UserStatus   @default(INACTIVE)
+  verify             VerifyStatus @default(UNVERIFIED)
   reset_token        String?
   reset_token_expiry DateTime?
-  created_at         DateTime  @default(now())
-  updated_at         DateTime  @updatedAt
+  created_at         DateTime     @default(now())
+  updated_at         DateTime     @updatedAt
 
   sentTransactions     Transaction[] @relation("SenderTransactions")
   receivedTransactions Transaction[] @relation("RecipientTransactions")
@@ -61,4 +67,16 @@ enum TransactionStatus {
 enum UserRole {
   USER
   ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  FREEZE
+  SUSPENDED
+}
+
+enum VerifyStatus {
+  VERIFIED
+  UNVERIFIED
 }

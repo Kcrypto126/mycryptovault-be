@@ -40,3 +40,8 @@ export const validateUpdatePassword = [
       "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
     ),
 ];
+
+export const validateUpdateKYC = [
+  body("phone_number").optional().isLength({ min: 10, max: 15 }).withMessage("Phone number must be 10-15 digits"),
+  body("address").optional(),
+];

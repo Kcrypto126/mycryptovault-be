@@ -7,12 +7,14 @@ import {
   updateBonus,
   updateBalance,
   updatePassword,
+  updateKYC,
 } from "../controllers/userController";
 import { auth } from "../middlewares/auth";
 import {
   validateUpdateProfile,
   validateEmail,
   validateUpdatePassword,
+  validateUpdateKYC,
 } from "../validators/userValidators";
 import multer from "multer";
 import path from "path";
@@ -22,11 +24,11 @@ const router = Router();
 // Configure multer for file upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/avatars/");
+    cb(null, "public/assets/");
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, "avatar-" + uniqueSuffix + path.extname(file.originalname));
+    cb(null, "assets-" + uniqueSuffix + path.extname(file.originalname));
   },
 });
 
@@ -52,6 +54,17 @@ router.put(
   validateUpdateProfile,
   upload.single("avatar"),
   updateProfile
+);
+
+router.put(
+  "/kyc",
+  auth,
+  validateUpdateKYC,
+  upload.fields([
+    { name: "idCard", maxCount: 1 },
+    { name: "govId", maxCount: 1 },
+  ]),
+  updateKYC
 );
 
 router.put("/password", auth, validateUpdatePassword, updatePassword);

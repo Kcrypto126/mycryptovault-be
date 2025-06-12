@@ -102,6 +102,79 @@ export const updateProfile = async (
   }
 };
 
+// Update KYC
+export const updateKYC = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.json({
+        success: false,
+        message: errors.array()[0].msg,
+      });
+    }
+
+    if (!req.user) {
+      return res.json({
+        success: false,
+        message: "Not autorized",
+      });
+    }
+
+    const user = await UserModel.findById(req.user.id);
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const { phone, address } = req.body;
+
+    const updateData = {
+      phone_number: phone,
+      address,
+      id_card: "",
+      government_id: "",
+    };
+
+    if (
+      req.files &&
+      "idCard" in (req.files as { [fieldname: string]: Express.Multer.File[] })
+    ) {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      const idCard = files.idCard[0].filename;
+      updateData.id_card = idCard;
+    } else {
+      updateData.id_card = req.body.idCard;
+    }
+
+    if (
+      req.files &&
+      "govId" in (req.files as { [fieldname: string]: Express.Multer.File[] })
+    ) {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      const govId = files.govId[0].filename;
+      updateData.government_id = govId;
+    } else {
+      updateData.government_id = req.body.govId;
+    }
+
+    const updatedUser = await UserModel.updateProfile(req.user.id, updateData);
+
+    res.status(201).json({
+      success: true,
+      message: "KYC updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Update user password
 export const updatePassword = async (
   req: AuthRequest,
@@ -132,20 +205,22 @@ export const updatePassword = async (
       });
     }
     const { oldPassword, newPassword } = req.body;
-    
+
     const isOldPasswordValid = await UserModel.comparePassword(
       oldPassword,
       user.password
     );
-    
+
     if (!isOldPasswordValid) {
       return res.json({
         success: false,
         message: "Invalid old password",
       });
     }
-    
-    const updatedUser = await UserModel.updatePassword(req.user.email, newPassword);
+
+    const updatedUser = await UserModel.updateProfile(req.user.id, {
+      password: newPassword,
+    });
 
     res.status(201).json({
       success: true,

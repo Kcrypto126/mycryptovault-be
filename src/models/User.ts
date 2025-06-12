@@ -13,6 +13,10 @@ export interface UserUpdateAttrs {
   full_name?: string;
   avatar?: string;
   password?: string;
+  phone_number?: string;
+  address?: string;
+  government_id?: string;
+  id_card?: string;
   bonus?: number;
   balance?: number;
 }
@@ -91,6 +95,10 @@ export class UserModel {
         full_name: updates?.full_name,
         avatar: updates?.avatar,
         password: hashedPassword,
+        phone_number: updates?.phone_number,
+        address: updates?.address,
+        government_id: updates?.government_id,
+        id_card: updates?.id_card,
         bonus: updates?.bonus,
         balance: updates?.balance,
       }

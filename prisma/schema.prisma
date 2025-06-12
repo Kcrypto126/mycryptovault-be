@@ -21,6 +21,12 @@ model User {
   balance   Float    @default(0)
   bonus     Float    @default(0)
   role      UserRole @default(USER)
+  phone_number String?
+  address    String?
+  government_id String?
+  id_card    String?
+  status     UserStatus @default(INACTIVE)
+  verify     VerifyStatus @default(UNVERIFIED)
   reset_token         String?
   reset_token_expiry  DateTime?
   created_at DateTime @default(now())
@@ -61,4 +67,16 @@ enum TransactionStatus {
 enum UserRole {
   USER
   ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  FREEZE
+  SUSPENDED
+}
+
+enum VerifyStatus {
+  VERIFIED
+  UNVERIFIED
 }
