@@ -46,27 +46,26 @@ export const updateProfile = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("request");
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: errors.array()[0].msg,
       });
     }
 
     if (!req.user) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Not autorized",
       });
     }
 
-    const { firstName, lastName, username } = req.body;
+    const { first_name, last_name, username } = req.body;
 
     const updateData = {
-      full_name: `${firstName} ${lastName}`,
+      full_name: `${first_name} ${last_name}`,
       username,
       avatar: "",
     };
@@ -83,7 +82,7 @@ export const updateProfile = async (
     if (username) {
       user = await UserModel.findByUserName(username);
       if (user && user.id !== req.user.id) {
-        return res.json({
+        return res.status(409).json({
           success: false,
           message: "Username already in use",
         });
