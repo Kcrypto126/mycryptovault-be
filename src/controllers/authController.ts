@@ -258,6 +258,8 @@ export const verifyToken = async (
       const user = await UserModel.findByEmail(email);
       if (!user) return res.status(404).json({ message: "User not found" });
 
+      console.log(user);
+
       return res.status(200).json({ message: "Token is valid.", user });
     });
   } catch (error) {
