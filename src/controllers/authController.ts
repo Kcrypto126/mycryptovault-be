@@ -139,7 +139,7 @@ export const forgotPassword = async (
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: errors.array()[0].msg,
       });
@@ -150,7 +150,7 @@ export const forgotPassword = async (
     // Find user
     const user = await UserModel.findByEmail(email);
     if (!user) {
-      return res.json({
+      return res.status(404).json({
         success: false,
         message: "Email not found",
       });
@@ -168,7 +168,7 @@ export const forgotPassword = async (
     // Store reset token in DB (implementation needed)
     const updatedUser = await UserModel.updateResetToken(email, updates);
     if (!updatedUser) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: "Failed to update user with reset token in the database.",
       });
@@ -189,10 +189,12 @@ export const forgotPassword = async (
       console.error("Error sending password reset email:", err)
     );
 
+    console.log(resetUrl);
+
     res.status(201).json({
-      resetUrl: resetUrl,
+      resetUrl,
       success: true,
-      message: "Password reset link sent if the email exists",
+      message: "Password reset link sent successfully",
     });
   } catch (error) {
     next(error);
@@ -208,7 +210,7 @@ export const resetPassword = async (
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: errors.array()[0].msg,
       });
@@ -218,7 +220,7 @@ export const resetPassword = async (
 
     const user = await UserModel.findByToken(token);
     if (!user) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: "Invalid or expired token",
       });
@@ -226,7 +228,7 @@ export const resetPassword = async (
 
     const updatedUser = await UserModel.updatePassword(user.email, password);
     if (!updatedUser) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: "Failed to reset password",
       });

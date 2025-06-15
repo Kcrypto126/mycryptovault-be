@@ -107,14 +107,14 @@ export const updateKYC = async (
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: errors.array()[0].msg,
       });
     }
 
     if (!req.user) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Not autorized",
       });
@@ -122,16 +122,16 @@ export const updateKYC = async (
 
     const user = await UserModel.findById(req.user.id);
     if (!user) {
-      return res.json({
+      return res.status(404).json({
         success: false,
         message: "User not found",
       });
     }
 
-    const { phone, address, id_card, government_id } = req.body;
+    const { phone_number, address, id_card, government_id } = req.body;
 
     const updateData = {
-      phone_number: phone,
+      phone_number,
       address,
       id_card,
       government_id,
@@ -148,7 +148,8 @@ export const updateKYC = async (
 
     if (
       req.files &&
-      "government_id" in (req.files as { [fieldname: string]: Express.Multer.File[] })
+      "government_id" in
+        (req.files as { [fieldname: string]: Express.Multer.File[] })
     ) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       const govId = files.government_id[0].filename;
@@ -160,7 +161,6 @@ export const updateKYC = async (
     res.status(201).json({
       success: true,
       message: "KYC updated successfully",
-      user: updatedUser,
     });
   } catch (error) {
     next(error);
@@ -176,14 +176,14 @@ export const updatePassword = async (
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: errors.array()[0].msg,
       });
     }
 
     if (!req.user) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Not autorized",
       });
@@ -191,7 +191,7 @@ export const updatePassword = async (
 
     const user = await UserModel.findById(req.user.id);
     if (!user) {
-      return res.json({
+      return res.status(404).json({
         success: false,
         message: "User not found",
       });
@@ -204,7 +204,7 @@ export const updatePassword = async (
     );
 
     if (!isOldPasswordValid) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Invalid old password",
       });
