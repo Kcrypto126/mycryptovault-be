@@ -61,8 +61,8 @@ router.put(
   auth,
   validateUpdateKYC,
   upload.fields([
-    { name: "idCard", maxCount: 1 },
-    { name: "govId", maxCount: 1 },
+    { name: "id_card", maxCount: 1 },
+    { name: "government_id", maxCount: 1 },
   ]),
   updateKYC
 );

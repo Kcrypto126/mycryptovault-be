@@ -6,7 +6,6 @@ import { TransactionType, TransactionStatus } from "../generated/prisma";
 import { TransactionModel } from "../models/Transaction";
 
 const admin_email: string = process.env.ADMIN_EMAIL || "a@a.com";
-const admin_pass: string = process.env.ADMIN_PASSWORD || "Asd123!@#";
 const SERVER_URL: string = process.env.SERVER_URL || "http://localhost:5000";
 
 // Get user profile
@@ -62,19 +61,17 @@ export const updateProfile = async (
       });
     }
 
-    const { first_name, last_name, username } = req.body;
+    const { first_name, last_name, username, avatar } = req.body;
 
     const updateData = {
       full_name: `${first_name} ${last_name}`,
       username,
-      avatar: "",
+      avatar,
     };
 
     // Add avatar path if a file was uploaded
     if (req.file) {
-      updateData.avatar = `${req.file.filename}`;
-    } else {
-      updateData.avatar = req.body.avatar;
+      updateData.avatar = `${SERVER_URL}/assets/${req.file.filename}`;
     }
 
     let user;
@@ -131,29 +128,31 @@ export const updateKYC = async (
       });
     }
 
-    const { phone, address } = req.body;
+    const { phone, address, id_card, government_id } = req.body;
 
     const updateData = {
       phone_number: phone,
       address,
-      id_card: "",
-      government_id: "",
+      id_card,
+      government_id,
+    };
+
+    if (
+      req.files &&
+      "id_card" in (req.files as { [fieldname: string]: Express.Multer.File[] })
+    ) {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      const idCard = files.id_card[0].filename;
+      updateData.id_card = `${SERVER_URL}/assets/${idCard}`;
     }
 
-    if (req.files && 'idCard' in (req.files as { [fieldname: string]: Express.Multer.File[] })) {
+    if (
+      req.files &&
+      "government_id" in (req.files as { [fieldname: string]: Express.Multer.File[] })
+    ) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      const idCard = files.idCard[0].filename;
-      updateData.id_card = idCard;
-    } else {
-      updateData.id_card = req.body.idCard;
-    }
-
-    if (req.files && 'govId' in (req.files as { [fieldname: string]: Express.Multer.File[] })) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      const govId = files.govId[0].filename;
-      updateData.government_id = govId;
-    } else {
-      updateData.government_id = req.body.govId;
+      const govId = files.government_id[0].filename;
+      updateData.government_id = `${SERVER_URL}/assets/${govId}`;
     }
 
     const updatedUser = await UserModel.updateProfile(req.user.id, updateData);

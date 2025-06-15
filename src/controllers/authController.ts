@@ -11,8 +11,9 @@ dotenv.config();
 
 const admin_email: string = process.env.ADMIN_EMAIL || "kaori19782@gmail.com";
 const jwt_secret: string = process.env.JWT_SECRET || "WELCOME TO CRYPTO WALLET";
-const frontend_url: string =
-  process.env.FRONTEND_URL || "http://192.168.144.157:3000";
+const FRONTEND_URL: string =
+  process.env.FRONTEND_URL || "http://192.168.142.78:3000";
+const SERVER_URL: string = process.env.SERVER_URL || "http://localhost:5000";
 
 // Register new user
 export const register = async (
@@ -47,11 +48,14 @@ export const register = async (
       role = UserRole.USER;
     }
 
+    const avatar = `${SERVER_URL}/assets/default-avatar.png`;
+
     // Create user
     const user = await UserModel.create({
       email,
       password,
       role,
+      avatar,
     });
 
     // Send welcome email
@@ -171,7 +175,7 @@ export const forgotPassword = async (
     }
 
     // Send password reset email
-    const resetUrl = `${frontend_url}/account/reset-password?token=${token}`;
+    const resetUrl = `${FRONTEND_URL}/account/reset-password?token=${token}`;
 
     sendEmail({
       to: user.email,
@@ -257,8 +261,6 @@ export const verifyToken = async (
 
       const user = await UserModel.findByEmail(email);
       if (!user) return res.status(404).json({ message: "User not found" });
-
-      console.log(user);
 
       return res.status(200).json({ message: "Token is valid.", user });
     });

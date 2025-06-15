@@ -6,6 +6,7 @@ export interface UserCreationAttrs {
   email: string;
   password: string;
   role: UserRole;
+  avatar: string;
 }
 
 export interface UserUpdateAttrs {
@@ -35,6 +36,7 @@ export class UserModel {
         email: userData.email.toLowerCase(),
         password: hashedPassword,
         role: userData.role,
+        avatar: userData.avatar,
       }
     });
   }
