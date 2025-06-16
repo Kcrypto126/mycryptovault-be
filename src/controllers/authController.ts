@@ -93,7 +93,7 @@ export const login = async (
       });
     }
 
-    const { email, password } = req.body;
+    const { email, password, isRemember } = req.body;
 
     // Find user
     const user = await UserModel.findByEmail(email);

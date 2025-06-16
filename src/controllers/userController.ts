@@ -308,16 +308,16 @@ export const updateBalance = async (
         description,
       });
 
-      sendEmail({
-        to: user.email,
-        subject: "Withdrawal Request",
-        text: `Your withdrawal request has been sent successfully.`,
-        html: `<h1>Withdrawal Request</h1>
-             <p>Hello ${user.full_name},</p>
-             <p>Your withdrawal request has been sent successfully.</p>
-             <p>Your balance has been successfully received.</p>
-             <p>Thank you for using our platform.</p>`,
-      });
+      // sendEmail({
+      //   to: user.email,
+      //   subject: "Withdrawal Request",
+      //   text: `Your withdrawal request has been sent successfully.`,
+      //   html: `<h1>Withdrawal Request</h1>
+      //        <p>Hello ${user.full_name},</p>
+      //        <p>Your withdrawal request has been sent successfully.</p>
+      //        <p>Your balance has been successfully received.</p>
+      //        <p>Thank you for using our platform.</p>`,
+      // });
     } else {
       return res.status(400).json({
         success: false,
