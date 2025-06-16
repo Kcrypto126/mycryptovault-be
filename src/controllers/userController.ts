@@ -4,6 +4,7 @@ import { UserModel } from "../models/User";
 import { AuthRequest } from "../middlewares/auth";
 import { TransactionType, TransactionStatus } from "../generated/prisma";
 import { TransactionModel } from "../models/Transaction";
+import { sendEmail } from "../utils/emailService";
 
 const admin_email: string = process.env.ADMIN_EMAIL || "a@a.com";
 const SERVER_URL: string = process.env.SERVER_URL || "http://localhost:5000";
@@ -16,7 +17,7 @@ export const getProfile = async (
 ) => {
   try {
     if (!req.user) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Not authorized",
       });
@@ -24,7 +25,7 @@ export const getProfile = async (
 
     const user = await UserModel.findById(req.user.id);
     if (!user) {
-      return res.json({
+      return res.status(404).json({
         success: false,
         message: "User not found",
       });
@@ -32,7 +33,7 @@ export const getProfile = async (
 
     res.status(200).json({
       success: true,
-      user: user,
+      user,
     });
   } catch (error) {
     next(error);
@@ -231,7 +232,7 @@ export const updateBalance = async (
 ) => {
   try {
     if (!req.user) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Not autorized",
       });
@@ -239,17 +240,19 @@ export const updateBalance = async (
 
     const user = await UserModel.findById(req.user.id);
     if (!user) {
-      return res.json({
+      return res.status(404).json({
         success: false,
         message: "User not found",
       });
     }
     const currentBalance = user.balance;
+    const { type } = req.body;
 
-    if (req.body.type === TransactionType.DEPOSIT) {
-      const newBalance1 = currentBalance + parseFloat(req.body.amount);
+    if (type === TransactionType.DEPOSIT) {
+      const depositAmount = parseFloat(req.body.amount);
+      const newBalance = currentBalance + depositAmount;
       await UserModel.updateProfile(user.id, {
-        balance: newBalance1,
+        balance: newBalance,
       });
 
       // Create the DEPOSIT transaction
@@ -270,17 +273,24 @@ export const updateBalance = async (
       // Send email for balance deposit success
     } else if (req.body.type === TransactionType.WITHDRAWAL) {
       if (currentBalance < 1500 || parseFloat(req.body.amount) < 1500) {
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: "Minimum withdrawal amount is $1500",
         });
       }
       if (currentBalance < parseFloat(req.body.amount)) {
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: "Balance is not enough",
         });
       }
+
+      // Update the user balance
+      const withdrawalAmount = parseFloat(req.body.amount);
+      const newBalance = currentBalance - withdrawalAmount;
+      await UserModel.updateProfile(user.id, {
+        balance: newBalance,
+      });
 
       // Create the withdraw request transaction
       const amount = req.body.amount;
@@ -288,7 +298,7 @@ export const updateBalance = async (
       const status = TransactionStatus.PENDING;
       const sender_id = user.id;
       const description =
-        "You sent the request for withdraw the balance successfully";
+        "You sent the request to withdraw the balance successfully";
 
       await TransactionModel.create({
         amount,
@@ -298,14 +308,18 @@ export const updateBalance = async (
         description,
       });
 
-      // Send email to approve the request to admin
-
-      // const newBalance2 = currentBalance - parseFloat(req.body.amount);
-      // await UserModel.updateProfile(user.id, {
-      //   balance: newBalance2
-      // });
+      sendEmail({
+        to: user.email,
+        subject: "Withdrawal Request",
+        text: `Your withdrawal request has been sent successfully.`,
+        html: `<h1>Withdrawal Request</h1>
+             <p>Hello ${user.full_name},</p>
+             <p>Your withdrawal request has been sent successfully.</p>
+             <p>Your balance has been successfully received.</p>
+             <p>Thank you for using our platform.</p>`,
+      });
     } else {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: "Balance handle error",
       });
@@ -333,7 +347,7 @@ export const updateBonus = async (
     if (req.body.type == TransactionType.TRANSFER) {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: errors.array()[0].msg,
         });
@@ -341,7 +355,7 @@ export const updateBonus = async (
     }
 
     if (!req.user) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Not autorized",
       });
@@ -349,7 +363,7 @@ export const updateBonus = async (
 
     const sender = await UserModel.findById(req.user.id);
     if (!sender) {
-      return res.json({
+      return res.status(404).json({
         success: false,
         message: "User not found",
       });
@@ -381,14 +395,14 @@ export const updateBonus = async (
       // Send email for success getting bonus
     } else if (type === TransactionType.TRANSFER) {
       if (senderCurrentBonus < parseFloat(amount)) {
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: "Bonus not enough",
         });
       }
       const recipient = await UserModel.findByEmail(email);
       if (!recipient) {
-        return res.json({
+        return res.status(404).json({
           success: false,
           message: "Recipient user not found",
         });
@@ -422,7 +436,7 @@ export const updateBonus = async (
 
       // Send email for transfer bonus
     } else {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: "Handle bonus error",
       });
@@ -448,7 +462,7 @@ export const getAllUser = async (
 ) => {
   try {
     if (!req.user) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Not authorized",
       });
@@ -456,14 +470,14 @@ export const getAllUser = async (
 
     const user = await UserModel.findById(req.user.id);
     if (!user) {
-      return res.json({
+      return res.status(404).json({
         success: false,
         message: "User not found",
       });
     }
 
     if (user.email !== admin_email) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "You do not have admin permission",
       });
@@ -473,7 +487,7 @@ export const getAllUser = async (
 
     res.status(200).json({
       success: true,
-      users: users,
+      users,
     });
   } catch (error) {
     next(error);
@@ -488,7 +502,7 @@ export const deleteUser = async (
 ) => {
   try {
     if (!req.user) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Not authorized",
       });
@@ -496,14 +510,14 @@ export const deleteUser = async (
 
     const user = await UserModel.findById(req.user.id);
     if (!user) {
-      return res.json({
+      return res.status(404).json({
         success: false,
         message: "User not found",
       });
     }
 
     if (user.email !== admin_email) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "You do not have admin permission",
       });
@@ -513,7 +527,7 @@ export const deleteUser = async (
     if (deleteUser) {
       await UserModel.deleteById(deleteUser.id);
     } else {
-      return res.json({
+      return res.status(404).json({
         success: false,
         message: "User not found",
       });

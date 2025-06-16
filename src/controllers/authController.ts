@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
-import crypto from "crypto";
+import crypto, { verify } from "crypto";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/User";
 import { sendEmail } from "../utils/emailService";
-import { UserRole } from "../generated/prisma";
+import { UserRole, UserStatus, VerifyStatus } from "../generated/prisma";
 import dotenv from "dotenv";
 
 dotenv.config();

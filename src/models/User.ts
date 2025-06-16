@@ -1,12 +1,14 @@
-import bcrypt from 'bcryptjs';
-import prisma from '../lib/prisma';
-import { UserRole } from '../generated/prisma';
+import bcrypt from "bcryptjs";
+import prisma from "../lib/prisma";
+import { UserRole, UserStatus, VerifyStatus } from "../generated/prisma";
 
 export interface UserCreationAttrs {
   email: string;
   password: string;
   role: UserRole;
   avatar: string;
+  status?: UserStatus;
+  verify?: VerifyStatus;
 }
 
 export interface UserUpdateAttrs {
@@ -20,6 +22,9 @@ export interface UserUpdateAttrs {
   id_card?: string;
   bonus?: number;
   balance?: number;
+  role?: UserRole;
+  status?: UserStatus;
+  verify?: VerifyStatus;
 }
 
 export interface ResetTokenAttrs {
@@ -37,35 +42,51 @@ export class UserModel {
         password: hashedPassword,
         role: userData.role,
         avatar: userData.avatar,
-      }
+        status:
+          userData.role === UserRole.ADMIN
+            ? UserStatus.ACTIVE
+            : UserStatus.INACTIVE,
+        verify:
+          userData.role === UserRole.ADMIN
+            ? VerifyStatus.VERIFIED
+            : VerifyStatus.UNVERIFIED,
+      },
     });
   }
 
   static async findAllUser() {
-    return prisma.user.findMany()
+    return prisma.user.findMany();
   }
 
   static async findByEmail(email: string) {
     return prisma.user.findUnique({
       where: {
-        email: email.toLowerCase()
-      }
+        email: email.toLowerCase(),
+      },
+      include: {
+        sentTransactions: true,
+        receivedTransactions: true,
+      },
     });
   }
 
   static async findByUserName(username: string) {
     return prisma.user.findUnique({
       where: {
-        username
-      }
+        username,
+      },
     });
   }
 
   static async findById(id: string) {
     return prisma.user.findUnique({
       where: {
-        id
-      }
+        id,
+      },
+      include: {
+        sentTransactions: true,
+        receivedTransactions: true,
+      },
     });
   }
 
@@ -73,12 +94,15 @@ export class UserModel {
     return prisma.user.findFirst({
       where: {
         reset_token: token,
-        reset_token_expiry: { gt: new Date() }
-      }
-    })
+        reset_token_expiry: { gt: new Date() },
+      },
+    });
   }
 
-  static async comparePassword(candidatePassword: string, hashedPassword: string): Promise<boolean> {
+  static async comparePassword(
+    candidatePassword: string,
+    hashedPassword: string
+  ): Promise<boolean> {
     return bcrypt.compare(candidatePassword, hashedPassword);
   }
 
@@ -90,7 +114,7 @@ export class UserModel {
 
     return prisma.user.update({
       where: {
-        id
+        id,
       },
       data: {
         username: updates?.username,
@@ -103,19 +127,25 @@ export class UserModel {
         id_card: updates?.id_card,
         bonus: updates?.bonus,
         balance: updates?.balance,
-      }
+        role: updates?.role,
+        status: updates?.status,
+        verify: updates?.verify,
+      },
     });
   }
 
-  static async updateResetToken(email: string, updates: Partial<ResetTokenAttrs>) {
+  static async updateResetToken(
+    email: string,
+    updates: Partial<ResetTokenAttrs>
+  ) {
     return prisma.user.update({
       where: {
-        email
+        email,
       },
       data: {
         reset_token: updates.reset_token,
-        reset_token_expiry: updates.reset_token_expiry
-      }
+        reset_token_expiry: updates.reset_token_expiry,
+      },
     });
   }
 
@@ -124,21 +154,21 @@ export class UserModel {
 
     return prisma.user.update({
       where: {
-        email
+        email,
       },
       data: {
         password: hashedPassword,
         reset_token: null,
         reset_token_expiry: null,
-      }
+      },
     });
   }
 
   static async deleteById(id: string) {
     return prisma.user.delete({
       where: {
-        id
-      }
-    })
+        id,
+      },
+    });
   }
 }

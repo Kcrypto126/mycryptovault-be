@@ -43,6 +43,7 @@ model Transaction {
   status      TransactionStatus?
   description String?
   created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
 
   sender_id   String?
   sender      User?    @relation("SenderTransactions", fields: [sender_id], references: [id])

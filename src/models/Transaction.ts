@@ -12,25 +12,16 @@ export interface TransactionCreationAttrs {
 
 export class TransactionModel {
   static async create(transactionData: TransactionCreationAttrs) {
-    const {
-      amount,
-      type,
-      status,
-      sender_id,
-      recipient_id,
-      description
-    } = transactionData;
-
-    const amountNumber = parseFloat(amount);
+    const amountNumber = parseFloat(transactionData.amount);
 
     return prisma.transaction.create({
       data: {
         amount: amountNumber,
-        type,
-        status: type == TransactionType.WITHDRAWAL ? TransactionStatus.PENDING : TransactionStatus.COMPLETED,
-        sender_id,
-        recipient_id,
-        description,
+        type: transactionData.type,
+        status: transactionData.type == TransactionType.WITHDRAWAL ? TransactionStatus.PENDING : TransactionStatus.COMPLETED,
+        sender_id: transactionData.sender_id,
+        recipient_id: transactionData.recipient_id,
+        description: transactionData.description,
       }
     });
   }
@@ -66,5 +57,4 @@ export class TransactionModel {
       }
     });
   }
-
 }
