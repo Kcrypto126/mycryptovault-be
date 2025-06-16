@@ -6,5 +6,5 @@ coverage
 logs
 migrations
 
-public/assets/*
-
+# public/assets/*
+# !public/assets/default.png
