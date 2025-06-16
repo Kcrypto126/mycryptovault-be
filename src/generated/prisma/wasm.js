@@ -149,6 +149,7 @@ exports.Prisma.TransactionScalarFieldEnum = {
   status: 'status',
   description: 'description',
   created_at: 'created_at',
+  updated_at: 'updated_at',
   sender_id: 'sender_id',
   recipient_id: 'recipient_id'
 };

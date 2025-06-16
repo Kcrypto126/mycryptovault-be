@@ -2415,6 +2415,7 @@ export namespace Prisma {
     status: $Enums.TransactionStatus | null
     description: string | null
     created_at: Date | null
+    updated_at: Date | null
     sender_id: string | null
     recipient_id: string | null
   }
@@ -2426,6 +2427,7 @@ export namespace Prisma {
     status: $Enums.TransactionStatus | null
     description: string | null
     created_at: Date | null
+    updated_at: Date | null
     sender_id: string | null
     recipient_id: string | null
   }
@@ -2437,6 +2439,7 @@ export namespace Prisma {
     status: number
     description: number
     created_at: number
+    updated_at: number
     sender_id: number
     recipient_id: number
     _all: number
@@ -2458,6 +2461,7 @@ export namespace Prisma {
     status?: true
     description?: true
     created_at?: true
+    updated_at?: true
     sender_id?: true
     recipient_id?: true
   }
@@ -2469,6 +2473,7 @@ export namespace Prisma {
     status?: true
     description?: true
     created_at?: true
+    updated_at?: true
     sender_id?: true
     recipient_id?: true
   }
@@ -2480,6 +2485,7 @@ export namespace Prisma {
     status?: true
     description?: true
     created_at?: true
+    updated_at?: true
     sender_id?: true
     recipient_id?: true
     _all?: true
@@ -2578,6 +2584,7 @@ export namespace Prisma {
     status: $Enums.TransactionStatus | null
     description: string | null
     created_at: Date
+    updated_at: Date
     sender_id: string | null
     recipient_id: string | null
     _count: TransactionCountAggregateOutputType | null
@@ -2608,6 +2615,7 @@ export namespace Prisma {
     status?: boolean
     description?: boolean
     created_at?: boolean
+    updated_at?: boolean
     sender_id?: boolean
     recipient_id?: boolean
     sender?: boolean | Transaction$senderArgs<ExtArgs>
@@ -2621,6 +2629,7 @@ export namespace Prisma {
     status?: boolean
     description?: boolean
     created_at?: boolean
+    updated_at?: boolean
     sender_id?: boolean
     recipient_id?: boolean
     sender?: boolean | Transaction$senderArgs<ExtArgs>
@@ -2634,6 +2643,7 @@ export namespace Prisma {
     status?: boolean
     description?: boolean
     created_at?: boolean
+    updated_at?: boolean
     sender_id?: boolean
     recipient_id?: boolean
     sender?: boolean | Transaction$senderArgs<ExtArgs>
@@ -2647,11 +2657,12 @@ export namespace Prisma {
     status?: boolean
     description?: boolean
     created_at?: boolean
+    updated_at?: boolean
     sender_id?: boolean
     recipient_id?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "type" | "status" | "description" | "created_at" | "sender_id" | "recipient_id", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "type" | "status" | "description" | "created_at" | "updated_at" | "sender_id" | "recipient_id", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sender?: boolean | Transaction$senderArgs<ExtArgs>
     recipient?: boolean | Transaction$recipientArgs<ExtArgs>
@@ -2678,6 +2689,7 @@ export namespace Prisma {
       status: $Enums.TransactionStatus | null
       description: string | null
       created_at: Date
+      updated_at: Date
       sender_id: string | null
       recipient_id: string | null
     }, ExtArgs["result"]["transaction"]>
@@ -3111,6 +3123,7 @@ export namespace Prisma {
     readonly status: FieldRef<"Transaction", 'TransactionStatus'>
     readonly description: FieldRef<"Transaction", 'String'>
     readonly created_at: FieldRef<"Transaction", 'DateTime'>
+    readonly updated_at: FieldRef<"Transaction", 'DateTime'>
     readonly sender_id: FieldRef<"Transaction", 'String'>
     readonly recipient_id: FieldRef<"Transaction", 'String'>
   }
@@ -3611,6 +3624,7 @@ export namespace Prisma {
     status: 'status',
     description: 'description',
     created_at: 'created_at',
+    updated_at: 'updated_at',
     sender_id: 'sender_id',
     recipient_id: 'recipient_id'
   };
@@ -3916,6 +3930,7 @@ export namespace Prisma {
     status?: EnumTransactionStatusNullableFilter<"Transaction"> | $Enums.TransactionStatus | null
     description?: StringNullableFilter<"Transaction"> | string | null
     created_at?: DateTimeFilter<"Transaction"> | Date | string
+    updated_at?: DateTimeFilter<"Transaction"> | Date | string
     sender_id?: StringNullableFilter<"Transaction"> | string | null
     recipient_id?: StringNullableFilter<"Transaction"> | string | null
     sender?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -3929,6 +3944,7 @@ export namespace Prisma {
     status?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     created_at?: SortOrder
+    updated_at?: SortOrder
     sender_id?: SortOrderInput | SortOrder
     recipient_id?: SortOrderInput | SortOrder
     sender?: UserOrderByWithRelationInput
@@ -3945,6 +3961,7 @@ export namespace Prisma {
     status?: EnumTransactionStatusNullableFilter<"Transaction"> | $Enums.TransactionStatus | null
     description?: StringNullableFilter<"Transaction"> | string | null
     created_at?: DateTimeFilter<"Transaction"> | Date | string
+    updated_at?: DateTimeFilter<"Transaction"> | Date | string
     sender_id?: StringNullableFilter<"Transaction"> | string | null
     recipient_id?: StringNullableFilter<"Transaction"> | string | null
     sender?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -3958,6 +3975,7 @@ export namespace Prisma {
     status?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     created_at?: SortOrder
+    updated_at?: SortOrder
     sender_id?: SortOrderInput | SortOrder
     recipient_id?: SortOrderInput | SortOrder
     _count?: TransactionCountOrderByAggregateInput
@@ -3977,6 +3995,7 @@ export namespace Prisma {
     status?: EnumTransactionStatusNullableWithAggregatesFilter<"Transaction"> | $Enums.TransactionStatus | null
     description?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
     sender_id?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     recipient_id?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
   }
@@ -4150,6 +4169,7 @@ export namespace Prisma {
     status?: $Enums.TransactionStatus | null
     description?: string | null
     created_at?: Date | string
+    updated_at?: Date | string
     sender?: UserCreateNestedOneWithoutSentTransactionsInput
     recipient?: UserCreateNestedOneWithoutReceivedTransactionsInput
   }
@@ -4161,6 +4181,7 @@ export namespace Prisma {
     status?: $Enums.TransactionStatus | null
     description?: string | null
     created_at?: Date | string
+    updated_at?: Date | string
     sender_id?: string | null
     recipient_id?: string | null
   }
@@ -4172,6 +4193,7 @@ export namespace Prisma {
     status?: NullableEnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     sender?: UserUpdateOneWithoutSentTransactionsNestedInput
     recipient?: UserUpdateOneWithoutReceivedTransactionsNestedInput
   }
@@ -4183,6 +4205,7 @@ export namespace Prisma {
     status?: NullableEnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     sender_id?: NullableStringFieldUpdateOperationsInput | string | null
     recipient_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -4194,6 +4217,7 @@ export namespace Prisma {
     status?: $Enums.TransactionStatus | null
     description?: string | null
     created_at?: Date | string
+    updated_at?: Date | string
     sender_id?: string | null
     recipient_id?: string | null
   }
@@ -4205,6 +4229,7 @@ export namespace Prisma {
     status?: NullableEnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TransactionUncheckedUpdateManyInput = {
@@ -4214,6 +4239,7 @@ export namespace Prisma {
     status?: NullableEnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     sender_id?: NullableStringFieldUpdateOperationsInput | string | null
     recipient_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -4529,6 +4555,7 @@ export namespace Prisma {
     status?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
+    updated_at?: SortOrder
     sender_id?: SortOrder
     recipient_id?: SortOrder
   }
@@ -4544,6 +4571,7 @@ export namespace Prisma {
     status?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
+    updated_at?: SortOrder
     sender_id?: SortOrder
     recipient_id?: SortOrder
   }
@@ -4555,6 +4583,7 @@ export namespace Prisma {
     status?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
+    updated_at?: SortOrder
     sender_id?: SortOrder
     recipient_id?: SortOrder
   }
@@ -4996,6 +5025,7 @@ export namespace Prisma {
     status?: $Enums.TransactionStatus | null
     description?: string | null
     created_at?: Date | string
+    updated_at?: Date | string
     recipient?: UserCreateNestedOneWithoutReceivedTransactionsInput
   }
 
@@ -5006,6 +5036,7 @@ export namespace Prisma {
     status?: $Enums.TransactionStatus | null
     description?: string | null
     created_at?: Date | string
+    updated_at?: Date | string
     recipient_id?: string | null
   }
 
@@ -5026,6 +5057,7 @@ export namespace Prisma {
     status?: $Enums.TransactionStatus | null
     description?: string | null
     created_at?: Date | string
+    updated_at?: Date | string
     sender?: UserCreateNestedOneWithoutSentTransactionsInput
   }
 
@@ -5036,6 +5068,7 @@ export namespace Prisma {
     status?: $Enums.TransactionStatus | null
     description?: string | null
     created_at?: Date | string
+    updated_at?: Date | string
     sender_id?: string | null
   }
 
@@ -5075,6 +5108,7 @@ export namespace Prisma {
     status?: EnumTransactionStatusNullableFilter<"Transaction"> | $Enums.TransactionStatus | null
     description?: StringNullableFilter<"Transaction"> | string | null
     created_at?: DateTimeFilter<"Transaction"> | Date | string
+    updated_at?: DateTimeFilter<"Transaction"> | Date | string
     sender_id?: StringNullableFilter<"Transaction"> | string | null
     recipient_id?: StringNullableFilter<"Transaction"> | string | null
   }
@@ -5318,6 +5352,7 @@ export namespace Prisma {
     status?: $Enums.TransactionStatus | null
     description?: string | null
     created_at?: Date | string
+    updated_at?: Date | string
     recipient_id?: string | null
   }
 
@@ -5328,6 +5363,7 @@ export namespace Prisma {
     status?: $Enums.TransactionStatus | null
     description?: string | null
     created_at?: Date | string
+    updated_at?: Date | string
     sender_id?: string | null
   }
 
@@ -5338,6 +5374,7 @@ export namespace Prisma {
     status?: NullableEnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     recipient?: UserUpdateOneWithoutReceivedTransactionsNestedInput
   }
 
@@ -5348,6 +5385,7 @@ export namespace Prisma {
     status?: NullableEnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     recipient_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -5358,6 +5396,7 @@ export namespace Prisma {
     status?: NullableEnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     recipient_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -5368,6 +5407,7 @@ export namespace Prisma {
     status?: NullableEnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     sender?: UserUpdateOneWithoutSentTransactionsNestedInput
   }
 
@@ -5378,6 +5418,7 @@ export namespace Prisma {
     status?: NullableEnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     sender_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -5388,6 +5429,7 @@ export namespace Prisma {
     status?: NullableEnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     sender_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
