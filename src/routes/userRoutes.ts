@@ -12,7 +12,6 @@ import {
 import { auth } from "../middlewares/auth";
 import {
   validateUpdateProfile,
-  validateEmail,
   validateUpdatePassword,
   validateUpdateKYC,
 } from "../validators/userValidators";
@@ -75,6 +74,6 @@ router.delete("/delete", auth, deleteUser);
 
 // Handle balance and bonus
 router.post("/balance", auth, updateBalance);
-router.post("/bonus", auth, validateEmail, updateBonus);
+router.post("/bonus", auth, updateBonus);
 
 export default router;
