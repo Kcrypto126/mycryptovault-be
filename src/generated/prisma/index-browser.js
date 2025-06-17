@@ -154,6 +154,17 @@ exports.Prisma.TransactionScalarFieldEnum = {
   recipient_id: 'recipient_id'
 };
 
+exports.Prisma.SupportScalarFieldEnum = {
+  id: 'id',
+  status: 'status',
+  subject: 'subject',
+  message: 'message',
+  replyMessage: 'replyMessage',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  user_id: 'user_id'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -199,9 +210,16 @@ exports.TransactionStatus = exports.$Enums.TransactionStatus = {
   CANCELLED: 'CANCELLED'
 };
 
+exports.SupportStatus = exports.$Enums.SupportStatus = {
+  INPROGRESS: 'INPROGRESS',
+  REJECTED: 'REJECTED',
+  RESOLVED: 'RESOLVED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
-  Transaction: 'Transaction'
+  Transaction: 'Transaction',
+  Support: 'Support'
 };
 
 /**

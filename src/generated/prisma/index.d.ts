@@ -23,6 +23,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  * 
  */
 export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
+/**
+ * Model Support
+ * 
+ */
+export type Support = $Result.DefaultSelection<Prisma.$SupportPayload>
 
 /**
  * Enums
@@ -73,6 +78,15 @@ export const VerifyStatus: {
 
 export type VerifyStatus = (typeof VerifyStatus)[keyof typeof VerifyStatus]
 
+
+export const SupportStatus: {
+  INPROGRESS: 'INPROGRESS',
+  REJECTED: 'REJECTED',
+  RESOLVED: 'RESOLVED'
+};
+
+export type SupportStatus = (typeof SupportStatus)[keyof typeof SupportStatus]
+
 }
 
 export type TransactionType = $Enums.TransactionType
@@ -94,6 +108,10 @@ export const UserStatus: typeof $Enums.UserStatus
 export type VerifyStatus = $Enums.VerifyStatus
 
 export const VerifyStatus: typeof $Enums.VerifyStatus
+
+export type SupportStatus = $Enums.SupportStatus
+
+export const SupportStatus: typeof $Enums.SupportStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -239,6 +257,16 @@ export class PrismaClient<
     * ```
     */
   get transaction(): Prisma.TransactionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.support`: Exposes CRUD operations for the **Support** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Supports
+    * const supports = await prisma.support.findMany()
+    * ```
+    */
+  get support(): Prisma.SupportDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -680,7 +708,8 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    Transaction: 'Transaction'
+    Transaction: 'Transaction',
+    Support: 'Support'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -699,7 +728,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "transaction"
+      modelProps: "user" | "transaction" | "support"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -851,6 +880,80 @@ export namespace Prisma {
           }
         }
       }
+      Support: {
+        payload: Prisma.$SupportPayload<ExtArgs>
+        fields: Prisma.SupportFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SupportFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SupportFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportPayload>
+          }
+          findFirst: {
+            args: Prisma.SupportFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SupportFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportPayload>
+          }
+          findMany: {
+            args: Prisma.SupportFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportPayload>[]
+          }
+          create: {
+            args: Prisma.SupportCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportPayload>
+          }
+          createMany: {
+            args: Prisma.SupportCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SupportCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportPayload>[]
+          }
+          delete: {
+            args: Prisma.SupportDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportPayload>
+          }
+          update: {
+            args: Prisma.SupportUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportPayload>
+          }
+          deleteMany: {
+            args: Prisma.SupportDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SupportUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SupportUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportPayload>[]
+          }
+          upsert: {
+            args: Prisma.SupportUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportPayload>
+          }
+          aggregate: {
+            args: Prisma.SupportAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSupport>
+          }
+          groupBy: {
+            args: Prisma.SupportGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SupportGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SupportCountArgs<ExtArgs>
+            result: $Utils.Optional<SupportCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -937,6 +1040,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     transaction?: TransactionOmit
+    support?: SupportOmit
   }
 
   /* Types for Logging */
@@ -1033,11 +1137,13 @@ export namespace Prisma {
   export type UserCountOutputType = {
     sentTransactions: number
     receivedTransactions: number
+    support: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sentTransactions?: boolean | UserCountOutputTypeCountSentTransactionsArgs
     receivedTransactions?: boolean | UserCountOutputTypeCountReceivedTransactionsArgs
+    support?: boolean | UserCountOutputTypeCountSupportArgs
   }
 
   // Custom InputTypes
@@ -1063,6 +1169,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountReceivedTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TransactionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSupportArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SupportWhereInput
   }
 
 
@@ -1386,6 +1499,7 @@ export namespace Prisma {
     updated_at?: boolean
     sentTransactions?: boolean | User$sentTransactionsArgs<ExtArgs>
     receivedTransactions?: boolean | User$receivedTransactionsArgs<ExtArgs>
+    support?: boolean | User$supportArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1459,6 +1573,7 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sentTransactions?: boolean | User$sentTransactionsArgs<ExtArgs>
     receivedTransactions?: boolean | User$receivedTransactionsArgs<ExtArgs>
+    support?: boolean | User$supportArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1469,6 +1584,7 @@ export namespace Prisma {
     objects: {
       sentTransactions: Prisma.$TransactionPayload<ExtArgs>[]
       receivedTransactions: Prisma.$TransactionPayload<ExtArgs>[]
+      support: Prisma.$SupportPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1886,6 +2002,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     sentTransactions<T extends User$sentTransactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedTransactions<T extends User$receivedTransactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    support<T extends User$supportArgs<ExtArgs> = {}>(args?: Subset<T, User$supportArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2367,6 +2484,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * User.support
+   */
+  export type User$supportArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportInclude<ExtArgs> | null
+    where?: SupportWhereInput
+    orderBy?: SupportOrderByWithRelationInput | SupportOrderByWithRelationInput[]
+    cursor?: SupportWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SupportScalarFieldEnum | SupportScalarFieldEnum[]
   }
 
   /**
@@ -3579,6 +3720,1122 @@ export namespace Prisma {
 
 
   /**
+   * Model Support
+   */
+
+  export type AggregateSupport = {
+    _count: SupportCountAggregateOutputType | null
+    _min: SupportMinAggregateOutputType | null
+    _max: SupportMaxAggregateOutputType | null
+  }
+
+  export type SupportMinAggregateOutputType = {
+    id: string | null
+    status: $Enums.SupportStatus | null
+    subject: string | null
+    message: string | null
+    replyMessage: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    user_id: string | null
+  }
+
+  export type SupportMaxAggregateOutputType = {
+    id: string | null
+    status: $Enums.SupportStatus | null
+    subject: string | null
+    message: string | null
+    replyMessage: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    user_id: string | null
+  }
+
+  export type SupportCountAggregateOutputType = {
+    id: number
+    status: number
+    subject: number
+    message: number
+    replyMessage: number
+    created_at: number
+    updated_at: number
+    user_id: number
+    _all: number
+  }
+
+
+  export type SupportMinAggregateInputType = {
+    id?: true
+    status?: true
+    subject?: true
+    message?: true
+    replyMessage?: true
+    created_at?: true
+    updated_at?: true
+    user_id?: true
+  }
+
+  export type SupportMaxAggregateInputType = {
+    id?: true
+    status?: true
+    subject?: true
+    message?: true
+    replyMessage?: true
+    created_at?: true
+    updated_at?: true
+    user_id?: true
+  }
+
+  export type SupportCountAggregateInputType = {
+    id?: true
+    status?: true
+    subject?: true
+    message?: true
+    replyMessage?: true
+    created_at?: true
+    updated_at?: true
+    user_id?: true
+    _all?: true
+  }
+
+  export type SupportAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Support to aggregate.
+     */
+    where?: SupportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Supports to fetch.
+     */
+    orderBy?: SupportOrderByWithRelationInput | SupportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SupportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Supports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Supports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Supports
+    **/
+    _count?: true | SupportCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SupportMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SupportMaxAggregateInputType
+  }
+
+  export type GetSupportAggregateType<T extends SupportAggregateArgs> = {
+        [P in keyof T & keyof AggregateSupport]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSupport[P]>
+      : GetScalarType<T[P], AggregateSupport[P]>
+  }
+
+
+
+
+  export type SupportGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SupportWhereInput
+    orderBy?: SupportOrderByWithAggregationInput | SupportOrderByWithAggregationInput[]
+    by: SupportScalarFieldEnum[] | SupportScalarFieldEnum
+    having?: SupportScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SupportCountAggregateInputType | true
+    _min?: SupportMinAggregateInputType
+    _max?: SupportMaxAggregateInputType
+  }
+
+  export type SupportGroupByOutputType = {
+    id: string
+    status: $Enums.SupportStatus | null
+    subject: string | null
+    message: string | null
+    replyMessage: string | null
+    created_at: Date
+    updated_at: Date
+    user_id: string | null
+    _count: SupportCountAggregateOutputType | null
+    _min: SupportMinAggregateOutputType | null
+    _max: SupportMaxAggregateOutputType | null
+  }
+
+  type GetSupportGroupByPayload<T extends SupportGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SupportGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SupportGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SupportGroupByOutputType[P]>
+            : GetScalarType<T[P], SupportGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SupportSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    status?: boolean
+    subject?: boolean
+    message?: boolean
+    replyMessage?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    user_id?: boolean
+    user?: boolean | Support$userArgs<ExtArgs>
+  }, ExtArgs["result"]["support"]>
+
+  export type SupportSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    status?: boolean
+    subject?: boolean
+    message?: boolean
+    replyMessage?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    user_id?: boolean
+    user?: boolean | Support$userArgs<ExtArgs>
+  }, ExtArgs["result"]["support"]>
+
+  export type SupportSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    status?: boolean
+    subject?: boolean
+    message?: boolean
+    replyMessage?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    user_id?: boolean
+    user?: boolean | Support$userArgs<ExtArgs>
+  }, ExtArgs["result"]["support"]>
+
+  export type SupportSelectScalar = {
+    id?: boolean
+    status?: boolean
+    subject?: boolean
+    message?: boolean
+    replyMessage?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    user_id?: boolean
+  }
+
+  export type SupportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "status" | "subject" | "message" | "replyMessage" | "created_at" | "updated_at" | "user_id", ExtArgs["result"]["support"]>
+  export type SupportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Support$userArgs<ExtArgs>
+  }
+  export type SupportIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Support$userArgs<ExtArgs>
+  }
+  export type SupportIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Support$userArgs<ExtArgs>
+  }
+
+  export type $SupportPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Support"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      status: $Enums.SupportStatus | null
+      subject: string | null
+      message: string | null
+      replyMessage: string | null
+      created_at: Date
+      updated_at: Date
+      user_id: string | null
+    }, ExtArgs["result"]["support"]>
+    composites: {}
+  }
+
+  type SupportGetPayload<S extends boolean | null | undefined | SupportDefaultArgs> = $Result.GetResult<Prisma.$SupportPayload, S>
+
+  type SupportCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SupportFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SupportCountAggregateInputType | true
+    }
+
+  export interface SupportDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Support'], meta: { name: 'Support' } }
+    /**
+     * Find zero or one Support that matches the filter.
+     * @param {SupportFindUniqueArgs} args - Arguments to find a Support
+     * @example
+     * // Get one Support
+     * const support = await prisma.support.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SupportFindUniqueArgs>(args: SelectSubset<T, SupportFindUniqueArgs<ExtArgs>>): Prisma__SupportClient<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Support that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SupportFindUniqueOrThrowArgs} args - Arguments to find a Support
+     * @example
+     * // Get one Support
+     * const support = await prisma.support.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SupportFindUniqueOrThrowArgs>(args: SelectSubset<T, SupportFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SupportClient<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Support that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportFindFirstArgs} args - Arguments to find a Support
+     * @example
+     * // Get one Support
+     * const support = await prisma.support.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SupportFindFirstArgs>(args?: SelectSubset<T, SupportFindFirstArgs<ExtArgs>>): Prisma__SupportClient<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Support that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportFindFirstOrThrowArgs} args - Arguments to find a Support
+     * @example
+     * // Get one Support
+     * const support = await prisma.support.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SupportFindFirstOrThrowArgs>(args?: SelectSubset<T, SupportFindFirstOrThrowArgs<ExtArgs>>): Prisma__SupportClient<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Supports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Supports
+     * const supports = await prisma.support.findMany()
+     * 
+     * // Get first 10 Supports
+     * const supports = await prisma.support.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const supportWithIdOnly = await prisma.support.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SupportFindManyArgs>(args?: SelectSubset<T, SupportFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Support.
+     * @param {SupportCreateArgs} args - Arguments to create a Support.
+     * @example
+     * // Create one Support
+     * const Support = await prisma.support.create({
+     *   data: {
+     *     // ... data to create a Support
+     *   }
+     * })
+     * 
+     */
+    create<T extends SupportCreateArgs>(args: SelectSubset<T, SupportCreateArgs<ExtArgs>>): Prisma__SupportClient<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Supports.
+     * @param {SupportCreateManyArgs} args - Arguments to create many Supports.
+     * @example
+     * // Create many Supports
+     * const support = await prisma.support.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SupportCreateManyArgs>(args?: SelectSubset<T, SupportCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Supports and returns the data saved in the database.
+     * @param {SupportCreateManyAndReturnArgs} args - Arguments to create many Supports.
+     * @example
+     * // Create many Supports
+     * const support = await prisma.support.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Supports and only return the `id`
+     * const supportWithIdOnly = await prisma.support.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SupportCreateManyAndReturnArgs>(args?: SelectSubset<T, SupportCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Support.
+     * @param {SupportDeleteArgs} args - Arguments to delete one Support.
+     * @example
+     * // Delete one Support
+     * const Support = await prisma.support.delete({
+     *   where: {
+     *     // ... filter to delete one Support
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SupportDeleteArgs>(args: SelectSubset<T, SupportDeleteArgs<ExtArgs>>): Prisma__SupportClient<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Support.
+     * @param {SupportUpdateArgs} args - Arguments to update one Support.
+     * @example
+     * // Update one Support
+     * const support = await prisma.support.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SupportUpdateArgs>(args: SelectSubset<T, SupportUpdateArgs<ExtArgs>>): Prisma__SupportClient<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Supports.
+     * @param {SupportDeleteManyArgs} args - Arguments to filter Supports to delete.
+     * @example
+     * // Delete a few Supports
+     * const { count } = await prisma.support.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SupportDeleteManyArgs>(args?: SelectSubset<T, SupportDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Supports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Supports
+     * const support = await prisma.support.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SupportUpdateManyArgs>(args: SelectSubset<T, SupportUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Supports and returns the data updated in the database.
+     * @param {SupportUpdateManyAndReturnArgs} args - Arguments to update many Supports.
+     * @example
+     * // Update many Supports
+     * const support = await prisma.support.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Supports and only return the `id`
+     * const supportWithIdOnly = await prisma.support.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SupportUpdateManyAndReturnArgs>(args: SelectSubset<T, SupportUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Support.
+     * @param {SupportUpsertArgs} args - Arguments to update or create a Support.
+     * @example
+     * // Update or create a Support
+     * const support = await prisma.support.upsert({
+     *   create: {
+     *     // ... data to create a Support
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Support we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SupportUpsertArgs>(args: SelectSubset<T, SupportUpsertArgs<ExtArgs>>): Prisma__SupportClient<$Result.GetResult<Prisma.$SupportPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Supports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportCountArgs} args - Arguments to filter Supports to count.
+     * @example
+     * // Count the number of Supports
+     * const count = await prisma.support.count({
+     *   where: {
+     *     // ... the filter for the Supports we want to count
+     *   }
+     * })
+    **/
+    count<T extends SupportCountArgs>(
+      args?: Subset<T, SupportCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SupportCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Support.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SupportAggregateArgs>(args: Subset<T, SupportAggregateArgs>): Prisma.PrismaPromise<GetSupportAggregateType<T>>
+
+    /**
+     * Group by Support.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SupportGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SupportGroupByArgs['orderBy'] }
+        : { orderBy?: SupportGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SupportGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSupportGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Support model
+   */
+  readonly fields: SupportFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Support.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SupportClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends Support$userArgs<ExtArgs> = {}>(args?: Subset<T, Support$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Support model
+   */
+  interface SupportFieldRefs {
+    readonly id: FieldRef<"Support", 'String'>
+    readonly status: FieldRef<"Support", 'SupportStatus'>
+    readonly subject: FieldRef<"Support", 'String'>
+    readonly message: FieldRef<"Support", 'String'>
+    readonly replyMessage: FieldRef<"Support", 'String'>
+    readonly created_at: FieldRef<"Support", 'DateTime'>
+    readonly updated_at: FieldRef<"Support", 'DateTime'>
+    readonly user_id: FieldRef<"Support", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Support findUnique
+   */
+  export type SupportFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportInclude<ExtArgs> | null
+    /**
+     * Filter, which Support to fetch.
+     */
+    where: SupportWhereUniqueInput
+  }
+
+  /**
+   * Support findUniqueOrThrow
+   */
+  export type SupportFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportInclude<ExtArgs> | null
+    /**
+     * Filter, which Support to fetch.
+     */
+    where: SupportWhereUniqueInput
+  }
+
+  /**
+   * Support findFirst
+   */
+  export type SupportFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportInclude<ExtArgs> | null
+    /**
+     * Filter, which Support to fetch.
+     */
+    where?: SupportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Supports to fetch.
+     */
+    orderBy?: SupportOrderByWithRelationInput | SupportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Supports.
+     */
+    cursor?: SupportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Supports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Supports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Supports.
+     */
+    distinct?: SupportScalarFieldEnum | SupportScalarFieldEnum[]
+  }
+
+  /**
+   * Support findFirstOrThrow
+   */
+  export type SupportFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportInclude<ExtArgs> | null
+    /**
+     * Filter, which Support to fetch.
+     */
+    where?: SupportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Supports to fetch.
+     */
+    orderBy?: SupportOrderByWithRelationInput | SupportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Supports.
+     */
+    cursor?: SupportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Supports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Supports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Supports.
+     */
+    distinct?: SupportScalarFieldEnum | SupportScalarFieldEnum[]
+  }
+
+  /**
+   * Support findMany
+   */
+  export type SupportFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportInclude<ExtArgs> | null
+    /**
+     * Filter, which Supports to fetch.
+     */
+    where?: SupportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Supports to fetch.
+     */
+    orderBy?: SupportOrderByWithRelationInput | SupportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Supports.
+     */
+    cursor?: SupportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Supports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Supports.
+     */
+    skip?: number
+    distinct?: SupportScalarFieldEnum | SupportScalarFieldEnum[]
+  }
+
+  /**
+   * Support create
+   */
+  export type SupportCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Support.
+     */
+    data?: XOR<SupportCreateInput, SupportUncheckedCreateInput>
+  }
+
+  /**
+   * Support createMany
+   */
+  export type SupportCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Supports.
+     */
+    data: SupportCreateManyInput | SupportCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Support createManyAndReturn
+   */
+  export type SupportCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * The data used to create many Supports.
+     */
+    data: SupportCreateManyInput | SupportCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Support update
+   */
+  export type SupportUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Support.
+     */
+    data: XOR<SupportUpdateInput, SupportUncheckedUpdateInput>
+    /**
+     * Choose, which Support to update.
+     */
+    where: SupportWhereUniqueInput
+  }
+
+  /**
+   * Support updateMany
+   */
+  export type SupportUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Supports.
+     */
+    data: XOR<SupportUpdateManyMutationInput, SupportUncheckedUpdateManyInput>
+    /**
+     * Filter which Supports to update
+     */
+    where?: SupportWhereInput
+    /**
+     * Limit how many Supports to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Support updateManyAndReturn
+   */
+  export type SupportUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * The data used to update Supports.
+     */
+    data: XOR<SupportUpdateManyMutationInput, SupportUncheckedUpdateManyInput>
+    /**
+     * Filter which Supports to update
+     */
+    where?: SupportWhereInput
+    /**
+     * Limit how many Supports to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Support upsert
+   */
+  export type SupportUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Support to update in case it exists.
+     */
+    where: SupportWhereUniqueInput
+    /**
+     * In case the Support found by the `where` argument doesn't exist, create a new Support with this data.
+     */
+    create: XOR<SupportCreateInput, SupportUncheckedCreateInput>
+    /**
+     * In case the Support was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SupportUpdateInput, SupportUncheckedUpdateInput>
+  }
+
+  /**
+   * Support delete
+   */
+  export type SupportDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportInclude<ExtArgs> | null
+    /**
+     * Filter which Support to delete.
+     */
+    where: SupportWhereUniqueInput
+  }
+
+  /**
+   * Support deleteMany
+   */
+  export type SupportDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Supports to delete
+     */
+    where?: SupportWhereInput
+    /**
+     * Limit how many Supports to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Support.user
+   */
+  export type Support$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Support without action
+   */
+  export type SupportDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Support
+     */
+    select?: SupportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Support
+     */
+    omit?: SupportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -3630,6 +4887,20 @@ export namespace Prisma {
   };
 
   export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
+
+
+  export const SupportScalarFieldEnum: {
+    id: 'id',
+    status: 'status',
+    subject: 'subject',
+    message: 'message',
+    replyMessage: 'replyMessage',
+    created_at: 'created_at',
+    updated_at: 'updated_at',
+    user_id: 'user_id'
+  };
+
+  export type SupportScalarFieldEnum = (typeof SupportScalarFieldEnum)[keyof typeof SupportScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3774,6 +5045,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'SupportStatus'
+   */
+  export type EnumSupportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SupportStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SupportStatus[]'
+   */
+  export type ListEnumSupportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SupportStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -3815,6 +5100,7 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"User"> | Date | string
     sentTransactions?: TransactionListRelationFilter
     receivedTransactions?: TransactionListRelationFilter
+    support?: SupportListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -3839,6 +5125,7 @@ export namespace Prisma {
     updated_at?: SortOrder
     sentTransactions?: TransactionOrderByRelationAggregateInput
     receivedTransactions?: TransactionOrderByRelationAggregateInput
+    support?: SupportOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -3866,6 +5153,7 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"User"> | Date | string
     sentTransactions?: TransactionListRelationFilter
     receivedTransactions?: TransactionListRelationFilter
+    support?: SupportListRelationFilter
   }, "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -4000,6 +5288,76 @@ export namespace Prisma {
     recipient_id?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
   }
 
+  export type SupportWhereInput = {
+    AND?: SupportWhereInput | SupportWhereInput[]
+    OR?: SupportWhereInput[]
+    NOT?: SupportWhereInput | SupportWhereInput[]
+    id?: StringFilter<"Support"> | string
+    status?: EnumSupportStatusNullableFilter<"Support"> | $Enums.SupportStatus | null
+    subject?: StringNullableFilter<"Support"> | string | null
+    message?: StringNullableFilter<"Support"> | string | null
+    replyMessage?: StringNullableFilter<"Support"> | string | null
+    created_at?: DateTimeFilter<"Support"> | Date | string
+    updated_at?: DateTimeFilter<"Support"> | Date | string
+    user_id?: StringNullableFilter<"Support"> | string | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type SupportOrderByWithRelationInput = {
+    id?: SortOrder
+    status?: SortOrderInput | SortOrder
+    subject?: SortOrderInput | SortOrder
+    message?: SortOrderInput | SortOrder
+    replyMessage?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    user_id?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SupportWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SupportWhereInput | SupportWhereInput[]
+    OR?: SupportWhereInput[]
+    NOT?: SupportWhereInput | SupportWhereInput[]
+    status?: EnumSupportStatusNullableFilter<"Support"> | $Enums.SupportStatus | null
+    subject?: StringNullableFilter<"Support"> | string | null
+    message?: StringNullableFilter<"Support"> | string | null
+    replyMessage?: StringNullableFilter<"Support"> | string | null
+    created_at?: DateTimeFilter<"Support"> | Date | string
+    updated_at?: DateTimeFilter<"Support"> | Date | string
+    user_id?: StringNullableFilter<"Support"> | string | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type SupportOrderByWithAggregationInput = {
+    id?: SortOrder
+    status?: SortOrderInput | SortOrder
+    subject?: SortOrderInput | SortOrder
+    message?: SortOrderInput | SortOrder
+    replyMessage?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    user_id?: SortOrderInput | SortOrder
+    _count?: SupportCountOrderByAggregateInput
+    _max?: SupportMaxOrderByAggregateInput
+    _min?: SupportMinOrderByAggregateInput
+  }
+
+  export type SupportScalarWhereWithAggregatesInput = {
+    AND?: SupportScalarWhereWithAggregatesInput | SupportScalarWhereWithAggregatesInput[]
+    OR?: SupportScalarWhereWithAggregatesInput[]
+    NOT?: SupportScalarWhereWithAggregatesInput | SupportScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Support"> | string
+    status?: EnumSupportStatusNullableWithAggregatesFilter<"Support"> | $Enums.SupportStatus | null
+    subject?: StringNullableWithAggregatesFilter<"Support"> | string | null
+    message?: StringNullableWithAggregatesFilter<"Support"> | string | null
+    replyMessage?: StringNullableWithAggregatesFilter<"Support"> | string | null
+    created_at?: DateTimeWithAggregatesFilter<"Support"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"Support"> | Date | string
+    user_id?: StringNullableWithAggregatesFilter<"Support"> | string | null
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -4022,6 +5380,7 @@ export namespace Prisma {
     updated_at?: Date | string
     sentTransactions?: TransactionCreateNestedManyWithoutSenderInput
     receivedTransactions?: TransactionCreateNestedManyWithoutRecipientInput
+    support?: SupportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -4046,6 +5405,7 @@ export namespace Prisma {
     updated_at?: Date | string
     sentTransactions?: TransactionUncheckedCreateNestedManyWithoutSenderInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutRecipientInput
+    support?: SupportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -4070,6 +5430,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     sentTransactions?: TransactionUpdateManyWithoutSenderNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutRecipientNestedInput
+    support?: SupportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -4094,6 +5455,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     sentTransactions?: TransactionUncheckedUpdateManyWithoutSenderNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutRecipientNestedInput
+    support?: SupportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -4244,6 +5606,82 @@ export namespace Prisma {
     recipient_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type SupportCreateInput = {
+    id?: string
+    status?: $Enums.SupportStatus | null
+    subject?: string | null
+    message?: string | null
+    replyMessage?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    user?: UserCreateNestedOneWithoutSupportInput
+  }
+
+  export type SupportUncheckedCreateInput = {
+    id?: string
+    status?: $Enums.SupportStatus | null
+    subject?: string | null
+    message?: string | null
+    replyMessage?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    user_id?: string | null
+  }
+
+  export type SupportUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumSupportStatusFieldUpdateOperationsInput | $Enums.SupportStatus | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    replyMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutSupportNestedInput
+  }
+
+  export type SupportUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumSupportStatusFieldUpdateOperationsInput | $Enums.SupportStatus | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    replyMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SupportCreateManyInput = {
+    id?: string
+    status?: $Enums.SupportStatus | null
+    subject?: string | null
+    message?: string | null
+    replyMessage?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    user_id?: string | null
+  }
+
+  export type SupportUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumSupportStatusFieldUpdateOperationsInput | $Enums.SupportStatus | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    replyMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SupportUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumSupportStatusFieldUpdateOperationsInput | $Enums.SupportStatus | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    replyMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -4334,12 +5772,22 @@ export namespace Prisma {
     none?: TransactionWhereInput
   }
 
+  export type SupportListRelationFilter = {
+    every?: SupportWhereInput
+    some?: SupportWhereInput
+    none?: SupportWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type TransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SupportOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -4612,6 +6060,56 @@ export namespace Prisma {
     _max?: NestedEnumTransactionStatusNullableFilter<$PrismaModel>
   }
 
+  export type EnumSupportStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.SupportStatus | EnumSupportStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SupportStatus[] | ListEnumSupportStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SupportStatus[] | ListEnumSupportStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSupportStatusNullableFilter<$PrismaModel> | $Enums.SupportStatus | null
+  }
+
+  export type SupportCountOrderByAggregateInput = {
+    id?: SortOrder
+    status?: SortOrder
+    subject?: SortOrder
+    message?: SortOrder
+    replyMessage?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type SupportMaxOrderByAggregateInput = {
+    id?: SortOrder
+    status?: SortOrder
+    subject?: SortOrder
+    message?: SortOrder
+    replyMessage?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type SupportMinOrderByAggregateInput = {
+    id?: SortOrder
+    status?: SortOrder
+    subject?: SortOrder
+    message?: SortOrder
+    replyMessage?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type EnumSupportStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SupportStatus | EnumSupportStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SupportStatus[] | ListEnumSupportStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SupportStatus[] | ListEnumSupportStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSupportStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.SupportStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumSupportStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumSupportStatusNullableFilter<$PrismaModel>
+  }
+
   export type TransactionCreateNestedManyWithoutSenderInput = {
     create?: XOR<TransactionCreateWithoutSenderInput, TransactionUncheckedCreateWithoutSenderInput> | TransactionCreateWithoutSenderInput[] | TransactionUncheckedCreateWithoutSenderInput[]
     connectOrCreate?: TransactionCreateOrConnectWithoutSenderInput | TransactionCreateOrConnectWithoutSenderInput[]
@@ -4626,6 +6124,13 @@ export namespace Prisma {
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
   }
 
+  export type SupportCreateNestedManyWithoutUserInput = {
+    create?: XOR<SupportCreateWithoutUserInput, SupportUncheckedCreateWithoutUserInput> | SupportCreateWithoutUserInput[] | SupportUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SupportCreateOrConnectWithoutUserInput | SupportCreateOrConnectWithoutUserInput[]
+    createMany?: SupportCreateManyUserInputEnvelope
+    connect?: SupportWhereUniqueInput | SupportWhereUniqueInput[]
+  }
+
   export type TransactionUncheckedCreateNestedManyWithoutSenderInput = {
     create?: XOR<TransactionCreateWithoutSenderInput, TransactionUncheckedCreateWithoutSenderInput> | TransactionCreateWithoutSenderInput[] | TransactionUncheckedCreateWithoutSenderInput[]
     connectOrCreate?: TransactionCreateOrConnectWithoutSenderInput | TransactionCreateOrConnectWithoutSenderInput[]
@@ -4638,6 +6143,13 @@ export namespace Prisma {
     connectOrCreate?: TransactionCreateOrConnectWithoutRecipientInput | TransactionCreateOrConnectWithoutRecipientInput[]
     createMany?: TransactionCreateManyRecipientInputEnvelope
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type SupportUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SupportCreateWithoutUserInput, SupportUncheckedCreateWithoutUserInput> | SupportCreateWithoutUserInput[] | SupportUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SupportCreateOrConnectWithoutUserInput | SupportCreateOrConnectWithoutUserInput[]
+    createMany?: SupportCreateManyUserInputEnvelope
+    connect?: SupportWhereUniqueInput | SupportWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -4704,6 +6216,20 @@ export namespace Prisma {
     deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
   }
 
+  export type SupportUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SupportCreateWithoutUserInput, SupportUncheckedCreateWithoutUserInput> | SupportCreateWithoutUserInput[] | SupportUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SupportCreateOrConnectWithoutUserInput | SupportCreateOrConnectWithoutUserInput[]
+    upsert?: SupportUpsertWithWhereUniqueWithoutUserInput | SupportUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SupportCreateManyUserInputEnvelope
+    set?: SupportWhereUniqueInput | SupportWhereUniqueInput[]
+    disconnect?: SupportWhereUniqueInput | SupportWhereUniqueInput[]
+    delete?: SupportWhereUniqueInput | SupportWhereUniqueInput[]
+    connect?: SupportWhereUniqueInput | SupportWhereUniqueInput[]
+    update?: SupportUpdateWithWhereUniqueWithoutUserInput | SupportUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SupportUpdateManyWithWhereWithoutUserInput | SupportUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SupportScalarWhereInput | SupportScalarWhereInput[]
+  }
+
   export type TransactionUncheckedUpdateManyWithoutSenderNestedInput = {
     create?: XOR<TransactionCreateWithoutSenderInput, TransactionUncheckedCreateWithoutSenderInput> | TransactionCreateWithoutSenderInput[] | TransactionUncheckedCreateWithoutSenderInput[]
     connectOrCreate?: TransactionCreateOrConnectWithoutSenderInput | TransactionCreateOrConnectWithoutSenderInput[]
@@ -4730,6 +6256,20 @@ export namespace Prisma {
     update?: TransactionUpdateWithWhereUniqueWithoutRecipientInput | TransactionUpdateWithWhereUniqueWithoutRecipientInput[]
     updateMany?: TransactionUpdateManyWithWhereWithoutRecipientInput | TransactionUpdateManyWithWhereWithoutRecipientInput[]
     deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type SupportUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SupportCreateWithoutUserInput, SupportUncheckedCreateWithoutUserInput> | SupportCreateWithoutUserInput[] | SupportUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SupportCreateOrConnectWithoutUserInput | SupportCreateOrConnectWithoutUserInput[]
+    upsert?: SupportUpsertWithWhereUniqueWithoutUserInput | SupportUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SupportCreateManyUserInputEnvelope
+    set?: SupportWhereUniqueInput | SupportWhereUniqueInput[]
+    disconnect?: SupportWhereUniqueInput | SupportWhereUniqueInput[]
+    delete?: SupportWhereUniqueInput | SupportWhereUniqueInput[]
+    connect?: SupportWhereUniqueInput | SupportWhereUniqueInput[]
+    update?: SupportUpdateWithWhereUniqueWithoutUserInput | SupportUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SupportUpdateManyWithWhereWithoutUserInput | SupportUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SupportScalarWhereInput | SupportScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSentTransactionsInput = {
@@ -4770,6 +6310,26 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReceivedTransactionsInput, UserUpdateWithoutReceivedTransactionsInput>, UserUncheckedUpdateWithoutReceivedTransactionsInput>
+  }
+
+  export type UserCreateNestedOneWithoutSupportInput = {
+    create?: XOR<UserCreateWithoutSupportInput, UserUncheckedCreateWithoutSupportInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSupportInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type NullableEnumSupportStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SupportStatus | null
+  }
+
+  export type UserUpdateOneWithoutSupportNestedInput = {
+    create?: XOR<UserCreateWithoutSupportInput, UserUncheckedCreateWithoutSupportInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSupportInput
+    upsert?: UserUpsertWithoutSupportInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSupportInput, UserUpdateWithoutSupportInput>, UserUncheckedUpdateWithoutSupportInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -5018,6 +6578,23 @@ export namespace Prisma {
     _max?: NestedEnumTransactionStatusNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumSupportStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.SupportStatus | EnumSupportStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SupportStatus[] | ListEnumSupportStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SupportStatus[] | ListEnumSupportStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSupportStatusNullableFilter<$PrismaModel> | $Enums.SupportStatus | null
+  }
+
+  export type NestedEnumSupportStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SupportStatus | EnumSupportStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SupportStatus[] | ListEnumSupportStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SupportStatus[] | ListEnumSupportStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSupportStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.SupportStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumSupportStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumSupportStatusNullableFilter<$PrismaModel>
+  }
+
   export type TransactionCreateWithoutSenderInput = {
     id?: string
     amount?: number
@@ -5082,6 +6659,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SupportCreateWithoutUserInput = {
+    id?: string
+    status?: $Enums.SupportStatus | null
+    subject?: string | null
+    message?: string | null
+    replyMessage?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type SupportUncheckedCreateWithoutUserInput = {
+    id?: string
+    status?: $Enums.SupportStatus | null
+    subject?: string | null
+    message?: string | null
+    replyMessage?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type SupportCreateOrConnectWithoutUserInput = {
+    where: SupportWhereUniqueInput
+    create: XOR<SupportCreateWithoutUserInput, SupportUncheckedCreateWithoutUserInput>
+  }
+
+  export type SupportCreateManyUserInputEnvelope = {
+    data: SupportCreateManyUserInput | SupportCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TransactionUpsertWithWhereUniqueWithoutSenderInput = {
     where: TransactionWhereUniqueInput
     update: XOR<TransactionUpdateWithoutSenderInput, TransactionUncheckedUpdateWithoutSenderInput>
@@ -5129,6 +6736,36 @@ export namespace Prisma {
     data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutRecipientInput>
   }
 
+  export type SupportUpsertWithWhereUniqueWithoutUserInput = {
+    where: SupportWhereUniqueInput
+    update: XOR<SupportUpdateWithoutUserInput, SupportUncheckedUpdateWithoutUserInput>
+    create: XOR<SupportCreateWithoutUserInput, SupportUncheckedCreateWithoutUserInput>
+  }
+
+  export type SupportUpdateWithWhereUniqueWithoutUserInput = {
+    where: SupportWhereUniqueInput
+    data: XOR<SupportUpdateWithoutUserInput, SupportUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SupportUpdateManyWithWhereWithoutUserInput = {
+    where: SupportScalarWhereInput
+    data: XOR<SupportUpdateManyMutationInput, SupportUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SupportScalarWhereInput = {
+    AND?: SupportScalarWhereInput | SupportScalarWhereInput[]
+    OR?: SupportScalarWhereInput[]
+    NOT?: SupportScalarWhereInput | SupportScalarWhereInput[]
+    id?: StringFilter<"Support"> | string
+    status?: EnumSupportStatusNullableFilter<"Support"> | $Enums.SupportStatus | null
+    subject?: StringNullableFilter<"Support"> | string | null
+    message?: StringNullableFilter<"Support"> | string | null
+    replyMessage?: StringNullableFilter<"Support"> | string | null
+    created_at?: DateTimeFilter<"Support"> | Date | string
+    updated_at?: DateTimeFilter<"Support"> | Date | string
+    user_id?: StringNullableFilter<"Support"> | string | null
+  }
+
   export type UserCreateWithoutSentTransactionsInput = {
     id?: string
     email: string
@@ -5150,6 +6787,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     receivedTransactions?: TransactionCreateNestedManyWithoutRecipientInput
+    support?: SupportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentTransactionsInput = {
@@ -5173,6 +6811,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutRecipientInput
+    support?: SupportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentTransactionsInput = {
@@ -5201,6 +6840,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     sentTransactions?: TransactionCreateNestedManyWithoutSenderInput
+    support?: SupportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedTransactionsInput = {
@@ -5224,6 +6864,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     sentTransactions?: TransactionUncheckedCreateNestedManyWithoutSenderInput
+    support?: SupportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedTransactionsInput = {
@@ -5263,6 +6904,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     receivedTransactions?: TransactionUpdateManyWithoutRecipientNestedInput
+    support?: SupportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentTransactionsInput = {
@@ -5286,6 +6928,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutRecipientNestedInput
+    support?: SupportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedTransactionsInput = {
@@ -5320,6 +6963,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     sentTransactions?: TransactionUpdateManyWithoutSenderNestedInput
+    support?: SupportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedTransactionsInput = {
@@ -5343,6 +6987,119 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     sentTransactions?: TransactionUncheckedUpdateManyWithoutSenderNestedInput
+    support?: SupportUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutSupportInput = {
+    id?: string
+    email: string
+    password: string
+    username?: string | null
+    full_name?: string | null
+    avatar?: string | null
+    balance?: number
+    bonus?: number
+    role?: $Enums.UserRole
+    phone_number?: string | null
+    address?: string | null
+    government_id?: string | null
+    id_card?: string | null
+    status?: $Enums.UserStatus
+    verify?: $Enums.VerifyStatus
+    reset_token?: string | null
+    reset_token_expiry?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    sentTransactions?: TransactionCreateNestedManyWithoutSenderInput
+    receivedTransactions?: TransactionCreateNestedManyWithoutRecipientInput
+  }
+
+  export type UserUncheckedCreateWithoutSupportInput = {
+    id?: string
+    email: string
+    password: string
+    username?: string | null
+    full_name?: string | null
+    avatar?: string | null
+    balance?: number
+    bonus?: number
+    role?: $Enums.UserRole
+    phone_number?: string | null
+    address?: string | null
+    government_id?: string | null
+    id_card?: string | null
+    status?: $Enums.UserStatus
+    verify?: $Enums.VerifyStatus
+    reset_token?: string | null
+    reset_token_expiry?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    sentTransactions?: TransactionUncheckedCreateNestedManyWithoutSenderInput
+    receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutRecipientInput
+  }
+
+  export type UserCreateOrConnectWithoutSupportInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSupportInput, UserUncheckedCreateWithoutSupportInput>
+  }
+
+  export type UserUpsertWithoutSupportInput = {
+    update: XOR<UserUpdateWithoutSupportInput, UserUncheckedUpdateWithoutSupportInput>
+    create: XOR<UserCreateWithoutSupportInput, UserUncheckedCreateWithoutSupportInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSupportInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSupportInput, UserUncheckedUpdateWithoutSupportInput>
+  }
+
+  export type UserUpdateWithoutSupportInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    full_name?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    balance?: FloatFieldUpdateOperationsInput | number
+    bonus?: FloatFieldUpdateOperationsInput | number
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    government_id?: NullableStringFieldUpdateOperationsInput | string | null
+    id_card?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    verify?: EnumVerifyStatusFieldUpdateOperationsInput | $Enums.VerifyStatus
+    reset_token?: NullableStringFieldUpdateOperationsInput | string | null
+    reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentTransactions?: TransactionUpdateManyWithoutSenderNestedInput
+    receivedTransactions?: TransactionUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSupportInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    full_name?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    balance?: FloatFieldUpdateOperationsInput | number
+    bonus?: FloatFieldUpdateOperationsInput | number
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    government_id?: NullableStringFieldUpdateOperationsInput | string | null
+    id_card?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    verify?: EnumVerifyStatusFieldUpdateOperationsInput | $Enums.VerifyStatus
+    reset_token?: NullableStringFieldUpdateOperationsInput | string | null
+    reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentTransactions?: TransactionUncheckedUpdateManyWithoutSenderNestedInput
+    receivedTransactions?: TransactionUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type TransactionCreateManySenderInput = {
@@ -5365,6 +7122,16 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     sender_id?: string | null
+  }
+
+  export type SupportCreateManyUserInput = {
+    id?: string
+    status?: $Enums.SupportStatus | null
+    subject?: string | null
+    message?: string | null
+    replyMessage?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
   }
 
   export type TransactionUpdateWithoutSenderInput = {
@@ -5431,6 +7198,36 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     sender_id?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SupportUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumSupportStatusFieldUpdateOperationsInput | $Enums.SupportStatus | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    replyMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SupportUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumSupportStatusFieldUpdateOperationsInput | $Enums.SupportStatus | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    replyMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SupportUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumSupportStatusFieldUpdateOperationsInput | $Enums.SupportStatus | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    replyMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

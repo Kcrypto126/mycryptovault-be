@@ -34,6 +34,8 @@ model User {
 
   sentTransactions     Transaction[] @relation("SenderTransactions")
   receivedTransactions Transaction[] @relation("RecipientTransactions")
+
+  support              Support[] @relation("SupportMessage")
 }
 
 model Transaction {
@@ -49,6 +51,19 @@ model Transaction {
   sender      User?    @relation("SenderTransactions", fields: [sender_id], references: [id])
   recipient_id String?
   recipient   User?    @relation("RecipientTransactions", fields: [recipient_id], references: [id])
+}
+
+model Support {
+  id          String   @id @default(uuid())
+  status      SupportStatus? @default(INPROGRESS)
+  subject     String?
+  message     String?
+  replyMessage String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+
+  user_id   String?
+  user      User?    @relation("SupportMessage", fields: [user_id], references: [id])
 }
 
 enum TransactionType {
@@ -80,4 +95,10 @@ enum UserStatus {
 enum VerifyStatus {
   VERIFIED
   UNVERIFIED
+}
+
+enum SupportStatus {
+  INPROGRESS
+  REJECTED
+  RESOLVED
 }
