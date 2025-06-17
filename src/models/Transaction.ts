@@ -31,19 +31,32 @@ export class TransactionModel {
       where: {
         sender_id: senderId,
         recipient_id: recipientId
-      }
+      },
+      include: {
+        sender: true,
+        recipient: true,
+      },
     })
   }
 
   static async findAllTransaction() {
-    return prisma.transaction.findMany();
+    return prisma.transaction.findMany({
+      include: {
+        sender: true,
+        recipient: true,
+      },
+    });
   }
 
   static async findById(id: string) {
     return prisma.transaction.findUnique({
       where: {
         id
-      }
+      },
+      include: {
+        sender: true,
+        recipient: true,
+      },
     });
   }
 
