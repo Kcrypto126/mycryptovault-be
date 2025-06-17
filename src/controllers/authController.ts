@@ -117,7 +117,12 @@ export const login = async (
     }
 
     // Generate token with type-safe JWT secret
-    const token = jwt.sign({ user }, jwt_secret, { expiresIn: "1d" });
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+    const token = jwt.sign(payload, jwt_secret, { expiresIn: "1d" });
 
     res.status(200).json({
       success: true,
@@ -250,14 +255,14 @@ export const verifyToken = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.body.token;
+    const { token } = req.body;
     jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
       if (err) {
         console.error(err);
         return res.status(400).json({ message: "Invalid token" });
       }
 
-      const email = decoded.user.email;
+      const email = decoded.email;
       if (!email)
         return res.status(404).json({ message: "User not found with token" });
 

@@ -27,14 +27,17 @@ export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
-      user: {
-        id: string;
-        email: string;
-        role: "ADMIN" | "USER";
-      };
+      id: string;
+      email: string;
+      role: "ADMIN" | "USER";
+    };
+        
+    req.user = {
+      id: decoded.id,
+      email: decoded.email,
+      role: decoded.role,
     };
 
-    req.user = decoded.user;
     next();
   } catch (error) {
     res.json({ success: false, message: "Not authorized" });
