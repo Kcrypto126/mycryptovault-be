@@ -185,7 +185,7 @@ export const getSupport = async (
         if (!supports) {
             return res.status(404).json({
               success: false,
-              message: "Support not found",
+              message: "Supports not found",
             });
         }
 
@@ -213,9 +213,23 @@ export const deleteSupport = async (
             });
           }
 
-        const { supportId } = req.body;
+        const { id } = req.body;
+        const support = await SupportModel.findById(id);
+        if (!support) {
+            return res.status(404).json({
+              success: false,
+              message: "Support not found",
+            });
+        }
 
-        await SupportModel.deleteById(supportId);
+        if (support.user_id !== req.user.id) {
+            return res.status(401).json({
+              success: false,
+              message: "It is not your support",
+            });
+        }
+
+        await SupportModel.deleteById(id);
 
         res.status(201).json({
             success: true,

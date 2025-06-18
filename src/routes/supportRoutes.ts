@@ -8,7 +8,7 @@ router.post("/create", auth, createSupport);
 router.get("/get-support", auth, getSupport);
 router.get("/get-all", auth, getAllSupport);
 router.post("/update", auth, updateSupport);
-router.post("/delete", auth, deleteSupport);
+router.delete("/delete", auth, deleteSupport);
 router.post("/update-status", auth, updateSupportStatus);
 
 export default router;
