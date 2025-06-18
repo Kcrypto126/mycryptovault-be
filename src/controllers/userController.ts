@@ -368,9 +368,16 @@ export const updateBonus = async (
         message: "User not found",
       });
     }
-    const senderCurrentBonus = sender.bonus;
 
+    const senderCurrentBonus = sender.bonus;
     const { type, email, amount } = req.body;
+
+    if (sender.email === email) {
+      return res.status(400).json({
+        success: false,
+        message: "You cannot transfer bonus to yourself",
+      });
+    }
 
     if (type === TransactionType.BONUS) {
       const newBonus = senderCurrentBonus + parseFloat(amount);
@@ -462,7 +469,7 @@ export const getAllUser = async (
 ) => {
   try {
     if (!req.user) {
-      return res.status(401).json({
+      return res.status(403).json({
         success: false,
         message: "Not authorized",
       });
@@ -477,7 +484,7 @@ export const getAllUser = async (
     }
 
     if (user.email !== admin_email) {
-      return res.status(401).json({
+      return res.status(403).json({
         success: false,
         message: "You do not have admin permission",
       });

@@ -104,6 +104,13 @@ export const login = async (
       });
     }
 
+    if (user.status === UserStatus.SUSPENDED) {
+      return res.status(403).json({
+        success: false,
+        message: "Your account is suspended.",
+      });
+    }
+
     // Check password
     const isPasswordValid = await UserModel.comparePassword(
       password,
