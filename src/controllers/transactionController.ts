@@ -69,8 +69,6 @@ export const getTransaction = async (
       });
     }
 
-    const { id } = req.params;
-
     // Get user
     const user = await UserModel.findById(req.user.id);
     if (!user) {
@@ -81,8 +79,8 @@ export const getTransaction = async (
     }
 
     // Get transaction
-    const transaction = await TransactionModel.findMany(user.id, user.id);
-    if (!transaction) {
+    const transactions = await TransactionModel.findMany(user.id, user.id);
+    if (!transactions) {
       return res.json({
         success: false,
         message: "Transaction not found",
@@ -91,7 +89,7 @@ export const getTransaction = async (
 
     res.status(200).json({
       success: true,
-      transaction,
+      transactions,
     });
   } catch (error) {
     next(error);

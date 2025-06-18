@@ -29,8 +29,10 @@ export class TransactionModel {
   static async findMany(senderId: string, recipientId: string) {
     return prisma.transaction.findMany({
       where: {
-        sender_id: senderId,
-        recipient_id: recipientId
+        OR: [
+          { sender_id: senderId },
+          { recipient_id: recipientId }
+        ]
       },
       include: {
         sender: true,

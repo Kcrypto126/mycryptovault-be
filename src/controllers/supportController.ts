@@ -3,6 +3,9 @@ import { AuthRequest } from "../middlewares/auth";
 import { NextFunction, Response } from "express";
 import { SupportModel } from "../models/Support";
 import { SupportStatus } from "../generated/prisma";
+import { sendEmail } from "../utils/emailService";
+
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "kaori19782@gmail.com";
 
 // Create support
 export const createSupport = async (
@@ -33,6 +36,19 @@ export const createSupport = async (
         message,
         user_id: user.id,
       });
+
+      sendEmail({
+        to: ADMIN_EMAIL,
+        subject: `Support Ticket Created by ${user.email}`,
+        text: `${subject}`,
+        html: `<h1>Support Ticket</h1>
+               <p>You requested a support ticket.</p>
+               <p>Please click the link below to reset your password:</p>
+               <p>${message}</p>
+               `,
+      }).catch((err) =>
+        console.error("Error sending password reset email:", err)
+      );
   
       res.status(201).json({
         success: true,
@@ -88,7 +104,7 @@ export const updateSupport = async (
     }
   };
 
-  // Update user support status
+// Update user support status
 export const updateSupportStatus = async (
     req: AuthRequest,
     res: Response,
@@ -125,7 +141,7 @@ export const updateSupportStatus = async (
     }
   };
 
-  // Get all support
+// Get all support
 export const getAllSupport = async (
     req: AuthRequest,
     res: Response,
@@ -151,7 +167,39 @@ export const getAllSupport = async (
     }
   };
 
-  // Delete support
+// Get support
+export const getSupport = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({
+              success: false,
+              message: "Not authorized",
+            });
+        }
+
+        const supports = await SupportModel.findByUserId(req.user.id);
+        if (!supports) {
+            return res.status(404).json({
+              success: false,
+              message: "Support not found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Support fetched successfully",
+            supports,
+        });
+    } catch (error) {
+        next(error);
+    }
+  };
+
+// Delete support
 export const deleteSupport = async (
     req: AuthRequest,
     res: Response,

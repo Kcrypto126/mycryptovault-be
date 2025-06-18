@@ -40,6 +40,15 @@ export class SupportModel {
     });
   }
 
+  static async findByUserId(userId: string) {
+    return prisma.support.findMany({
+      where: { user_id: userId },
+      include: {
+        user: true,
+      },
+    });
+  }
+
   static async deleteById(id: string) {
     return prisma.support.delete({
       where: { id },

@@ -27,5 +27,6 @@ export const sendEmail = async (options: EmailOptions): Promise<void> => {
     text: options.text,
     html: options.html,
   };
+  await transporter.verify();
   await transporter.sendMail(message);
 };
