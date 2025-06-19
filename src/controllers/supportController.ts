@@ -2,7 +2,7 @@ import { UserModel } from "../models/User";
 import { AuthRequest } from "../middlewares/auth";
 import { NextFunction, Response } from "express";
 import { SupportModel } from "../models/Support";
-import { SupportStatus } from "../generated/prisma";
+import { SupportStatus, UserRole } from "../generated/prisma";
 import { sendEmail } from "../utils/emailService";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "kaori19782@gmail.com";
@@ -80,10 +80,17 @@ export const updateSupport = async (
           message: "User not found",
         });
       }
-  
-      const { replyMessage, supportId } = req.body;
 
-      const support = await SupportModel.findById(supportId);
+      if (user.role !== UserRole.ADMIN) {
+        return res.status(401).json({
+          success: false,
+          message: "You do not have admin permission",
+        });
+      }
+  
+      const { id, reply, status } = req.body;
+
+      const support = await SupportModel.findById(id);
       if (!support) {
         return res.status(404).json({
           success: false,
@@ -91,50 +98,14 @@ export const updateSupport = async (
         });
       }
   
-      await SupportModel.update(supportId, {
-        replyMessage,
+      await SupportModel.update(id, {
+        replyMessage: reply,
+        status: status,
       });
   
       res.status(201).json({
         success: true,
         message: "Support updated successfully",
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-// Update user support status
-export const updateSupportStatus = async (
-    req: AuthRequest,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      if (!req.user) {
-        return res.status(401).json({
-          success: false,
-          message: "Not authorized",
-        });
-      }
-  
-      const { status, supportId } = req.body;
-
-      const support = await SupportModel.findById(supportId);
-      if (!support) {
-        return res.status(404).json({
-          success: false,
-          message: "Support not found",
-        });
-      }
-  
-      await SupportModel.update(supportId, {
-        status,
-      });
-  
-      res.status(201).json({
-        success: true,
-        message: "Support status updated successfully",
       });
     } catch (error) {
       next(error);
@@ -154,6 +125,21 @@ export const getAllSupport = async (
               message: "Not authorized",
             });
           }
+
+        const user = await UserModel.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({
+              success: false,
+              message: "User not found",
+            });
+        }
+
+        if (user.role !== UserRole.ADMIN) {
+            return res.status(401).json({
+                success: false,
+                message: "You do not have admin permission",
+            });
+        }
 
         const supports = await SupportModel.findAll();
 

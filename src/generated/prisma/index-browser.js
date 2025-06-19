@@ -213,7 +213,7 @@ exports.TransactionStatus = exports.$Enums.TransactionStatus = {
 
 exports.SupportStatus = exports.$Enums.SupportStatus = {
   INPROGRESS: 'INPROGRESS',
-  REJECTED: 'REJECTED',
+  ESCALATED: 'ESCALATED',
   RESOLVED: 'RESOLVED'
 };
 

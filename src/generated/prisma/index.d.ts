@@ -82,7 +82,7 @@ export type VerifyStatus = (typeof VerifyStatus)[keyof typeof VerifyStatus]
 
 export const SupportStatus: {
   INPROGRESS: 'INPROGRESS',
-  REJECTED: 'REJECTED',
+  ESCALATED: 'ESCALATED',
   RESOLVED: 'RESOLVED'
 };
 
