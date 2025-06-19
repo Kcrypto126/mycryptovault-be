@@ -73,7 +73,8 @@ export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
 
 export const VerifyStatus: {
   VERIFIED: 'VERIFIED',
-  UNVERIFIED: 'UNVERIFIED'
+  UNVERIFIED: 'UNVERIFIED',
+  REJECTED: 'REJECTED'
 };
 
 export type VerifyStatus = (typeof VerifyStatus)[keyof typeof VerifyStatus]

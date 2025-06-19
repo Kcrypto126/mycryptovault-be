@@ -193,7 +193,8 @@ exports.UserStatus = exports.$Enums.UserStatus = {
 
 exports.VerifyStatus = exports.$Enums.VerifyStatus = {
   VERIFIED: 'VERIFIED',
-  UNVERIFIED: 'UNVERIFIED'
+  UNVERIFIED: 'UNVERIFIED',
+  REJECTED: 'REJECTED'
 };
 
 exports.TransactionType = exports.$Enums.TransactionType = {

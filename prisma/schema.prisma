@@ -95,6 +95,7 @@ enum UserStatus {
 enum VerifyStatus {
   VERIFIED
   UNVERIFIED
+  REJECTED
 }
 
 enum SupportStatus {

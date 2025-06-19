@@ -2,11 +2,10 @@ import { Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 import { UserModel } from "../models/User";
 import { AuthRequest } from "../middlewares/auth";
-import { TransactionType, TransactionStatus } from "../generated/prisma";
+import { TransactionType, TransactionStatus, UserRole, VerifyStatus, UserStatus } from "../generated/prisma";
 import { TransactionModel } from "../models/Transaction";
 import { sendEmail } from "../utils/emailService";
 
-const admin_email: string = process.env.ADMIN_EMAIL || "a@a.com";
 const SERVER_URL: string = process.env.SERVER_URL || "http://localhost:5000";
 
 // Get user profile
@@ -483,7 +482,7 @@ export const getAllUser = async (
       });
     }
 
-    if (user.email !== admin_email) {
+    if (user.role !== UserRole.ADMIN) {
       return res.status(403).json({
         success: false,
         message: "You do not have admin permission",
@@ -523,7 +522,7 @@ export const updateUserStatus = async (
       });
     }
 
-    if (user.email !== admin_email) {
+    if (user.role !== UserRole.ADMIN) {
       return res.status(403).json({
         success: false,
         message: "You do not have admin permission",
@@ -553,6 +552,61 @@ export const updateUserStatus = async (
   }
 };
 
+// Approve KYC
+export const handleKYC = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized",
+      });
+    }
+
+    const user = await UserModel.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (user.role !== UserRole.ADMIN) {
+      return res.status(403).json({
+        success: false,
+        message: "You do not have admin permission",
+      });
+    }
+
+    const { email,type } = req.body;
+    const userToUpdate = await UserModel.findByEmail(email);
+    if (!userToUpdate) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    await UserModel.updateProfile(userToUpdate.id, {
+      verify: type == "VERIFIED" ? VerifyStatus.VERIFIED: VerifyStatus.REJECTED,
+    });
+
+    await UserModel.updateProfile(userToUpdate.id, {
+      status: type == "VERIFIED" ? UserStatus.ACTIVE : UserStatus.INACTIVE,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: type === "VERIFIED" ? "KYC approved successfully" : "KYC rejected successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Delete the user
 export const deleteUser = async (
   req: AuthRequest,
@@ -575,7 +629,7 @@ export const deleteUser = async (
       });
     }
 
-    if (user.email !== admin_email) {
+    if (user.role !== UserRole.ADMIN) {
       return res.status(401).json({
         success: false,
         message: "You do not have admin permission",

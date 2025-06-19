@@ -9,6 +9,7 @@ import {
   updatePassword,
   updateKYC,
   updateUserStatus,
+  handleKYC,
 } from "../controllers/userController";
 import { auth } from "../middlewares/auth";
 import {
@@ -73,6 +74,7 @@ router.put("/password", auth, validateUpdatePassword, updatePassword);
 router.get("/all-user", auth, getAllUser);
 router.delete("/delete", auth, deleteUser);
 router.put("/status", auth, updateUserStatus);
+router.put("/handle-kyc", auth, handleKYC);
 
 // Handle balance and bonus
 router.post("/balance", auth, updateBalance);
