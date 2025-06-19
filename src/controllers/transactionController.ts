@@ -109,8 +109,6 @@ export const getAllTransaction = async (
       });
     }
 
-    const { id } = req.params;
-
     // Get user
     const user = await UserModel.findById(req.user.id);
     if (!user) {

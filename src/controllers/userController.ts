@@ -501,6 +501,65 @@ export const getAllUser = async (
   }
 };
 
+// Update user status
+export const updateUserStatus = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized",
+      });
+    }
+
+    const user = await UserModel.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (user.email !== admin_email) {
+      return res.status(403).json({
+        success: false,
+        message: "You do not have admin permission",
+      });
+    }
+
+    const { email, status } = req.body;
+
+    const userToUpdate = await UserModel.findByEmail(email);
+    if (!userToUpdate) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (userToUpdate.email === user.email) {
+      return res.status(400).json({
+        success: false,
+        message: "You cannot update your own status",
+      });
+    }
+
+    await UserModel.updateProfile(userToUpdate.id, {
+      status,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "User status updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Delete the user
 export const deleteUser = async (
   req: AuthRequest,
