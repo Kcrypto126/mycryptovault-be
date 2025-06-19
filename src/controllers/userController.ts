@@ -540,13 +540,6 @@ export const updateUserStatus = async (
       });
     }
 
-    if (userToUpdate.email === user.email) {
-      return res.status(400).json({
-        success: false,
-        message: "You cannot update your own status",
-      });
-    }
-
     await UserModel.updateProfile(userToUpdate.id, {
       status,
     });

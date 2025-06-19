@@ -3,6 +3,7 @@ import {
     createTransaction,
     getTransaction,
     getAllTransaction,
+    approveWithdrawal,
     //   getTransactionHistory,
     //   syncOxapayTransactions
 } from '../controllers/transactionController';
@@ -13,7 +14,10 @@ const router = Router();
 // Transaction routes
 router.post('/create', auth, createTransaction);
 router.get('/get-transaction', auth, getTransaction);
+
+// Admin routes
 router.get('/all-transaction', auth, getAllTransaction);
+router.put('/approve-withdrawal', auth, approveWithdrawal);
 
 // router.get('/', auth, getTransactionHistory);
 // router.post('/sync-oxapay', auth, syncOxapayTransactions);
