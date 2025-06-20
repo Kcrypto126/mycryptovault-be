@@ -1,0 +1,142 @@
+<head>
+    <style>
+        @font-face {
+            font-family: "Satoshi";
+            src: url("http://85.208.197.156:5000/default/fonts/Satoshi-Regular.woff") format("woff"),
+                url("http://85.208.197.156:5000/default/fonts/Satoshi-Regular.woff2") format("woff2");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Your CSS styles here */
+        .container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .content {
+            max-width: 495px;
+            margin: auto;
+            border-radius: 24px;
+            background-color: #0e0329 !important;
+            padding: 32px;
+            color: #fff;
+            font-family: "Satoshi", Arial, sans-serif;
+        }
+
+        .content-header {
+        }
+
+        .content-body {
+            padding: 0 24px;
+        }
+
+        .content-footer {
+            margin-top: 30px;
+            gap: 16px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0;
+            width: fit-content;
+            line-height: 150%;
+            letter-spacing: 0.05em;
+        }
+
+        h2 {
+            font-size: 14px;
+            font-weight: 400;
+            margin: 0 0;
+            text-align: center;
+            line-height: 150%;
+        }
+
+        h3 {
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            margin: 0 0;
+            text-align: center;
+            line-height: 150%;
+        }
+
+        p {
+            font-size: 16px;
+            font-weight: 300;
+            color: #e4e4e4;
+            margin: 0 0;
+            text-align: center;
+            line-height: 150%;
+        }
+
+        button {
+            width: 142px;
+            height: 52px;
+            font-family: "Satoshi", Arial, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #632ee4 0%, #9f7ef3 100%);
+            border: 2px solid #79699d;
+            box-shadow: inset 0 0 10px rgb(39 39 39 / 81%);
+            cursor: pointer;
+        }
+
+        button:hover {
+            box-shadow: inset 0 0 10px rgba(94, 93, 93, 0.81),
+                0 0 20px rgba(94, 93, 93, 0.81);
+        }
+
+        @media (max-width: 640px) {
+            .content {
+                max-width: 100%;
+                padding: 24px 10px;
+            }
+
+            .content-body {
+                padding: 0 10px;
+            }
+
+            .content-body {
+                gap: 10px;
+            }
+
+            .content-footer {
+                margin-top: 14px;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="content-header">
+                <img src="http://85.208.197.156:5000/default/logo.png" alt="logo" style="width: 36px; height: 36px; display: inline;" />
+                <h1>Cryptovault!</h1>
+            </div>
+            <img src="http://85.208.197.156:5000/default/logo.png" alt="logo" style="width: 62px; height: 62px; margin: 5px 0" />
+            <div class="content-body">
+                <h1>Welcome to Cryptovault!</h1>
+                <p style="font-weight: 500; font-size: 18px">
+                    Subject: Welcome to Cryptovault - Let's Get Started
+                </p>
+                <p>
+                    Hi <%= username %><br />Welcome to Cryptovault - your secure gateway to
+                    manageing and growing your crypto assets.<br />
+                    Your account is now active. You can log in anytime to tract balances,
+                    manage vaults, and explore rewards.
+                </p>
+            </div>
+            <div class="content-footer">
+                <button>Log in</button>
+                <h2>Thanks for joining the vault.</h2>
+                <h3 style="margin-top: 5px">– Cryptovault Security Team</h3>
+            </div>
+        </div>
+    </div>
+</body>

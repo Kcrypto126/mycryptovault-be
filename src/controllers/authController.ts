@@ -4,7 +4,10 @@ import crypto, { verify } from "crypto";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/User";
 import { sendEmail } from "../utils/emailService";
-import { UserRole, UserStatus, VerifyStatus } from "../generated/prisma";
+import { UserRole, UserStatus } from "../generated/prisma";
+import ejs from 'ejs';
+import fs from 'fs';
+import path from "path";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -13,7 +16,6 @@ const admin_email: string = process.env.ADMIN_EMAIL || "kaori19782@gmail.com";
 const jwt_secret: string = process.env.JWT_SECRET || "WELCOME TO CRYPTO WALLET";
 const FRONTEND_URL: string =
   process.env.FRONTEND_URL || "http://192.168.142.78:3000";
-const SERVER_URL: string = process.env.SERVER_URL || "http://localhost:5000";
 
 // Register new user
 export const register = async (
@@ -48,7 +50,7 @@ export const register = async (
       role = UserRole.USER;
     }
 
-    const avatar = `${SERVER_URL}/assets/default-avatar.png`;
+    const avatar = "/assets/avatars/avatar-default.png";
 
     // Create user
     const user = await UserModel.create({
@@ -59,13 +61,14 @@ export const register = async (
     });
 
     // Send welcome email
+    const templateString = fs.readFileSync('/default/email-template.ejs', 'utf-8');
+    const html = ejs.render(templateString, { username: 'John' });
+
     sendEmail({
       to: user.email,
       subject: "Welcome to Crypto Wallet Platform",
       text: `Hello ${user.full_name}, thank you for joining our platform. Your account has been created successfully.`,
-      html: `<div><h1>Welcome to Crypto Wallet Platform</h1>
-             <p>Hello ${user.full_name},</p>
-             <p>Thank you for joining our platform. Your account has been created successfully.</p></div>`,
+      html: html,
     }).catch((err) => console.error("Error sending welcome email:", err));
 
     res.status(201).json({
@@ -130,6 +133,27 @@ export const login = async (
       role: user.role,
     };
     const token = jwt.sign(payload, jwt_secret, { expiresIn: "1d" });
+
+    // send email
+    const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
+    const html = ejs.render(templateString, { username: 'John' });
+
+    // Read CSS file content
+    // const cssPath = path.join(__dirname, 'def', 'email-style.css');
+    // const cssContent = fs.readFileSync(cssPath, 'utf-8');
+
+    // // Render EJS template with CSS injected
+    // const html = ejs.renderFile(
+    //   path.join(__dirname, 'views', 'email-template.ejs'),
+    //   { username: 'John', styles: cssContent }
+    // );
+
+    sendEmail({
+      to: user.email,
+      subject: "Welcome to Cryptovault ",
+      text: `Hello ${user.email}, thank you for joining our platform. Your account has been created successfully.`,
+      html: html,
+    }).catch((err) => console.error("Error sending welcome email:", err));
 
     res.status(200).json({
       success: true,

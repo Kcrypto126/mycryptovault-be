@@ -25,8 +25,8 @@ export const sendEmail = async (options: EmailOptions): Promise<void> => {
   const message = {
     from: process.env.EMAIL_FROM || 'kaori@cryptowallet.com',
     to: options.to,
-    subject: options.subject,
-    text: options.text,
+    // subject: options.subject,
+    // text: options.text,
     html: options.html,
   };
   await transporter.verify();
