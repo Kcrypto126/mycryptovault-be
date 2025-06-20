@@ -7,4 +7,3 @@ logs
 migrations
 
 public/assets/*
-!public/assets/default.png

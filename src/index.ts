@@ -22,6 +22,7 @@ app.use(morgan("dev"));
 // Use static data in public
 app.use("/static", express.static(__dirname + "/public"));
 app.use("/assets", express.static("public/assets"));
+app.use("/default", express.static("public/default"));
 
 // Connect to database
 const connectToDatabase = async () => {

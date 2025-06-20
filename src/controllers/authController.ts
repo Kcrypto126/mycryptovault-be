@@ -63,9 +63,9 @@ export const register = async (
       to: user.email,
       subject: "Welcome to Crypto Wallet Platform",
       text: `Hello ${user.full_name}, thank you for joining our platform. Your account has been created successfully.`,
-      html: `<h1>Welcome to Crypto Wallet Platform</h1>
+      html: `<div><h1>Welcome to Crypto Wallet Platform</h1>
              <p>Hello ${user.full_name},</p>
-             <p>Thank you for joining our platform. Your account has been created successfully.</p>`,
+             <p>Thank you for joining our platform. Your account has been created successfully.</p></div>`,
     }).catch((err) => console.error("Error sending welcome email:", err));
 
     res.status(201).json({
