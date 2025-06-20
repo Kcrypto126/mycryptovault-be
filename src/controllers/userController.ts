@@ -5,8 +5,13 @@ import { AuthRequest } from "../middlewares/auth";
 import { TransactionType, TransactionStatus, UserRole, VerifyStatus, UserStatus } from "../generated/prisma";
 import { TransactionModel } from "../models/Transaction";
 import { sendEmail } from "../utils/emailService";
+import ejs from 'ejs';
+import fs from 'fs';
+import path from "path";
 
-const SERVER_URL: string = process.env.SERVER_URL || "http://localhost:5000";
+const SERVER_URL: string = process.env.SERVER_URL || "http://85.208.197.156:5000";
+const FRONTEND_URL: string = process.env.FRONTEND_URL || "http://192.168.142.78:3000"
+const ADMIN_EMAIL: string = process.env.ADMIN_EMAIL || "kaori19782@gmail.com"
 
 // Get user profile
 export const getProfile = async (
@@ -149,7 +154,7 @@ export const updateKYC = async (
     if (
       req.files &&
       "government_id" in
-        (req.files as { [fieldname: string]: Express.Multer.File[] })
+      (req.files as { [fieldname: string]: Express.Multer.File[] })
     ) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       const govId = files.government_id[0].filename;
@@ -250,6 +255,7 @@ export const updateBalance = async (
     if (type === TransactionType.DEPOSIT) {
       const depositAmount = parseFloat(req.body.amount);
       const newBalance = currentBalance + depositAmount;
+
       await UserModel.updateProfile(user.id, {
         balance: newBalance,
       });
@@ -268,8 +274,6 @@ export const updateBalance = async (
         recipient_id,
         description,
       });
-
-      // Send email for balance deposit success
     } else if (req.body.type === TransactionType.WITHDRAWAL) {
       if (currentBalance < 1500 || parseFloat(req.body.amount) < 1500) {
         return res.status(400).json({
@@ -300,16 +304,23 @@ export const updateBalance = async (
         description,
       });
 
-      // sendEmail({
-      //   to: user.email,
-      //   subject: "Withdrawal Request",
-      //   text: `Your withdrawal request has been sent successfully.`,
-      //   html: `<h1>Withdrawal Request</h1>
-      //        <p>Hello ${user.full_name},</p>
-      //        <p>Your withdrawal request has been sent successfully.</p>
-      //        <p>Your balance has been successfully received.</p>
-      //        <p>Thank you for using our platform.</p>`,
-      // });
+      const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
+      const html = ejs.render(templateString, {
+        title: 'Withdraw Request Received!',
+        subject: "Witdhraw Request",
+        username: ADMIN_EMAIL.split("@")[0],
+        content: `We received a request to withdraw the balance from ${user.full_name || user.email}. Please check and handle it.`,
+        link: `${FRONTEND_URL}/admin-dashboard/withdrawal-requests`,
+        linkTitle: "Withdraw",
+        footer: ""
+      });
+
+      await sendEmail({
+        to: ADMIN_EMAIL,
+        subject: "Welcome to Cryptovault",
+        text: `Hello ${user.email}, thank you for joining our platform.`,
+        html: html,
+      }).catch((err) => console.error("Error sending welcome email:", err));
     } else {
       return res.status(400).json({
         success: false,
@@ -434,6 +445,28 @@ export const updateBonus = async (
       });
 
       // Send email for transfer bonus
+      const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
+      const html = ejs.render(templateString, {
+        title: 'You Received The Bonus!',
+        subject: "Bonus Received",
+        username: recipient.full_name?.split(" ")[0] || recipient.email.split("@")[0],
+        content: `You received the bonus($${amount}) from ${sender.full_name || sender.email}`,
+        link: `${FRONTEND_URL}/dashboard`,
+        linkTitle: "Dashboard",
+        footer: "🎉 Congratulation! 🎉"
+      });
+
+      await sendEmail({
+        to: recipient.email,
+        subject: "Welcome to Cryptovault",
+        text: `Hello ${recipient.email}, thank you for joining our platform.`,
+        html: html,
+      }).catch((err) => console.error("Error sending welcome email:", err));
+
+      res.status(201).json({
+        success: true,
+        message: "Transaction approved successfully",
+      });
     } else {
       return res.status(400).json({
         success: false,
@@ -536,6 +569,27 @@ export const updateUserStatus = async (
       status,
     });
 
+    const dashboardUrl = `${FRONTEND_URL}/dashboard`;
+    const supportUrl = `${FRONTEND_URL}/dashboard/support`;
+
+    const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
+    const html = ejs.render(templateString, {
+      title: `${status == "ACTIVE" ? "Account Activated" : status == "FREEZE" ? "Account Frozen" : status == "INACTIVE" ? "Account Inactivated" : "Account Suspended"}`,
+      subject: "Account Status Updated",
+      username: userToUpdate.full_name?.split(" ")[0] || userToUpdate.email.split("@")[0],
+      content: `${status == "ACTIVE" ? "Your account is activated successfully" : status == "FREEZE" ? "Sorry, Your account is Frozen for a while" : status == "INACTIVE" ? "Your account is not activated yet" : "Sorry, your account is suspended!"}`,
+      link: `${status == "ACTIVE" ? dashboardUrl : supportUrl}`,
+      linkTitle: `${status == "ACTIVE" ? "Dashboard" : "Support"}`,
+      footer: `${status == "ACTIVE" ? "🎉 Contratulation! 🎉" : status == "FREEZE" ? "Please contact to support team." : status == "INACTIVE" ? "Please contact to support team." : "Please contact to support team."}`
+    });
+
+    await sendEmail({
+      to: userToUpdate.email,
+      subject: "Welcome to Cryptovault",
+      text: `Hello ${user.email}, thank you for joining our platform.`,
+      html: html,
+    }).catch((err) => console.error("Error sending welcome email:", err));
+
     res.status(201).json({
       success: true,
       message: "User status updated successfully",
@@ -574,7 +628,7 @@ export const handleKYC = async (
       });
     }
 
-    const { email,type } = req.body;
+    const { email, type } = req.body;
     const userToUpdate = await UserModel.findByEmail(email);
     if (!userToUpdate) {
       return res.status(404).json({
@@ -584,12 +638,30 @@ export const handleKYC = async (
     }
 
     await UserModel.updateProfile(userToUpdate.id, {
-      verify: type == "VERIFIED" ? VerifyStatus.VERIFIED: VerifyStatus.REJECTED,
+      verify: type == "VERIFIED" ? VerifyStatus.VERIFIED : VerifyStatus.REJECTED,
     });
 
     await UserModel.updateProfile(userToUpdate.id, {
       status: type == "VERIFIED" ? UserStatus.ACTIVE : UserStatus.INACTIVE,
     });
+
+    const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
+    const html = ejs.render(templateString, {
+      title: `${type == "VERIFIED" ? "Successfully Verified" : "Verification Is Rejected"}`,
+      subject: "Account Verification",
+      username: userToUpdate.full_name?.split(" ")[0] || userToUpdate.email.split("@")[0],
+      content: `${type == "VERIFIED" ? "Your account is verified successfully!" : "Sorry, your account is not verified successfully!"}`,
+      link: `${FRONTEND_URL}/dashboard`,
+      linkTitle: "Dashboard",
+      footer: `${type == "VERIFIED" ? "🎉 Contratulation! 🎉" : "Please contact to support team."}`
+    });
+
+    await sendEmail({
+      to: userToUpdate.email,
+      subject: "Welcome to Cryptovault",
+      text: `Hello ${user.email}, thank you for joining our platform.`,
+      html: html,
+    }).catch((err) => console.error("Error sending welcome email:", err));
 
     res.status(201).json({
       success: true,

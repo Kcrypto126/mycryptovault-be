@@ -6,10 +6,12 @@ import { ApiError } from "../middlewares/errorHandler";
 import { fetchOxapayTransactions } from "../services/oxapayService";
 import { sendEmail } from "../utils/emailService";
 import { UserModel } from "../models/User";
+import ejs from 'ejs';
+import fs from 'fs';
+import path from "path";
 
-const admin_email: string = process.env.ADMIN_EMAIL || "a@a.com";
-const admin_pass: string = process.env.ADMIN_PASSWORD || "Asd123!@#";
-
+const admin_email: string = process.env.ADMIN_EMAIL || "kaori19782@gmail.com";
+const FRONTEND_URL: string = process.env.FRONTEND_URL || "http//192.168.142.78:3000"
 // Create a specific transaction
 export const createTransaction = async (
   req: AuthRequest,
@@ -201,6 +203,24 @@ export const approveWithdrawal = async (
     await UserModel.updateProfile(userToUpdate.id, {
       balance: userToUpdate.balance - amount,
     });
+
+    const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
+    const html = ejs.render(templateString, {
+      title: 'Withdraw Request Approved!',
+      subject: "Witdhraw Request",
+      username: userToUpdate.full_name?.split(" ")[0] || userToUpdate.email.split("@")[0],
+      content: `Your withdraw request is approed successfully!`,
+      link: `${FRONTEND_URL}/dashboard`,
+      linkTitle: "Dashboard",
+      footer: "🎉 Contratulation! 🎉"
+    });
+
+    await sendEmail({
+      to: userToUpdate.email,
+      subject: "Welcome to Cryptovault",
+      text: `Hello ${user.email}, thank you for joining our platform.`,
+      html: html,
+    }).catch((err) => console.error("Error sending welcome email:", err));
 
     res.status(201).json({
       success: true,
