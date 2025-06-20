@@ -60,14 +60,22 @@ export const register = async (
       avatar,
     });
 
-    // Send welcome email
-    const templateString = fs.readFileSync('/default/email-template.ejs', 'utf-8');
-    const html = ejs.render(templateString, { username: 'John' });
+    // send email
+    const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
+    const html = ejs.render(templateString, { 
+      title: 'Welcome to Cryptovault!', 
+      subject: "Welcome to Cryptovault - Let's Get Started", 
+      username: user.email.split("@")[0], 
+      content: "Welcome to Cryptovault - your secure gateway to managing and growing your crypto assets.<br>Your account is now active. You can log in anytime to track balances, manage vaults, and explore rewards.",
+      link: `${FRONTEND_URL}/account/signin`,
+      linkTitle: "Log In",
+      footer: "Thanks for joining the vault."
+    });
 
     sendEmail({
       to: user.email,
-      subject: "Welcome to Crypto Wallet Platform",
-      text: `Hello ${user.full_name}, thank you for joining our platform. Your account has been created successfully.`,
+      subject: "Welcome to Cryptovault",
+      text: `Hello ${user.email}, thank you for joining our platform.`,
       html: html,
     }).catch((err) => console.error("Error sending welcome email:", err));
 
@@ -134,27 +142,6 @@ export const login = async (
     };
     const token = jwt.sign(payload, jwt_secret, { expiresIn: "1d" });
 
-    // send email
-    const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
-    const html = ejs.render(templateString, { username: 'John' });
-
-    // Read CSS file content
-    // const cssPath = path.join(__dirname, 'def', 'email-style.css');
-    // const cssContent = fs.readFileSync(cssPath, 'utf-8');
-
-    // // Render EJS template with CSS injected
-    // const html = ejs.renderFile(
-    //   path.join(__dirname, 'views', 'email-template.ejs'),
-    //   { username: 'John', styles: cssContent }
-    // );
-
-    sendEmail({
-      to: user.email,
-      subject: "Welcome to Cryptovault ",
-      text: `Hello ${user.email}, thank you for joining our platform. Your account has been created successfully.`,
-      html: html,
-    }).catch((err) => console.error("Error sending welcome email:", err));
-
     res.status(200).json({
       success: true,
       token,
@@ -213,24 +200,28 @@ export const forgotPassword = async (
     // Send password reset email
     const resetUrl = `${FRONTEND_URL}/account/reset-password?token=${token}`;
 
+    const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
+    const html = ejs.render(templateString, { 
+      title: 'Reset Your Password', 
+      subject: "Reset Your Cryptovault Password", 
+      username: user.full_name?.split(" ")[0] || user.email.split("@")[0], 
+      content: "We received a request to reset your password. If this was you, click below to create a new one",
+      link: `${resetUrl}`,
+      linkTitle: "Reset Password",
+      footer: "This link expires in 30 minutes.<br>If you didn’t request this, please ignore this email or contact support immediately."
+    });
+
     sendEmail({
       to: user.email,
-      subject: "Password Reset Request",
-      text: `You requested a password reset. Please use this link to reset your password: ${resetUrl}`,
-      html: `<h1>Password Reset</h1>
-             <p>You requested a password reset.</p>
-             <p>Please click the link below to reset your password:</p>
-             <a href="${resetUrl}">Reset Password</a>`,
-    }).catch((err) =>
-      console.error("Error sending password reset email:", err)
-    );
-
-    console.log(resetUrl);
+      subject: "Welcome to Cryptovault",
+      text: `Hello ${user.email}, thank you for joining our platform.`,
+      html: html,
+    }).catch((err) => console.error("Error sending welcome email:", err));
 
     res.status(201).json({
       resetUrl,
       success: true,
-      message: "Password reset link sent successfully",
+      message: "You wil get the password reset link soon.",
     });
   } catch (error) {
     next(error);

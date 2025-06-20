@@ -83,7 +83,7 @@
                 font-family: Arial, sans-serif;
                 "
             >
-                Welcome to Cryptovault!
+                <%= title%>
             </h1>
             </td>
         </tr>
@@ -99,7 +99,7 @@
                 font-family: Arial, sans-serif;
                 "
             >
-                Subject: Welcome to Cryptovault - Let's Get Started
+                Subject: <%= subject%>
             </p>
             </td>
         </tr>
@@ -115,17 +115,14 @@
                 font-family: Arial, sans-serif;
                 "
             >
-                Hi <%= username %><br />Welcome to Cryptovault - your secure
-                gateway to managing and growing your crypto assets.<br />
-                Your account is now active. You can log in anytime to track
-                balances, manage vaults, and explore rewards.
+                Hi <%= username %><br /><%- content%>
             </p>
             </td>
         </tr>
         <tr>
             <td style="padding-bottom: 24px">
             <a
-                href="#"
+                href='<%= link%>'
                 style="
                 display: inline-block;
                 text-decoration: none;
@@ -134,18 +131,18 @@
                 height: 52px;
                 line-height: 52px;
                 font-family: Arial, sans-serif;
-                font-size: 12px;
+                font-size: 11px;
                 font-weight: 700;
                 color: #fff;
                 text-align: center;
                 border-radius: 50px;
-                background-image: url('../../public/default/button-bg.png');
+                background-image: url('https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/button-bg.png');
                 background-position: -10px -9.5px;
                 border: 2px solid #79699d;
                 cursor: pointer;
                 "
             >
-                Log in
+                <%= linkTitle%>
             </a>
             </td>
         </tr>
@@ -162,7 +159,7 @@
                 font-family: Arial, sans-serif;
                 "
             >
-                Thanks for joining the vault.
+                <%- footer%>
             </h2>
             </td>
         </tr>
