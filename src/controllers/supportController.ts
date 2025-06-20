@@ -37,18 +37,7 @@ export const createSupport = async (
         user_id: user.id,
       });
 
-      sendEmail({
-        to: ADMIN_EMAIL,
-        subject: `Support Ticket Created by ${user.email}`,
-        text: `${subject}`,
-        html: `<h1>Support Ticket</h1>
-               <p>You requested a support ticket.</p>
-               <p>Please click the link below to reset your password:</p>
-               <p>${message}</p>
-               `,
-      }).catch((err) =>
-        console.error("Error sending password reset email:", err)
-      );
+       
   
       res.status(201).json({
         success: true,
@@ -88,7 +77,7 @@ export const updateSupport = async (
         });
       }
   
-      const { id, reply, status } = req.body;
+      const { id, message, reply, status } = req.body;
 
       const support = await SupportModel.findById(id);
       if (!support) {
@@ -99,6 +88,7 @@ export const updateSupport = async (
       }
   
       await SupportModel.update(id, {
+        message,
         replyMessage: reply,
         status: status,
       });

@@ -284,13 +284,6 @@ export const updateBalance = async (
         });
       }
 
-      // Update the user balance
-      // const withdrawalAmount = parseFloat(req.body.amount);
-      // const newBalance = currentBalance - withdrawalAmount;
-      // await UserModel.updateProfile(user.id, {
-      //   balance: newBalance,
-      // });
-
       // Create the withdraw request transaction
       const amount = req.body.amount;
       const type = TransactionType.WITHDRAWAL;

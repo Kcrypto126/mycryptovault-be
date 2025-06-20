@@ -27,6 +27,7 @@ export class SupportModel {
       data: {
         status: supportData?.status,
         replyMessage: supportData?.replyMessage,
+        message: supportData?.message,
       },
     });
   }
