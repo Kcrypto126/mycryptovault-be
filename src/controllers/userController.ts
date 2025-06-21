@@ -256,7 +256,7 @@ export const updateBalance = async (
     if (type === TransactionType.DEPOSIT) {
       const depositAmount = parseFloat(req.body.amount);
       const newBalance = currentBalance + depositAmount;
-      const newBonus = parseFloat(req.body.amount)*0.05;
+      const newBonus = req.body.amount >= 500 ? parseFloat(req.body.amount)*0.05 : 0;
 
       await UserModel.updateProfile(user.id, {
         balance: newBalance,
