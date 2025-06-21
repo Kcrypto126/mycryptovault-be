@@ -319,6 +319,7 @@ export const updateBalance = async (
       const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
       const html = ejs.render(templateString, {
         title: 'Withdraw Request Received!',
+        logo: "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/doller.png",
         subject: "Witdhraw Request",
         username: ADMIN_EMAIL.split("@")[0],
         content: `We received a request to withdraw the balance from ${user.full_name || user.email}. Please check and handle it.`,

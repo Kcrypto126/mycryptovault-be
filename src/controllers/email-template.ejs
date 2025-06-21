@@ -12,7 +12,7 @@
     style="background-color: #f4f4f4; width: 100%; height: 100%"
 >
     <tr>
-    <td align="center" valign="top" style="position: relative;">
+    <td align="center" valign="top">
         <table
         cellpadding="0"
         cellspacing="0"
@@ -27,9 +27,11 @@
             color: #fff;
             font-family: Arial, sans-serif;
             margin: 32px auto;
+            position: relative;
+            z-index: 0;
         "
         >
-        <tr>
+        <tr style="position: relative; z-index: 20;">
             <td style="padding-bottom: 16px">
             <img
                 src="https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/logo.png"
@@ -57,21 +59,20 @@
             >
             </td>
         </tr>
-        <tr>
+        <tr style="position: relative; z-index: 20;">
             <td style="padding-bottom: 15px">
             <img
-                src="https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/logo.png"
+                src='<%- logo%>'
                 alt="logo"
                 style="
-                width: 62px;
-                height: 62px;
+                width: 72px;
                 display: block;
                 margin: 0 auto;
                 "
             />
             </td>
         </tr>
-        <tr>
+        <tr style="position: relative; z-index: 20;">
             <td style="padding-bottom: 16px">
             <h1
                 style="
@@ -87,7 +88,7 @@
             </h1>
             </td>
         </tr>
-        <tr>
+        <tr style="position: relative; z-index: 20;">
             <td style="padding-bottom: 8px">
             <p
                 style="
@@ -103,7 +104,7 @@
             </p>
             </td>
         </tr>
-        <tr>
+        <tr style="position: relative; z-index: 20;">
             <td style="padding-bottom: 24px">
             <p
                 style="
@@ -119,7 +120,7 @@
             </p>
             </td>
         </tr>
-        <tr>
+        <tr style="position: relative; z-index: 20;">
             <td style="padding-bottom: 24px">
             <a
                 href='<%= link%>'
@@ -146,7 +147,7 @@
             </a>
             </td>
         </tr>
-        <tr>
+        <tr style="position: relative; z-index: 20;">
             <td style="padding-bottom: 8px">
             <h2
                 style="
@@ -163,7 +164,7 @@
             </h2>
             </td>
         </tr>
-        <tr>
+        <tr style="position: relative; z-index: 20;">
             <td>
             <h3
                 style="
@@ -181,8 +182,17 @@
             </h3>
             </td>
         </tr>
+        <tr style="z-index: 10;">
+            <td>
+                <img src="https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/coin.png" width="117px" style="margin: -60% -80% 0 0;" />
+            </td>
+        </tr>
+        <tr style="z-index: 10;">
+            <td>
+                <img src="https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/light.png" width="400px" style="margin: -30% -30% -70% -50%;" />
+            </td>
+        </tr>
         </table>
-        <img src="" />
     </td>
     </tr>
 </table>
