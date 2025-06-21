@@ -250,14 +250,17 @@ export const updateBalance = async (
       });
     }
     const currentBalance = user.balance;
+    const currentBonus = user.bonus;
     const { type } = req.body;
 
     if (type === TransactionType.DEPOSIT) {
       const depositAmount = parseFloat(req.body.amount);
       const newBalance = currentBalance + depositAmount;
+      const newBonus = parseFloat(req.body.amount)*0.05;
 
       await UserModel.updateProfile(user.id, {
         balance: newBalance,
+        bonus: currentBonus + newBonus,
       });
 
       // Create the DEPOSIT transaction
@@ -266,13 +269,22 @@ export const updateBalance = async (
       const status = TransactionStatus.COMPLETED;
       const recipient_id = user.id;
       const description = "Your balance has been successfully received.";
-
+      // Deposit transaction
       await TransactionModel.create({
         amount,
         type,
         status,
         recipient_id,
         description,
+      });
+
+      // Bonus transaction for 5% of deposit
+      await TransactionModel.create({
+        amount: newBonus.toString(),
+        type: TransactionType.BONUS,
+        status: TransactionStatus.COMPLETED,
+        recipient_id,
+        description: "You got a 5% of Deposit amount as a Bonus.",
       });
     } else if (req.body.type === TransactionType.WITHDRAWAL) {
       if (currentBalance < 1500 || parseFloat(req.body.amount) < 1500) {
