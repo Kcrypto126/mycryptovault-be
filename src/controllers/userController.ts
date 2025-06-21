@@ -670,7 +670,7 @@ export const handleKYC = async (
       logo: `${type == "VERIFIED" ? "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/thumb.png" : "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/locker.png"}`,
       subject: "Account Verification",
       username: userToUpdate.full_name?.split(" ")[0] || userToUpdate.email.split("@")[0],
-      content: `${type == "VERIFIED" ? "Your account is verified successfully!" : "Sorry, your account is not verified successfully!"}`,
+      content: `${type == "VERIFIED" ? "Your account is verified successfully!" : "Sorry, your account is not verified."}`,
       link: `${FRONTEND_URL}/dashboard`,
       linkTitle: "Dashboard",
       footer: `${type == "VERIFIED" ? "🎉 Contratulation! 🎉" : "Please contact to support team."}`
