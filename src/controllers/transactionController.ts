@@ -208,6 +208,7 @@ export const approveWithdrawal = async (
     const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
     const html = ejs.render(templateString, {
       title: 'Withdraw Request Approved!',
+      logo: "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/gift.png",
       subject: "Witdhraw Request",
       username: userToUpdate.full_name?.split(" ")[0] || userToUpdate.email.split("@")[0],
       content: `Your withdraw request is approed successfully! You got a available spin.`,

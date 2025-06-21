@@ -72,6 +72,7 @@ export const register = async (
     const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
     const html = ejs.render(templateString, {
       title: 'Welcome to Cryptovault!',
+      logo: "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/envelop.png",
       subject: "Welcome to Cryptovault - Let's Get Started",
       username: user.email.split("@")[0],
       content: "Welcome to Cryptovault - your secure gateway to managing and growing your crypto assets.<br>Please verify your email using the button below.",
@@ -135,6 +136,7 @@ export const login = async (
       const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
       const html = ejs.render(templateString, {
         title: 'Email Verification Link Received!',
+        logo: "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/envelop.png",
         subject: "Email Verification",
         username: user.email.split("@")[0],
         content: "You received email verification link. Please click to verify your email.",
@@ -244,6 +246,7 @@ export const forgotPassword = async (
     const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
     const html = ejs.render(templateString, {
       title: 'Reset Your Password',
+      logo: "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/locker.png",
       subject: "Reset Your Cryptovault Password",
       username: user.full_name?.split(" ")[0] || user.email.split("@")[0],
       content: "We received a request to reset your password. If this was you, click below to create a new one",

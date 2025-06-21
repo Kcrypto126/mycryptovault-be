@@ -44,6 +44,7 @@ export const createSupport = async (
         const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
         const html = ejs.render(templateString, {
             title: 'Support Request',
+            logo: "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/gift.png",
             subject: subject,
             username: "Support Team",
             content: `We received support request from ${user.full_name || user.email} as follow. <br>"${message}"`,

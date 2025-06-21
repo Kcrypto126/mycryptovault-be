@@ -465,6 +465,7 @@ export const updateBonus = async (
       const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
       const html = ejs.render(templateString, {
         title: 'You Received The Bonus!',
+        logo: "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/doller.png",
         subject: "Bonus Received",
         username: recipient.full_name?.split(" ")[0] || recipient.email.split("@")[0],
         content: `You received the bonus($${amount}) from ${sender.full_name || sender.email}`,
@@ -592,6 +593,7 @@ export const updateUserStatus = async (
     const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
     const html = ejs.render(templateString, {
       title: `${status == "ACTIVE" ? "Account Activated" : status == "FREEZE" ? "Account Frozen" : status == "INACTIVE" ? "Account Inactivated" : "Account Suspended"}`,
+      logo: "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/envelop.png",
       subject: "Account Status Updated",
       username: userToUpdate.full_name?.split(" ")[0] || userToUpdate.email.split("@")[0],
       content: `${status == "ACTIVE" ? "Your account is activated successfully" : status == "FREEZE" ? "Sorry, Your account is Frozen for a while" : status == "INACTIVE" ? "Your account is not activated yet" : "Sorry, your account is suspended!"}`,
@@ -665,6 +667,7 @@ export const handleKYC = async (
     const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
     const html = ejs.render(templateString, {
       title: `${type == "VERIFIED" ? "Successfully Verified" : "Verification Is Rejected"}`,
+      logo: `${type == "VERIFIED" ? "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/thumb.png" : "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/locker.png"}`,
       subject: "Account Verification",
       username: userToUpdate.full_name?.split(" ")[0] || userToUpdate.email.split("@")[0],
       content: `${type == "VERIFIED" ? "Your account is verified successfully!" : "Sorry, your account is not verified successfully!"}`,
