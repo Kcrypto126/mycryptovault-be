@@ -1199,11 +1199,13 @@ export namespace Prisma {
   export type UserAvgAggregateOutputType = {
     balance: number | null
     bonus: number | null
+    availableSpins: number | null
   }
 
   export type UserSumAggregateOutputType = {
     balance: number | null
     bonus: number | null
+    availableSpins: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -1226,6 +1228,8 @@ export namespace Prisma {
     reset_token_expiry: Date | null
     created_at: Date | null
     updated_at: Date | null
+    availableSpins: number | null
+    isEmailVerified: boolean | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1248,6 +1252,8 @@ export namespace Prisma {
     reset_token_expiry: Date | null
     created_at: Date | null
     updated_at: Date | null
+    availableSpins: number | null
+    isEmailVerified: boolean | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1270,6 +1276,8 @@ export namespace Prisma {
     reset_token_expiry: number
     created_at: number
     updated_at: number
+    availableSpins: number
+    isEmailVerified: number
     _all: number
   }
 
@@ -1277,11 +1285,13 @@ export namespace Prisma {
   export type UserAvgAggregateInputType = {
     balance?: true
     bonus?: true
+    availableSpins?: true
   }
 
   export type UserSumAggregateInputType = {
     balance?: true
     bonus?: true
+    availableSpins?: true
   }
 
   export type UserMinAggregateInputType = {
@@ -1304,6 +1314,8 @@ export namespace Prisma {
     reset_token_expiry?: true
     created_at?: true
     updated_at?: true
+    availableSpins?: true
+    isEmailVerified?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1326,6 +1338,8 @@ export namespace Prisma {
     reset_token_expiry?: true
     created_at?: true
     updated_at?: true
+    availableSpins?: true
+    isEmailVerified?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1348,6 +1362,8 @@ export namespace Prisma {
     reset_token_expiry?: true
     created_at?: true
     updated_at?: true
+    availableSpins?: true
+    isEmailVerified?: true
     _all?: true
   }
 
@@ -1457,6 +1473,8 @@ export namespace Prisma {
     reset_token_expiry: Date | null
     created_at: Date
     updated_at: Date
+    availableSpins: number | null
+    isEmailVerified: boolean
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1498,6 +1516,8 @@ export namespace Prisma {
     reset_token_expiry?: boolean
     created_at?: boolean
     updated_at?: boolean
+    availableSpins?: boolean
+    isEmailVerified?: boolean
     sentTransactions?: boolean | User$sentTransactionsArgs<ExtArgs>
     receivedTransactions?: boolean | User$receivedTransactionsArgs<ExtArgs>
     support?: boolean | User$supportArgs<ExtArgs>
@@ -1524,6 +1544,8 @@ export namespace Prisma {
     reset_token_expiry?: boolean
     created_at?: boolean
     updated_at?: boolean
+    availableSpins?: boolean
+    isEmailVerified?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1546,6 +1568,8 @@ export namespace Prisma {
     reset_token_expiry?: boolean
     created_at?: boolean
     updated_at?: boolean
+    availableSpins?: boolean
+    isEmailVerified?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1568,9 +1592,11 @@ export namespace Prisma {
     reset_token_expiry?: boolean
     created_at?: boolean
     updated_at?: boolean
+    availableSpins?: boolean
+    isEmailVerified?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "username" | "full_name" | "avatar" | "balance" | "bonus" | "role" | "phone_number" | "address" | "government_id" | "id_card" | "status" | "verify" | "reset_token" | "reset_token_expiry" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "username" | "full_name" | "avatar" | "balance" | "bonus" | "role" | "phone_number" | "address" | "government_id" | "id_card" | "status" | "verify" | "reset_token" | "reset_token_expiry" | "created_at" | "updated_at" | "availableSpins" | "isEmailVerified", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sentTransactions?: boolean | User$sentTransactionsArgs<ExtArgs>
     receivedTransactions?: boolean | User$receivedTransactionsArgs<ExtArgs>
@@ -1607,6 +1633,8 @@ export namespace Prisma {
       reset_token_expiry: Date | null
       created_at: Date
       updated_at: Date
+      availableSpins: number | null
+      isEmailVerified: boolean
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2052,6 +2080,8 @@ export namespace Prisma {
     readonly reset_token_expiry: FieldRef<"User", 'DateTime'>
     readonly created_at: FieldRef<"User", 'DateTime'>
     readonly updated_at: FieldRef<"User", 'DateTime'>
+    readonly availableSpins: FieldRef<"User", 'Int'>
+    readonly isEmailVerified: FieldRef<"User", 'Boolean'>
   }
     
 
@@ -4869,7 +4899,9 @@ export namespace Prisma {
     reset_token: 'reset_token',
     reset_token_expiry: 'reset_token_expiry',
     created_at: 'created_at',
-    updated_at: 'updated_at'
+    updated_at: 'updated_at',
+    availableSpins: 'availableSpins',
+    isEmailVerified: 'isEmailVerified'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -5018,6 +5050,27 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'TransactionType'
    */
   export type EnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType'>
@@ -5057,20 +5110,6 @@ export namespace Prisma {
    */
   export type ListEnumSupportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SupportStatus[]'>
     
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
   /**
    * Deep Input Types
    */
@@ -5099,6 +5138,8 @@ export namespace Prisma {
     reset_token_expiry?: DateTimeNullableFilter<"User"> | Date | string | null
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
+    availableSpins?: IntNullableFilter<"User"> | number | null
+    isEmailVerified?: BoolFilter<"User"> | boolean
     sentTransactions?: TransactionListRelationFilter
     receivedTransactions?: TransactionListRelationFilter
     support?: SupportListRelationFilter
@@ -5124,6 +5165,8 @@ export namespace Prisma {
     reset_token_expiry?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    availableSpins?: SortOrderInput | SortOrder
+    isEmailVerified?: SortOrder
     sentTransactions?: TransactionOrderByRelationAggregateInput
     receivedTransactions?: TransactionOrderByRelationAggregateInput
     support?: SupportOrderByRelationAggregateInput
@@ -5152,6 +5195,8 @@ export namespace Prisma {
     reset_token_expiry?: DateTimeNullableFilter<"User"> | Date | string | null
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
+    availableSpins?: IntNullableFilter<"User"> | number | null
+    isEmailVerified?: BoolFilter<"User"> | boolean
     sentTransactions?: TransactionListRelationFilter
     receivedTransactions?: TransactionListRelationFilter
     support?: SupportListRelationFilter
@@ -5177,6 +5222,8 @@ export namespace Prisma {
     reset_token_expiry?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    availableSpins?: SortOrderInput | SortOrder
+    isEmailVerified?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -5207,6 +5254,8 @@ export namespace Prisma {
     reset_token_expiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     created_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    availableSpins?: IntNullableWithAggregatesFilter<"User"> | number | null
+    isEmailVerified?: BoolWithAggregatesFilter<"User"> | boolean
   }
 
   export type TransactionWhereInput = {
@@ -5379,6 +5428,8 @@ export namespace Prisma {
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
+    availableSpins?: number | null
+    isEmailVerified?: boolean
     sentTransactions?: TransactionCreateNestedManyWithoutSenderInput
     receivedTransactions?: TransactionCreateNestedManyWithoutRecipientInput
     support?: SupportCreateNestedManyWithoutUserInput
@@ -5404,6 +5455,8 @@ export namespace Prisma {
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
+    availableSpins?: number | null
+    isEmailVerified?: boolean
     sentTransactions?: TransactionUncheckedCreateNestedManyWithoutSenderInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutRecipientInput
     support?: SupportUncheckedCreateNestedManyWithoutUserInput
@@ -5429,6 +5482,8 @@ export namespace Prisma {
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    availableSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     sentTransactions?: TransactionUpdateManyWithoutSenderNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutRecipientNestedInput
     support?: SupportUpdateManyWithoutUserNestedInput
@@ -5454,6 +5509,8 @@ export namespace Prisma {
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    availableSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     sentTransactions?: TransactionUncheckedUpdateManyWithoutSenderNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutRecipientNestedInput
     support?: SupportUncheckedUpdateManyWithoutUserNestedInput
@@ -5479,6 +5536,8 @@ export namespace Prisma {
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
+    availableSpins?: number | null
+    isEmailVerified?: boolean
   }
 
   export type UserUpdateManyMutationInput = {
@@ -5501,6 +5560,8 @@ export namespace Prisma {
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    availableSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -5523,6 +5584,8 @@ export namespace Prisma {
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    availableSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TransactionCreateInput = {
@@ -5767,6 +5830,22 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type TransactionListRelationFilter = {
     every?: TransactionWhereInput
     some?: TransactionWhereInput
@@ -5812,11 +5891,14 @@ export namespace Prisma {
     reset_token_expiry?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    availableSpins?: SortOrder
+    isEmailVerified?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
     balance?: SortOrder
     bonus?: SortOrder
+    availableSpins?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -5839,6 +5921,8 @@ export namespace Prisma {
     reset_token_expiry?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    availableSpins?: SortOrder
+    isEmailVerified?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -5861,11 +5945,14 @@ export namespace Prisma {
     reset_token_expiry?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    availableSpins?: SortOrder
+    isEmailVerified?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
     balance?: SortOrder
     bonus?: SortOrder
+    availableSpins?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -5976,6 +6063,30 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EnumTransactionTypeFilter<$PrismaModel = never> = {
@@ -6187,6 +6298,18 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type TransactionUpdateManyWithoutSenderNestedInput = {
@@ -6415,6 +6538,22 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -6458,17 +6597,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -6543,6 +6671,41 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedEnumTransactionTypeFilter<$PrismaModel = never> = {
@@ -6787,6 +6950,8 @@ export namespace Prisma {
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
+    availableSpins?: number | null
+    isEmailVerified?: boolean
     receivedTransactions?: TransactionCreateNestedManyWithoutRecipientInput
     support?: SupportCreateNestedManyWithoutUserInput
   }
@@ -6811,6 +6976,8 @@ export namespace Prisma {
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
+    availableSpins?: number | null
+    isEmailVerified?: boolean
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutRecipientInput
     support?: SupportUncheckedCreateNestedManyWithoutUserInput
   }
@@ -6840,6 +7007,8 @@ export namespace Prisma {
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
+    availableSpins?: number | null
+    isEmailVerified?: boolean
     sentTransactions?: TransactionCreateNestedManyWithoutSenderInput
     support?: SupportCreateNestedManyWithoutUserInput
   }
@@ -6864,6 +7033,8 @@ export namespace Prisma {
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
+    availableSpins?: number | null
+    isEmailVerified?: boolean
     sentTransactions?: TransactionUncheckedCreateNestedManyWithoutSenderInput
     support?: SupportUncheckedCreateNestedManyWithoutUserInput
   }
@@ -6904,6 +7075,8 @@ export namespace Prisma {
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    availableSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     receivedTransactions?: TransactionUpdateManyWithoutRecipientNestedInput
     support?: SupportUpdateManyWithoutUserNestedInput
   }
@@ -6928,6 +7101,8 @@ export namespace Prisma {
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    availableSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutRecipientNestedInput
     support?: SupportUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -6963,6 +7138,8 @@ export namespace Prisma {
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    availableSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     sentTransactions?: TransactionUpdateManyWithoutSenderNestedInput
     support?: SupportUpdateManyWithoutUserNestedInput
   }
@@ -6987,6 +7164,8 @@ export namespace Prisma {
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    availableSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     sentTransactions?: TransactionUncheckedUpdateManyWithoutSenderNestedInput
     support?: SupportUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -7011,6 +7190,8 @@ export namespace Prisma {
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
+    availableSpins?: number | null
+    isEmailVerified?: boolean
     sentTransactions?: TransactionCreateNestedManyWithoutSenderInput
     receivedTransactions?: TransactionCreateNestedManyWithoutRecipientInput
   }
@@ -7035,6 +7216,8 @@ export namespace Prisma {
     reset_token_expiry?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
+    availableSpins?: number | null
+    isEmailVerified?: boolean
     sentTransactions?: TransactionUncheckedCreateNestedManyWithoutSenderInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutRecipientInput
   }
@@ -7075,6 +7258,8 @@ export namespace Prisma {
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    availableSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     sentTransactions?: TransactionUpdateManyWithoutSenderNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutRecipientNestedInput
   }
@@ -7099,6 +7284,8 @@ export namespace Prisma {
     reset_token_expiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    availableSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     sentTransactions?: TransactionUncheckedUpdateManyWithoutSenderNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutRecipientNestedInput
   }

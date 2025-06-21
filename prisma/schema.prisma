@@ -31,6 +31,8 @@ model User {
   reset_token_expiry  DateTime?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  availableSpins      Int?
+  isEmailVerified     Boolean @default(false)
 
   sentTransactions     Transaction[] @relation("SenderTransactions")
   receivedTransactions Transaction[] @relation("RecipientTransactions")

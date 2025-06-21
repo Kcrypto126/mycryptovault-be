@@ -36,8 +36,8 @@ export const register = async (
     let role: UserRole = "USER";
 
     // Check if user already exists
-    const existingUserEmail = await UserModel.findByEmail(email);
-    if (existingUserEmail) {
+    const existingUser = await UserModel.findByEmail(email);
+    if (existingUser) {
       return res.status(409).json({
         success: false,
         message: "Email already in use",
@@ -58,21 +58,29 @@ export const register = async (
       password,
       role,
       avatar,
+      isEmailVerified: false,
     });
 
-    // send email
+    // email verification link sent
+    const emailToken = jwt.sign(
+      { userId: user.id },
+      jwt_secret,
+      { expiresIn: '1d' }
+    );
+    const url = `${FRONTEND_URL}/account/verify-email?token=${emailToken}`;
+
     const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
-    const html = ejs.render(templateString, { 
-      title: 'Welcome to Cryptovault!', 
-      subject: "Welcome to Cryptovault - Let's Get Started", 
-      username: user.email.split("@")[0], 
-      content: "Welcome to Cryptovault - your secure gateway to managing and growing your crypto assets.<br>Your account is now active. You can log in anytime to track balances, manage vaults, and explore rewards.",
-      link: `${FRONTEND_URL}/account/signin`,
-      linkTitle: "Log In",
+    const html = ejs.render(templateString, {
+      title: 'Welcome to Cryptovault!',
+      subject: "Welcome to Cryptovault - Let's Get Started",
+      username: user.email.split("@")[0],
+      content: "Welcome to Cryptovault - your secure gateway to managing and growing your crypto assets.<br>Please verify your email using the button below.",
+      link: url,
+      linkTitle: "Verify Email",
       footer: "Thanks for joining the vault."
     });
 
-    sendEmail({
+    await sendEmail({
       to: user.email,
       subject: "Welcome to Cryptovault",
       text: `Hello ${user.email}, thank you for joining our platform.`,
@@ -113,6 +121,39 @@ export const login = async (
         success: false,
         message: "User not found",
       });
+    }
+
+    if (!user.isEmailVerified) {
+      const emailToken = jwt.sign(
+        { userId: user.id },
+        jwt_secret,
+        { expiresIn: '1d' }
+      );
+      const url = `${FRONTEND_URL}/account/verify-email?token=${emailToken}`;
+
+      // send email
+      const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
+      const html = ejs.render(templateString, {
+        title: 'Email Verification Link Received!',
+        subject: "Email Verification",
+        username: user.email.split("@")[0],
+        content: "You received email verification link. Please click to verify your email.",
+        link: url,
+        linkTitle: "Verify Email",
+        footer: "Thanks for joining the vault."
+      });
+
+      await sendEmail({
+        to: user.email,
+        subject: "Welcome to Cryptovault",
+        text: `Hello ${user.email}, thank you for joining our platform.`,
+        html: html,
+      }).catch((err) => console.error("Error sending welcome email:", err));
+
+      return res.status(400).json({
+        success: false,
+        message: "You will be receive the email verification link. Please check your inbox."
+      })
     }
 
     if (user.status === UserStatus.SUSPENDED) {
@@ -201,10 +242,10 @@ export const forgotPassword = async (
     const resetUrl = `${FRONTEND_URL}/account/reset-password?token=${token}`;
 
     const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
-    const html = ejs.render(templateString, { 
-      title: 'Reset Your Password', 
-      subject: "Reset Your Cryptovault Password", 
-      username: user.full_name?.split(" ")[0] || user.email.split("@")[0], 
+    const html = ejs.render(templateString, {
+      title: 'Reset Your Password',
+      subject: "Reset Your Cryptovault Password",
+      username: user.full_name?.split(" ")[0] || user.email.split("@")[0],
       content: "We received a request to reset your password. If this was you, click below to create a new one",
       link: `${resetUrl}`,
       linkTitle: "Reset Password",
@@ -297,3 +338,37 @@ export const verifyToken = async (
     next(error);
   }
 };
+
+// verify email
+export const verifyEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { token } = req.body;
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+      if (err) {
+        console.error(err);
+        return res.status(400).json({ message: "Invalid token" });
+      }
+      const user = await UserModel.findById(decoded.userId);
+      if(!user) {
+        return res.status(404).json({
+          success: false,
+          message: "user not found"
+        })
+      }
+      await UserModel.updateProfile(user.id, {
+        isEmailVerified: true
+      })
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Email verified successfully!"
+    })
+  } catch (err) {
+    res.status(400).send('Invalid or expired token');
+  }
+}

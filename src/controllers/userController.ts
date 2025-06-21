@@ -373,6 +373,7 @@ export const updateBonus = async (
     }
 
     const senderCurrentBonus = sender.bonus;
+    const senderCurrentSpins = sender.availableSpins;
     const { type, email, amount } = req.body;
 
     if (sender.email === email) {
@@ -384,8 +385,11 @@ export const updateBonus = async (
 
     if (type === TransactionType.BONUS) {
       const newBonus = senderCurrentBonus + parseFloat(amount);
+      const newAvailableSpins = (senderCurrentSpins || 0) - 1;
+      console.log(newAvailableSpins);
       await UserModel.updateProfile(sender.id, {
         bonus: newBonus,
+        availableSpins: newAvailableSpins,
       });
 
       // Create the bonus transaction

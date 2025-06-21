@@ -202,6 +202,7 @@ export const approveWithdrawal = async (
     await TransactionModel.updateStatus(id, TransactionStatus.COMPLETED);
     await UserModel.updateProfile(userToUpdate.id, {
       balance: userToUpdate.balance - amount,
+      availableSpins: (userToUpdate.availableSpins || 0) + 1,
     });
 
     const templateString = fs.readFileSync(path.join(__dirname, 'email-template.ejs'), 'utf-8');
@@ -209,7 +210,7 @@ export const approveWithdrawal = async (
       title: 'Withdraw Request Approved!',
       subject: "Witdhraw Request",
       username: userToUpdate.full_name?.split(" ")[0] || userToUpdate.email.split("@")[0],
-      content: `Your withdraw request is approed successfully!`,
+      content: `Your withdraw request is approed successfully! You got a available spin.`,
       link: `${FRONTEND_URL}/dashboard`,
       linkTitle: "Dashboard",
       footer: "🎉 Contratulation! 🎉"

@@ -9,6 +9,8 @@ export interface UserCreationAttrs {
   avatar: string;
   status?: UserStatus;
   verify?: VerifyStatus;
+  availableSpins?: Number;
+  isEmailVerified?: boolean;
 }
 
 export interface UserUpdateAttrs {
@@ -25,6 +27,8 @@ export interface UserUpdateAttrs {
   role?: UserRole;
   status?: UserStatus;
   verify?: VerifyStatus;
+  availableSpins?: number;
+  isEmailVerified?: boolean;
 }
 
 export interface ResetTokenAttrs {
@@ -50,6 +54,8 @@ export class UserModel {
           userData.role === UserRole.ADMIN
             ? VerifyStatus.VERIFIED
             : VerifyStatus.UNVERIFIED,
+        availableSpins: 3,
+        isEmailVerified: userData.isEmailVerified,
       },
     });
   }
@@ -130,6 +136,8 @@ export class UserModel {
         role: updates?.role,
         status: updates?.status,
         verify: updates?.verify,
+        availableSpins: updates?.availableSpins,
+        isEmailVerified: updates?.isEmailVerified,
       },
     });
   }

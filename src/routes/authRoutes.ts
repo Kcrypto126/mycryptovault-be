@@ -5,6 +5,7 @@ import {
   forgotPassword,
   resetPassword,
   verifyToken,
+  verifyEmail
 } from "../controllers/authController";
 import {
   validateRegistration,
@@ -23,5 +24,6 @@ router.post("/forgot-password", validateForgotPassword, forgotPassword);
 router.post("/reset-password", validateResetPassword, resetPassword);
 
 router.post("/verify-token", verifyToken);
+router.post("/verify-email", verifyEmail);
 
 export default router;

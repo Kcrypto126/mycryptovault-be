@@ -139,7 +139,9 @@ exports.Prisma.UserScalarFieldEnum = {
   reset_token: 'reset_token',
   reset_token_expiry: 'reset_token_expiry',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  availableSpins: 'availableSpins',
+  isEmailVerified: 'isEmailVerified'
 };
 
 exports.Prisma.TransactionScalarFieldEnum = {
