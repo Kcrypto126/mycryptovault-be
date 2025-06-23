@@ -1,9 +1,7 @@
 import { Response, NextFunction } from "express";
 import { TransactionModel } from "../models/Transaction";
-import { TransactionStatus, TransactionType } from "../generated/prisma";
+import { TransactionStatus } from "../generated/prisma";
 import { AuthRequest } from "../middlewares/auth";
-import { ApiError } from "../middlewares/errorHandler";
-import { fetchOxapayTransactions } from "../services/oxapayService";
 import { sendEmail } from "../utils/emailService";
 import { UserModel } from "../models/User";
 import ejs from 'ejs';

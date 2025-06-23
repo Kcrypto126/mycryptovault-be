@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
-import crypto, { verify } from "crypto";
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/User";
 import { sendEmail } from "../utils/emailService";

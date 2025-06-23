@@ -2,7 +2,7 @@ import { UserModel } from "../models/User";
 import { AuthRequest } from "../middlewares/auth";
 import { NextFunction, Response } from "express";
 import { SupportModel } from "../models/Support";
-import { SupportStatus, UserRole } from "../generated/prisma";
+import { UserRole } from "../generated/prisma";
 import { sendEmail } from "../utils/emailService";
 import ejs from 'ejs';
 import fs from 'fs';
