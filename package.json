@@ -8,7 +8,7 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
     "test": "jest",
-    "migrate": "npx prisma migrate dev --name add-email-verification-process"
+    "migrate": "npx prisma migrate dev --name init"
   },
   "dependencies": {
     "@prisma/client": "6.7.0",
