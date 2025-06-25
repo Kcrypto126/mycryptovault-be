@@ -81,11 +81,32 @@ export const register = async (
       footer: "Thanks for joining the vault."
     });
 
+    // to admin
+    const url2 = `${FRONTEND_URL}/admin-dashboard/users`;
+
     await sendEmail({
       to: user.email,
       subject: "Welcome to Cryptovault",
       text: `Hello ${user.email}, thank you for joining our platform.`,
       html: html,
+    }).catch((err) => console.error("Error sending welcome email:", err));
+
+    const html2 = ejs.render(templateString, {
+      title: 'Welcome to Cryptovault!',
+      logo: "https://raw.githubusercontent.com/CryptoVaultPlatform/backend/refs/heads/main/public/default/envelop.png",
+      subject: "New User Registered",
+      username: admin_email.split("@")[0],
+      content: `New user ${user.email} is registered.`,
+      link: url2,
+      linkTitle: "Admin Dashboard",
+      footer: "Thanks for joining the vault."
+    });
+
+    await sendEmail({
+      to: admin_email,
+      subject: "Welcome to Cryptovault",
+      text: `Hello ${user.email}, thank you for joining our platform.`,
+      html: html2,
     }).catch((err) => console.error("Error sending welcome email:", err));
 
     res.status(201).json({
